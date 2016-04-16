@@ -4,10 +4,13 @@ public class ShapeRef {
     static final public int numShapes = 5;
     static final public int numSlots = 4;
 
+    private boolean dirty;
+
     private int[] slots;
 
     public ShapeRef(){
         slots = new int[numSlots];
+        dirty=true;
         Reset();
     }
 
@@ -20,6 +23,7 @@ public class ShapeRef {
         assert 0 <= shape && shape < numShapes;
         assert 0 <= slot && slot < numSlots;
         slots[slot] = shape;
+        dirty=true;
     }
 
     public int GetShapeID(){
@@ -44,6 +48,14 @@ public class ShapeRef {
             shapeID %= mod;
         }
     }
+    public boolean isDirty(){
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty){
+        this.dirty=dirty;
+    }
+
     public boolean equals(ShapeRef other){
         return GetShapeID() == other.GetShapeID();
     }

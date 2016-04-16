@@ -42,13 +42,13 @@ public class GameInputProcessor implements InputProcessor {
 
     private void PlaceShape(int shape){
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            myshape.PlaceShape(shape,0);
-        } else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            myshape.PlaceShape(shape,1);
-        } else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             myshape.PlaceShape(shape,2);
-        } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        } else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
             myshape.PlaceShape(shape,3);
+        } else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            myshape.PlaceShape(shape,0);
+        } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            myshape.PlaceShape(shape,1);
         }
     }
 
