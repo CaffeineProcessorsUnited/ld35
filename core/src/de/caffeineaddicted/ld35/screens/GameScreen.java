@@ -28,7 +28,7 @@ import java.util.Random;
 public class GameScreen implements Screen {
 
     private static float baseDist = 30.f;
-    private static float baseSpeed = 4f;
+    private static float baseSpeed = 2f;
     private static float speedMultiplier = 0.5f;
     private int iteration = 0;
     private static Color[] colors;
@@ -213,9 +213,9 @@ public class GameScreen implements Screen {
         }
 
         if(dist < 1) {
-            //if (matchShapes()) {
+            if (matchShapes()) {
                 generateNewIncomimgShape();
-            //}
+            }
         }
     }
 
