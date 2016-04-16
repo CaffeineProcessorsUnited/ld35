@@ -1,8 +1,8 @@
 package de.caffeineaddicted.ld35.logic;
 
 public class ShapeRef {
-    final public int numShapes = 5;
-    final public int numSlots = 4;
+    static final public int numShapes = 5;
+    static final public int numSlots = 4;
 
     private int[] slots;
 

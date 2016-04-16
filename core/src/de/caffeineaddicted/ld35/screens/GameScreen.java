@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
     }
 
     private void generateNewIncomimgShape(){
-        int i = new Random().nextInt(625);
+        int i = new Random().nextInt((int)Math.pow(ShapeRef.numShapes,ShapeRef.numSlots));
         incomingShape.SetShape(i);
     }
 
