@@ -27,8 +27,8 @@ import java.util.Random;
  */
 public class GameScreen implements Screen {
     
-    private Model player_model, incoming_model;
-    private ModelInstance player_instance, incoming_instance;
+    private Model player_model[], incoming_model[];
+    private ModelInstance player_instance[], incoming_instance[];
     private ModelBatch modelBatch;
     private  float dist = 80;
     private CoffeeGame g;
@@ -50,6 +50,25 @@ public class GameScreen implements Screen {
         incomingShape.SetShape(i);
     }
 
+    private void setModelTransform(int model){
+        float x = 0;
+        float y = 0;
+        float z = dist;
+        if(model == 0){
+            x = -5;
+        } else if(model == 1){
+
+        } else if(model == 2){
+            x = 5;
+        } else if(model == 3){
+            y = 5;
+        } else {
+            z += 0.2;
+        }
+
+        incoming_instance[model].transform = new Matrix4(new Vector3(x,y,z),new Quaternion(),new Vector3(1,1,1));
+    }
+
     public void create(){
         g.debug("Creating GameScreen");
         // give it to the multiplexer
@@ -65,13 +84,35 @@ public class GameScreen implements Screen {
         modelBatch = new ModelBatch();
 
         ModelBuilder builder = new ModelBuilder();
-        player_model = builder.createBox(1.0f,0.3f,0.01f,new Material(ColorAttribute.createDiffuse(Color.GREEN)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        player_instance = new ModelInstance(player_model);
-        player_instance.transform = new Matrix4(new Vector3(0f,0f,1.2f),new Quaternion(),new Vector3(1,1,1));
+        player_model = new Model[5];
+        player_model[0] = builder.createBox(0.3f,0.3f,0.01f,new Material(ColorAttribute.createDiffuse(0.0f, 1.0f, 0.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        player_model[1] = builder.createBox(0.3f,0.3f,0.01f,new Material(ColorAttribute.createDiffuse(0.0f, 1.0f, 0.2f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        player_model[2] = builder.createBox(0.3f,0.3f,0.01f,new Material(ColorAttribute.createDiffuse(0.0f, 1.0f, 0.4f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        player_model[3] = builder.createBox(0.3f,0.3f,0.01f,new Material(ColorAttribute.createDiffuse(0.0f, 1.0f, 0.6f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        player_model[4] = builder.createBox(1.0f,0.3f,0.01f,new Material(ColorAttribute.createDiffuse(0.0f, 1.0f, 0.8f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
 
-        incoming_model = builder.createBox(20f,20f,0.01f, new Material(ColorAttribute.createDiffuse(Color.BLUE)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        incoming_instance = new ModelInstance(incoming_model);
-        incoming_instance.transform = new Matrix4(new Vector3(0f,0f,dist),new Quaternion(),new Vector3(1,1,1));
+        player_instance = new ModelInstance[5];//new ModelInstance(player_model);
+        for(int i = 0; i <5 ; ++i)
+            player_instance[i] = new ModelInstance(player_model[i]);
+        player_instance[0].transform = new Matrix4(new Vector3(-0.3f,0f,1.2f),new Quaternion(),new Vector3(1,1,1));
+        player_instance[1].transform = new Matrix4(new Vector3(0f,0f,1.2f),new Quaternion(),new Vector3(1,1,1));
+        player_instance[2].transform = new Matrix4(new Vector3(0.3f,0f,1.2f),new Quaternion(),new Vector3(1,1,1));
+        player_instance[3].transform = new Matrix4(new Vector3(0f,0.3f,1.2f),new Quaternion(),new Vector3(1,1,1));
+        player_instance[4].transform = new Matrix4(new Vector3(0f,0f,1.4f),new Quaternion(),new Vector3(1,1,1));
+
+        incoming_model = new Model[6];
+        incoming_model[0] = builder.createBox(5f,5f,0.01f, new Material(ColorAttribute.createDiffuse(0.0f, 0.0f, 1.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        incoming_model[1] = builder.createBox(5f,5f,0.01f, new Material(ColorAttribute.createDiffuse(0.2f, 0.0f, 1.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        incoming_model[2] = builder.createBox(5f,5f,0.01f, new Material(ColorAttribute.createDiffuse(0.4f, 0.0f, 1.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        incoming_model[3] = builder.createBox(5f,5f,0.01f, new Material(ColorAttribute.createDiffuse(0.6f, 0.0f, 1.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        incoming_model[4] = builder.createBox(20f,20f,0.01f, new Material(ColorAttribute.createDiffuse(0.8f, 0.0f, 1.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        incoming_model[5] = builder.createBox(20f,20f,0.01f, new Material(ColorAttribute.createDiffuse(1.0f, 0.0f, 1.0f, 1.0f)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+
+        incoming_instance = new ModelInstance[6];
+        for(int i = 0; i< 6; ++i) {
+            incoming_instance[i] = new ModelInstance(incoming_model[i]);
+            setModelTransform(i);
+        }
     }
 
     public void render (float delta) {
@@ -84,13 +125,18 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         g.getBatch().setProjectionMatrix(camera.combined);
         modelBatch.begin(camera);
-        modelBatch.render(player_instance);
-        modelBatch.render(incoming_instance);
+        for(int i = 0; i < 5; ++i) {
+            modelBatch.render(player_instance[i]);
+        }
+        for(int i = 0; i < 6; ++i) {
+            modelBatch.render(incoming_instance[i]);
+        }
         modelBatch.end();
 
         if (dist > 2) {
             dist -= 0.1;
-            incoming_instance.transform = new Matrix4(new Vector3(0f, 0f, dist), new Quaternion(), new Vector3(1, 1, 1));
+            for(int i = 0; i <6; ++i)
+                setModelTransform(i);
         }
 
         if(matchShapes()){
@@ -114,7 +160,10 @@ public class GameScreen implements Screen {
     @Override
     public void dispose () {
         modelBatch.dispose();
-        player_model.dispose();
+        for(int i = 0; i <5; ++i)
+            player_model[i].dispose();
+        for(int i = 0; i <6; ++i)
+            incoming_model[i].dispose();
     }
 
     @Override
