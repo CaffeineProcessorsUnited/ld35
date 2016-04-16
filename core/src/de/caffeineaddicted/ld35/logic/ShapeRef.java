@@ -8,8 +8,7 @@ public class ShapeRef {
 
     public ShapeRef(){
         slots = new int[numSlots];
-        for(int i = 0; i < numSlots; ++i)
-            slots[i] = 0;
+        Reset();
     }
 
     public void Reset() {
@@ -38,8 +37,7 @@ public class ShapeRef {
         return slots[slot];
     }
     public void SetShape(int shapeID){
-        for(int i = 0; i < numSlots; ++i)
-            slots[i] = 0;
+        Reset();
         for(int i = numSlots-1; i >= 0; --i){
             int mod = (int) Math.pow(numShapes,i);
             slots[i] = shapeID / mod;
