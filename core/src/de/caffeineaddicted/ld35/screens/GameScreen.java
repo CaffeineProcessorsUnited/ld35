@@ -9,6 +9,8 @@ import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.input.GameInputProcessor;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
 
+import java.util.Random;
+
 /**
  * Created by malte on 4/16/16.
  */
@@ -23,6 +25,15 @@ public class GameScreen implements Screen {
     public GameScreen(CoffeeGame g) {
         this.g = g;
         create();
+    }
+
+    private boolean matchShapex(){
+        return playerShape.equals(incomingShape);
+    }
+
+    private void generateNewIncomimgShape(){
+        int i = new Random().nextInt(625);
+        incomingShape.SetShape(i);
     }
 
     public void create(){
