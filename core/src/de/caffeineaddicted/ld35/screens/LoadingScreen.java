@@ -3,17 +3,28 @@ package de.caffeineaddicted.ld35.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.messages.ShowMainMenuMessage;
 
 /**
  * Created by malte on 4/16/16.
  */
 public class LoadingScreen implements Screen {
 
-    CoffeeGame g;
-    Stage stage;
+    private CoffeeGame g;
+    private Sprite background;
+
+    private float height = 15f;
+    private float percent_width = 0.8f;
+    private float margin_bottom = 40f;
+    private float line_thickness = 2f;
+
+    private float bar_r = 0.957f;
+    private float bar_g = 0f;
+    private float bar_b = 0.541f;
+    private float bar_a = 0.8f;
 
     public LoadingScreen(CoffeeGame g) {
         this.g = g;
@@ -22,32 +33,83 @@ public class LoadingScreen implements Screen {
 
     public void create(){
         g.debug("Creating LoadingScreen");
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+
+        g.getAssets().preload();
+
+        g.getAssets().finishLoading();
+
+        Texture texBackground = g.getAssets().get("loading_background.jpg", Texture.class);
+        texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        background = new Sprite(texBackground);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+
         g.getAssets().load();
     }
 
     public void render (float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        g.getBatch().begin();
+        background.draw(g.getBatch());
+        g.getBatch().end();
+
+        g.getShape().setColor(bar_r, bar_g, bar_b, bar_a);
+        Gdx.gl.glLineWidth(line_thickness);
+
+        g.getShape().begin(ShapeRenderer.ShapeType.Line);
+        g.getShape().rect(x(), y(), w(), h());
+        g.getShape().end();
+
+        g.getShape().begin(ShapeRenderer.ShapeType.Filled);
+        g.getShape().rect(x(), y(), wp(), h());
+        g.getShape().end();
+
+        g.debug("Drawing rect: " + x() + ", " + y() + ", " + w() + ", " + h());
+        g.debug("Drawing box: " + x() + ", " + y() + ", " + wp() + ", " + h());
+
         if (g.getAssets().update()) {
             g.debug("Finished loading assets");
-            g.message(ShowMainMenuMessage.class);
+            //g.message(ShowMainMenuMessage.class);
         } else {
             g.debug("Loading assets " + (g.getAssets().getProgress() * 100) + " %");
         }
     }
 
+    private float x() {
+        return ((1 - percent_width) / 2) * Gdx.graphics.getWidth();
+    }
+
+    private float y() {
+        return margin_bottom;
+    }
+
+    private float w() {
+        return (Gdx.graphics.getWidth() * percent_width);
+    }
+
+    private float wp() {
+        return w() * g.getAssets().getProgress() / 2;
+    }
+
+    private float h() {
+        return height;
+    }
+
     @Override
     public void resize (int width, int height) {
-        stage.getViewport().update(width, height, true);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
     public void dispose () {
-        stage.dispose();
+
     }
 
     @Override

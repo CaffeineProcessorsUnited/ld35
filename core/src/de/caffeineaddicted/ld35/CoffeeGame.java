@@ -2,23 +2,29 @@ package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.messages.*;
 import de.caffeineaddicted.ld35.screens.*;
 
 public class CoffeeGame extends MessageBasedGame {
 
     private SpriteBatch batch;
+    private ShapeRenderer shape;
     private Assets assets;
     private Highscores highscores;
+
+    private Music menuMusic;
 
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         debug("Creating game");
         batch = new SpriteBatch();
+        shape = new ShapeRenderer();
         assets = new Assets();
-        assets.load();
+        assets.preload();
         highscores = new Highscores();
         setScreen(new LoadingScreen(this));
     }
@@ -55,12 +61,22 @@ public class CoffeeGame extends MessageBasedGame {
         return batch;
     }
 
+    public ShapeRenderer getShape() {
+        return shape;
+    }
+
     public Assets getAssets() {
         return assets;
     }
 
     public Highscores getHighscores() {
         return highscores;
+    }
+
+    public void setMusic(M) {
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/music_menu.ogg");
+        menuMusic.setLooping(true);
+        menuMusic.play();
     }
 
     public String getLogTag() {
