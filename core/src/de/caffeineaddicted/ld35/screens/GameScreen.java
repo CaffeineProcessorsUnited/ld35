@@ -7,14 +7,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.input.GameInputProcessor;
+import de.caffeineaddicted.ld35.logic.ShapeRef;
 
 /**
  * Created by malte on 4/16/16.
  */
 public class GameScreen implements Screen {
 
-    CoffeeGame g;
-    PerspectiveCamera camera;
+    private CoffeeGame g;
+    private PerspectiveCamera camera;
+    private ShapeRef playerShape;
+    private ShapeRef incomingShape;
 
 
     public GameScreen(CoffeeGame g) {
@@ -26,10 +29,13 @@ public class GameScreen implements Screen {
         g.debug("Creating GameScreen");
         // give it to the multiplexer
         //Gdx.input.setInputProcessor();
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new GameInputProcessor());
-        Gdx.input.setInputProcessor(multiplexer);
 
+        playerShape = new ShapeRef();
+        incomingShape = new ShapeRef();
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new GameInputProcessor(playerShape));
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     public void render (float delta) {

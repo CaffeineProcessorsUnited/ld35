@@ -12,6 +12,7 @@ public class CoffeeGame extends MessageBasedGame {
     private Assets assets;
     private Highscores highscores;
 
+
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
