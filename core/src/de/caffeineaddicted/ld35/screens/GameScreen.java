@@ -3,6 +3,7 @@ package de.caffeineaddicted.ld35.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -31,6 +32,7 @@ public class GameScreen implements Screen {
     private static float baseSpeed = 4f;
     private static float speedMultiplier = 0.5f;
     private int iteration = 0;
+    private static Color[] colors;
 
     private int numPoints;
     private static int numPointTrigger = 7;
@@ -48,6 +50,12 @@ public class GameScreen implements Screen {
 
     public GameScreen(CoffeeGame g) {
         this.g = g;
+        colors =new Color[5];
+        colors[0]= Color.RED;
+        colors[1]= Color.GREEN;
+        colors[2]= Color.BLUE;
+        colors[3]= Color.WHITE;
+        colors[4]= Color.ORANGE;
         create();
     }
 
@@ -65,6 +73,9 @@ public class GameScreen implements Screen {
         }
         speed = Math.min(baseSpeed + speedMultiplier * iteration,20.f);
         Gdx.app.log("GenerateNewIncomingShape",numPoints+" "+iteration+" "+speed);
+        for(int j=0;j<4;j++){
+            incoming_instance[j].materials.first().set(ColorAttribute.createDiffuse(colors[incomingShape.GetShape(j)]));
+        }
     }
 
     private void setModelTransform(int model){
@@ -93,7 +104,6 @@ public class GameScreen implements Screen {
 
         playerShape = new ShapeRef();
         incomingShape = new ShapeRef();
-        generateNewIncomimgShape();
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GameInputProcessor(playerShape));
@@ -133,6 +143,7 @@ public class GameScreen implements Screen {
             incoming_instance[i] = new ModelInstance(incoming_model[i]);
             setModelTransform(i);
         }
+        generateNewIncomimgShape();
     }
 
     public void render (float delta) {
@@ -140,6 +151,13 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         //camera.update();
+
+        if(playerShape.isDirty()){
+            for (int i=0;i<4;i++){
+                player_instance[i].materials.first().set(ColorAttribute.createDiffuse(colors[playerShape.GetShape(i)]));
+            }
+            playerShape.setDirty(false);
+        }
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
