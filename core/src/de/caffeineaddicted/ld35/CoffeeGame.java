@@ -17,10 +17,10 @@ public class CoffeeGame extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 
 		ShapeRef s = new ShapeRef();
-		s.PlaceShape(3,0);
-		s.PlaceShape(3,1);
-		s.PlaceShape(3,2);
-		s.PlaceShape(3,3);
+		s.PlaceShape(4,0);
+		s.PlaceShape(4,1);
+		s.PlaceShape(4,2);
+		s.PlaceShape(4,3);
 
 		int shapeID = s.GetShapeID();
         Gdx.app.log("",""+shapeID);

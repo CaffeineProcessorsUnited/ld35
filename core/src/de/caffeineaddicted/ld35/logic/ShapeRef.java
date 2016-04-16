@@ -6,26 +6,32 @@ public class ShapeRef {
     final public int shape3 = 2;
     final public int shape4 = 3;
 
-    final public int numShapes = 4;
+    final public int numShapes = 5;
+    final public int numSlots = 4;
 
     private int[] slots;
 
     public ShapeRef(){
-        slots = new int[4];
-        for(int i = 0; i < 4; ++i)
+        slots = new int[numSlots];
+        for(int i = 0; i < numSlots; ++i)
+            slots[i] = 0;
+    }
+
+    public void Reset() {
+        for(int i = 0; i < numSlots; ++i)
             slots[i] = 0;
     }
 
     public void PlaceShape(int shape, int slot) {
-        assert 0 <= shape && shape < 4;
-        assert 0 <= slot && slot < 4;
+        assert 0 <= shape && shape < numShapes;
+        assert 0 <= slot && slot < numSlots;
         slots[slot] = shape;
     }
 
     public int GetShapeID(){
         int id = 0;
-        for(int i = 0; i < 4; ++i) {
-            id += (Math.pow(4, i) * slots[i]);
+        for(int i = 0; i < numSlots; ++i) {
+            id += (Math.pow(numShapes, i) * slots[i]);
         }
         return id;
     }
@@ -33,14 +39,14 @@ public class ShapeRef {
         return slots;
     }
     public int GetShape(int slot){
-        assert 0 <= slot && slot < 4;
+        assert 0 <= slot && slot < numSlots;
         return slots[slot];
     }
     public void SetShape(int shapeID){
-        for(int i = 0; i < 4; ++i)
+        for(int i = 0; i < numSlots; ++i)
             slots[i] = 0;
-        for(int i = 3; i >= 0; --i){
-            int mod = (int) Math.pow(4,i);
+        for(int i = numSlots-1; i >= 0; --i){
+            int mod = (int) Math.pow(numShapes,i);
             slots[i] = shapeID / mod;
             shapeID %= mod;
         }
@@ -48,5 +54,4 @@ public class ShapeRef {
     public boolean equals(ShapeRef other){
         return GetShapeID() == other.GetShapeID();
     }
-
 }
