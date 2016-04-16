@@ -8,12 +8,27 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.messages.*;
 import de.caffeineaddicted.ld35.screens.*;
 
+import static de.caffeineaddicted.ld35.CoffeeGame.CONSTANTS.*;
+
 public class CoffeeGame extends MessageBasedGame {
+
+    public static class CONSTANTS {
+
+        public final static String PREFERENCES_FILENAME = "caffeine-ld35";
+
+        public final static String  PREF_KEY_MUSIC_MENU_ACTIVATED = "music_menu_activated";
+        public final static boolean PREF_DEF_MUSIC_MENU_ACTIVATED = true;
+
+        public final static String  PREF_KEY_MUSIC_MENU_VOLUME = "music_menu_volume";
+        public final static  float   PREF_DEF_MUSIC_MENU_VOLUME = 1.f;
+    }
 
     private SpriteBatch batch;
     private ShapeRenderer shape;
     private Assets assets;
     private Highscores highscores;
+
+    Preferences preferences;
 
     private Music menuMusic;
 
@@ -21,39 +36,75 @@ public class CoffeeGame extends MessageBasedGame {
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         debug("Creating game");
+        loadPreferences();
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         assets = new Assets();
         assets.preload();
         highscores = new Highscores();
+        preferences = new Preferences(PREFERENCES_FILENAME);
         setScreen(new LoadingScreen(this));
     }
 
-    public void message(Class<? extends Message> message) {
+    public void message(Message message) {
         if (message == null) {
-            message = new DefaultMessage().getClass();
+            message = new DefaultMessage();
         }
         // Here comes the logic
-        if (message == ShowMainMenuMessage.class) {
+        if (message.getClass() == ExitGameMessage.class) {
+            debug("Bye");
+            Gdx.app.exit();
+        }
+        if (message.getClass() == FinishedLoadingMessage.class) {
             debug("Received message after finishing loading assets");
-            // Finished loading show menu screen
+            menuMusic = getAssets().get("theme_game.wav", Music.class);
+            menuMusic.setLooping(true);
+            loadPreferences();
             setScreen(new MainMenuScreen(this));
         }
-        if (message == ShowGameMessage.class) {
-            debug("Showing the game screen");
-            setScreen(new GameScreen(this));
+        if (message.getClass() == GameOverMessage.class) {
+            debug("Go to the lose screen");
+            setScreen(new GameOverScreen(this, ((GameOverMessage) message).score));
         }
-        if (message == ShowCreditsMessage.class) {
+        if (message.getClass() == PreferencesUpdatedMessage.class) {
+            debug("Preferences have changed. Update Interface");
+            getPreferences().flush();
+            loadPreferences();
+        }
+        if (message.getClass() == ResumeGameMessage.class) {
+            debug("Go to main menu screen");
+            setScreen(new MainMenuScreen(this));
+        }
+        if (message.getClass() == ShowCreditsMessage.class) {
             debug("Showing the credits screen");
             setScreen(new CreditsScreen(this));
         }
-        if (message == ShowHighscoresMessage.class) {
+        if (message.getClass() == ShowGameMessage.class) {
+            debug("Showing the game screen");
+            setScreen(new GameScreen(this));
+        }
+        if (message.getClass() == ShowHighscoresMessage.class) {
             debug("Showing the highscore screen");
             setScreen(new HighscoresScreen(this));
         }
-        if (message == ExitGameMessage.class) {
-            debug("Bye");
-            Gdx.app.exit();
+        if (message.getClass() == ShowMainMenuMessage.class) {
+            debug("Go to main menu screen");
+            setScreen(new MainMenuScreen(this));
+        }
+        if (message.getClass() == ShowPreferenceScreen.class) {
+            debug("Showing the preference screen");
+            setScreen(new PreferencesScreen(this));
+        }
+    }
+
+    public void loadPreferences() {
+        if (menuMusic != null) {
+            if (getPreferences().getBoolean(PREF_KEY_MUSIC_MENU_ACTIVATED, PREF_DEF_MUSIC_MENU_ACTIVATED)) {
+                menuMusic.play();
+            } else {
+                menuMusic.stop();
+            }
+            menuMusic.setVolume(getPreferences().getFloat(PREF_KEY_MUSIC_MENU_VOLUME, PREF_DEF_MUSIC_MENU_VOLUME));
         }
     }
 
@@ -73,10 +124,25 @@ public class CoffeeGame extends MessageBasedGame {
         return highscores;
     }
 
-    public void setMusic(M) {
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/music_menu.ogg");
-        menuMusic.setLooping(true);
-        menuMusic.play();
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public boolean reloadScreen() {
+        if (CreditsScreen.class.isInstance(getScreen())) {
+            setScreen(new CreditsScreen(this));
+        } else if (GameScreen.class.isInstance(getScreen())) {
+            setScreen(new GameScreen(this));
+        } else if (HighscoresScreen.class.isInstance(getScreen())) {
+            setScreen(new HighscoresScreen(this));
+        } else if (LoadingScreen.class.isInstance(getScreen())) {
+            setScreen(new LoadingScreen(this));
+        } else if (MainMenuScreen.class.isInstance(getScreen())) {
+            setScreen(new MainMenuScreen(this));
+        } else {
+            return false;
+        }
+        return true;
     }
 
     public String getLogTag() {

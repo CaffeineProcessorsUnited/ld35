@@ -6,10 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.MenuScreen;
-import de.caffeineaddicted.ld35.messages.ExitGameMessage;
-import de.caffeineaddicted.ld35.messages.ShowCreditsMessage;
-import de.caffeineaddicted.ld35.messages.ShowGameMessage;
-import de.caffeineaddicted.ld35.messages.ShowHighscoresMessage;
+import de.caffeineaddicted.ld35.messages.*;
 
 /**
  * Created by malte on 4/16/16.
@@ -37,7 +34,7 @@ public class MainMenuScreen extends MenuScreen {
         btnPlay = new TextButton("Play", g.getAssets().get("uiskin.json", Skin.class));
         btnPlay.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(ShowGameMessage.class);
+                g.message(new ShowGameMessage());
             }
         });
         btnPlay.setWidth(btnWidth);
@@ -48,7 +45,7 @@ public class MainMenuScreen extends MenuScreen {
         btnHighscores = new TextButton("Highscores", g.getAssets().get("uiskin.json", Skin.class));
         btnHighscores.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(ShowHighscoresMessage.class);
+                g.message(new ShowHighscoresMessage());
             }
         });
         btnHighscores.setWidth(btnWidth);
@@ -59,6 +56,7 @@ public class MainMenuScreen extends MenuScreen {
         btnHelp = new TextButton("Help", g.getAssets().get("uiskin.json", Skin.class));
         btnHelp.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
+                g.message(new GameOverMessage(42));
             }
         });
         btnHelp.setWidth(btnWidth);
@@ -69,6 +67,7 @@ public class MainMenuScreen extends MenuScreen {
         btnSettings = new TextButton("Settings", g.getAssets().get("uiskin.json", Skin.class));
         btnSettings.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
+                g.message(new ShowPreferenceScreen());
             }
         });
         btnSettings.setWidth(btnWidth);
@@ -79,7 +78,7 @@ public class MainMenuScreen extends MenuScreen {
         btnCredits = new TextButton("Credits", g.getAssets().get("uiskin.json", Skin.class));
         btnCredits.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(ShowCreditsMessage.class);
+                g.message(new ShowCreditsMessage());
             }
         });
         btnCredits.setWidth(btnWidth);
@@ -90,7 +89,7 @@ public class MainMenuScreen extends MenuScreen {
         btnExit = new TextButton("Exit", g.getAssets().get("uiskin.json", Skin.class));
         btnExit.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(ExitGameMessage.class);
+                g.message(new ExitGameMessage());
             }
         });
         btnExit.setWidth(btnWidth);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.CoffeeGame;
+import de.caffeineaddicted.ld35.messages.FinishedLoadingMessage;
 
 /**
  * Created by malte on 4/16/16.
@@ -26,6 +27,10 @@ public class LoadingScreen implements Screen {
     private float bar_b = 0.541f;
     private float bar_a = 0.8f;
 
+    private float time = 0;
+    private float wait_time = 0.5f;
+    private float min_time = 1.5f;
+
     public LoadingScreen(CoffeeGame g) {
         this.g = g;
         create();
@@ -42,8 +47,6 @@ public class LoadingScreen implements Screen {
         texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         background = new Sprite(texBackground);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-
 
         g.getAssets().load();
     }
@@ -74,12 +77,18 @@ public class LoadingScreen implements Screen {
         g.debug("Drawing rect: " + x() + ", " + y() + ", " + w() + ", " + h());
         g.debug("Drawing box: " + x() + ", " + y() + ", " + wp() + ", " + h());
 
-        if (g.getAssets().update()) {
-            g.debug("Finished loading assets");
-            //g.message(ShowMainMenuMessage.class);
-        } else {
-            g.debug("Loading assets " + (g.getAssets().getProgress() * 100) + " %");
+        if (time >= wait_time) {
+            if (g.getAssets().update()) {
+                if (time >= min_time) {
+                    g.debug("Finished loading assets");
+                    g.message(new FinishedLoadingMessage());
+                }
+            } else {
+                g.debug("Loading assets " + (g.getAssets().getProgress() * 100) + " %");
+            }
         }
+        time += delta;
+        g.debug(time + "");
     }
 
     private float x() {
@@ -95,7 +104,7 @@ public class LoadingScreen implements Screen {
     }
 
     private float wp() {
-        return w() * g.getAssets().getProgress() / 2;
+        return w() * (g.getAssets().getProgress() - (time >= (min_time * 0.7) ? 0f : 0.15f));
     }
 
     private float h() {

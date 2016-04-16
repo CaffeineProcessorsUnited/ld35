@@ -14,30 +14,32 @@ import java.util.ArrayList;
 /**
  * Created by malte on 4/16/16.
  */
-public class HighscoresScreen extends MenuScreen {
+public class HelpScreen extends MenuScreen {
 
     float txtMarginTop = 100;
-    float txtWidth = 400;
+    float txtWidth = 380;
     float txtHeight = 25;
     TextButton btnBack;
-    String[] txtCredits = { "Credits:", "Zwile zwei du kacklappen", "", "People developing this game:", "", "", "bla bla newline test"};
-    ArrayList<Label> txtScores;
+    String[] txtHelps = { "Help", "Help", "Help", "Help", "Help", "Help", "Help"};
+    ArrayList<Label> txtHelpLabels;
 
-    public HighscoresScreen(CoffeeGame g) {
+    public HelpScreen(CoffeeGame g) {
         super(g);
         create();
     }
 
-    public void create(){
-        g.debug("Creating CreditsScreen");
-        setTitle("LD 35: Highscores");
 
-        txtScores = new ArrayList<Label>();
-        for (int i = 0; i < Math.min(g.getHighscores().getScores().size(), 10); i++) {
-            txtScores.add(new Label(g.getHighscores().getScores().get(i).getName() + "" + g.getHighscores().getScores().get(i).getScore(), g.getAssets().get("uiskin.json", Skin.class), "default"));
-            txtScores.get(i).setWidth(txtWidth);
-            txtScores.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
-            stage.addActor(txtScores.get(i));
+    public void create() {
+        g.debug("Creating HelpScreen");
+
+        setTitle("LD 35: Help");
+
+        txtHelpLabels = new ArrayList<Label>();
+        for (int i = 0; i < txtHelps.length; i++) {
+            txtHelpLabels.add(new Label(txtHelps[i], g.getAssets().get("uiskin.json", Skin.class), "default"));
+            txtHelpLabels.get(i).setWidth(txtWidth);
+            txtHelpLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
+            stage.addActor(txtHelpLabels.get(i));
         }
 
         // Back button

@@ -12,10 +12,10 @@ public class Assets extends AssetManager {
 
     public void preload() {
         load("loading_background.jpg", Texture.class);
-        load("music/theme", Music.class);
     }
 
     public void load() {
+        load("theme_game.wav", Music.class);
         load("badlogic.jpg", Texture.class);
         load("menu_background.jpg", Texture.class);
         load("uiskin.json", Skin.class);

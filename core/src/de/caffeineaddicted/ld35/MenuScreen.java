@@ -119,6 +119,12 @@ public class MenuScreen implements Screen {
         tabindex = index;
     }
 
+    public void click() {
+        if (!(tabindex < 0)) {
+            buttons.get(tabindex).toggle();
+        }
+    }
+
     public void up() {
         select(Math.max(0, tabindex - 1));
     }

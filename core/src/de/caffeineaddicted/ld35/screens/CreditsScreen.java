@@ -1,7 +1,6 @@
 package de.caffeineaddicted.ld35.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -16,11 +15,6 @@ import java.util.ArrayList;
  * Created by malte on 4/16/16.
  */
 public class CreditsScreen extends MenuScreen {
-
-    CoffeeGame g;
-    Stage stage;
-
-    Label title;
 
     float txtMarginTop = 100;
     float txtWidth = 380;
@@ -51,7 +45,7 @@ public class CreditsScreen extends MenuScreen {
         btnBack = new TextButton("Back", g.getAssets().get("uiskin.json", Skin.class));
         btnBack.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(ShowMainMenuMessage.class);
+                g.message(new ShowMainMenuMessage());
             }
         });
         btnBack.setWidth(120);

@@ -24,6 +24,9 @@ public class MenuInputProcessor implements InputProcessor {
             case Input.Keys.DOWN:
                 screen.down();
                 break;
+            case Input.Keys.ENTER:
+                screen.click();
+                break;
         }
         return false;
     }

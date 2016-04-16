@@ -36,6 +36,7 @@ public class Highscores {
     private void sort() {
         ScoreComparator comparator = new ScoreComparator();
         Collections.sort(scores, comparator);
+        scores = sublist(scores, 0, Math.min(9, scores.size() - 1));
     }
 
     public void addScore(String name, int score) {
@@ -68,9 +69,12 @@ public class Highscores {
     }
 
     public void updateScoreFile() {
+        if (scores.size() == 0) {
+            return;
+        }
         try {
             outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
-            outputStream.writeObject(scores.subList(0, 9));
+            outputStream.writeObject(sublist(scores, 0, Math.min(9, scores.size() - 1)));
         } catch (FileNotFoundException e) {
             System.out.println("[Update] FNF Error: " + e.getMessage() + ",the program will try and make a new file");
         } catch (IOException e) {
@@ -85,6 +89,14 @@ public class Highscores {
                 System.out.println("[Update] Error: " + e.getMessage());
             }
         }
+    }
+
+    public ArrayList<Score> sublist(ArrayList<Score> list, int begin, int end) {
+        ArrayList<Score> result = new ArrayList<Score>();
+        for (int i = begin; i <= end; i++) {
+            result.add(list.get(i));
+        }
+        return result;
     }
 
     public String getHighscoreString() {
