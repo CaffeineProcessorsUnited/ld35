@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
         create();
     }
 
-    private boolean matchShapex(){
+    private boolean matchShapes(){
         return playerShape.equals(incomingShape);
     }
 
@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
 
         playerShape = new ShapeRef();
         incomingShape = new ShapeRef();
+        generateNewIncomimgShape();
 
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GameInputProcessor(playerShape));
@@ -57,6 +58,10 @@ public class GameScreen implements Screen {
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
         g.getBatch().setProjectionMatrix(camera.combined);
+
+        if(matchShapes()){
+            generateNewIncomimgShape();
+        }
     }
 
     @Override
