@@ -42,6 +42,8 @@ public class Assets extends AssetManager {
         load("GreyTriagTexture.png", Texture.class);
         load("BrickTexture.png", Texture.class);
 
+        load("unicorn.png", Texture.class);
+        load("unicorninverted.png", Texture.class);
         load("square.png", Texture.class);
         load("squareinverted.png", Texture.class);
         load("circle.png", Texture.class);
@@ -50,5 +52,7 @@ public class Assets extends AssetManager {
         load("starinverted.png", Texture.class);
         load("triangle.png", Texture.class);
         load("triangleinverted.png", Texture.class);
+
+        load("rainbow.png", Texture.class);
     }
 }

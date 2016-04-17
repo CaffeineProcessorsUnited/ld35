@@ -38,10 +38,10 @@ public class GameScreen extends CoffeeScreen {
         public static int MIN_PLAYER_INDEX = 0;
         public static int MAX_PLAYER_INDEX = 4;
         public static int MIN_INCOMING_INDEX = 5;
-        public static int MAX_INCOMING_INDEX = 11;
-        public static int MIN_TUNNEL_INDEX = 12;
-        public static int MAX_TUNNEL_INDEX = 18;
-        public static int MAX_INDEX = 19;
+        public static int MAX_INCOMING_INDEX = 14;
+        public static int MIN_TUNNEL_INDEX = 15;
+        public static int MAX_TUNNEL_INDEX = 21;
+        public static int MAX_INDEX = 22;
 
         public static int BLUE_TILES_SIDE = 0;
         public static int GREY_TILES = 1;
@@ -56,8 +56,9 @@ public class GameScreen extends CoffeeScreen {
         public static int SPRITE_STAR_INV = 10;
         public static int SPRITE_TRIANGLE = 11;
         public static int SPRITE_TRIANGLE_INV = 12;
+        public static int SPRITE_RAINBOW = 13;
 
-        public static int NUM_TEXTURES = 13;
+        public static int NUM_TEXTURES = 14;
     }
 
     private boolean cheatMode;
@@ -98,9 +99,17 @@ public class GameScreen extends CoffeeScreen {
 
     private Stage stage;
 
-    private void loadTexture(int idx, final String name){
+    private void loadTexture(int idx, final String name, boolean mipmap){
         textures[idx] = game.getAssets().get(name+".png", Texture.class);
-        textures[idx].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        if(mipmap)
+            textures[idx].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        else
+            textures[idx].setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+    }
+
+    private void loadTexture(int idx, final String name){
+        loadTexture(idx, name, true);
     }
 
     public GameScreen(CoffeeGame game) {
@@ -116,8 +125,8 @@ public class GameScreen extends CoffeeScreen {
         loadTexture(INDICES.BLUE_TILES_SIDE,"BluetilesTexture");
         loadTexture(INDICES.GREY_TILES,"GreyTriagTexture");
         loadTexture(INDICES.BRICK_TILES,"BrickTexture");
-        loadTexture(INDICES.SPRITE_UNICORN,"square");
-        loadTexture(INDICES.SPRITE_UNICORN_INV,"squareinverted");
+        loadTexture(INDICES.SPRITE_UNICORN,"unicorn");
+        loadTexture(INDICES.SPRITE_UNICORN_INV,"unicorninverted");
         loadTexture(INDICES.SPRITE_SQUARE,"square");
         loadTexture(INDICES.SPRITE_SQUARE_INV,"squareinverted");
         loadTexture(INDICES.SPRITE_CIRCLE,"circle");
@@ -126,6 +135,7 @@ public class GameScreen extends CoffeeScreen {
         loadTexture(INDICES.SPRITE_STAR_INV,"starinverted");
         loadTexture(INDICES.SPRITE_TRIANGLE,"triangle");
         loadTexture(INDICES.SPRITE_TRIANGLE_INV,"triangleinverted");
+        loadTexture(INDICES.SPRITE_RAINBOW,"rainbow",false);
 
         create();
         reset();
@@ -151,7 +161,6 @@ public class GameScreen extends CoffeeScreen {
         else {
             speed = Math.max(speed,s);
         }
-        game.debug("GenerateNewIncomingShape", numPoints + " " + iteration + " " + speed);
         for (int j = 0; j < 4; j++) {
             instances[INDICES.MIN_INCOMING_INDEX+j].materials.first().set(makeAttributeFromShape(incomingShape.GetShape(j),true));
         }
@@ -162,24 +171,38 @@ public class GameScreen extends CoffeeScreen {
         float x = 0;
         float y = 0;
         float z = dist;
+        Vector3 scaling = new Vector3(1,1,1);
         if (model == 0) {
             x = -0.3f;
+            scaling.x = -1;
         } else if (model == 1) {
-
+            scaling.x = -1;
         } else if (model == 2) {
             x = 0.3f;
+            scaling.x = -1;
         } else if (model == 3) {
             y = 0.3f;
+            scaling.x = -1;
         } else if (model == 4) {
             z += 0.02;
         } else if (model == 5) {
-            z += 0.04;
-            y += 2.35;
+            x += 1.225;
+            y += 0.9;
+        } else if (model == 6) {
+            y += 1.45;
+        } else if (model == 7) {
+            x += -1.225;
+            y += 0.9;
+        } else if (model == 8) {
+            x += -0.3;
+            y += 0.3;
+        } else if (model == 9) {
+            x += 0.3;
+            y += 0.3;
         }
 
         if(instances[INDICES.MIN_INCOMING_INDEX+model] != null)
-            instances[INDICES.MIN_INCOMING_INDEX+model].transform = new Matrix4(new Vector3(x, y, z), new Quaternion(), new Vector3(1, 1, 1));
-
+            instances[INDICES.MIN_INCOMING_INDEX+model].transform = new Matrix4(new Vector3(x, y, z), new Quaternion(), scaling);
     }
 
     private void setTunnelTransform(){
@@ -188,10 +211,6 @@ public class GameScreen extends CoffeeScreen {
             positon.z = dist;
             instances[i].transform.setTranslation(positon);
         }
-    }
-
-    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material){
-        makeModel(idx, size, offset, material, null);
     }
 
     private void calcPlane(final Vector3 pos, final Vector3 size, Vector3 aa, Vector3 bb, Vector3 cc, Vector3 dd, Vector3 nn){
@@ -232,7 +251,13 @@ public class GameScreen extends CoffeeScreen {
         nn.set(n);
     }
 
+    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material){
+        makeModel(idx, size, offset, material, null);
+    }
     private void makeModel(int idx, Vector3 size, Vector3 offset, Material material, Quaternion rotation){
+        makeModel(idx, size, offset, material, rotation,new Vector3(1,1,1));
+    }
+    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material, Quaternion rotation, Vector3 scaling){
         if(builder == null)
             return;
         if(rotation == null)
@@ -254,7 +279,7 @@ public class GameScreen extends CoffeeScreen {
                                          n.x,n.y,n.z,
                                          material, va);
         instances[idx] = new ModelInstance(models[idx]);
-        instances[idx].transform = new Matrix4(offset, rotation, new Vector3(1,1,1));
+        instances[idx].transform = new Matrix4(offset, rotation, scaling);
     }
 
     private TextureAttribute makeAttributeFromShape(int idx, boolean inv){
@@ -294,19 +319,27 @@ public class GameScreen extends CoffeeScreen {
         makeModel(INDICES.MIN_PLAYER_INDEX+0,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(-0.3f, 0f, 1.2f),
-                makeMaterialFromTexture(INDICES.SPRITE_STAR));
+                makeMaterialFromTexture(INDICES.SPRITE_STAR),
+                new Quaternion(),
+                new Vector3(-1,1,1));
         makeModel(INDICES.MIN_PLAYER_INDEX+1,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(0f, 0f, 1.2f),
-                makeMaterialFromTexture(INDICES.SPRITE_STAR));
+                makeMaterialFromTexture(INDICES.SPRITE_STAR),
+                new Quaternion(),
+                new Vector3(-1,1,1));
         makeModel(INDICES.MIN_PLAYER_INDEX+2,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(0.3f, 0f, 1.2f),
-                makeMaterialFromTexture(INDICES.SPRITE_STAR));
+                makeMaterialFromTexture(INDICES.SPRITE_STAR),
+                new Quaternion(),
+                new Vector3(-1,1,1));
         makeModel(INDICES.MIN_PLAYER_INDEX+3,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(0f, 0.3f, 1.2f),
-                makeMaterialFromTexture(INDICES.SPRITE_STAR));
+                makeMaterialFromTexture(INDICES.SPRITE_STAR),
+                new Quaternion(),
+                new Vector3(-1,1,1));
         /*makeModel(INDICES.MIN_PLAYER_INDEX+4,
                 new Vector3(1f, 1f, 0f),
                 new Vector3(0f, 0f, 1.22f),
@@ -331,15 +364,28 @@ public class GameScreen extends CoffeeScreen {
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
                 makeMaterialFromTexture(INDICES.SPRITE_STAR_INV));
         /*makeModel(INDICES.MIN_INCOMING_INDEX + 4,
-                new Vector3(1.0f, 1.0f, 0f),
-                new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(Color.PURPLE)));*/
-        makeModel(INDICES.MIN_INCOMING_INDEX + 5,
                 new Vector3(20f, 5f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(TextureAttribute.createDiffuse(textures[INDICES.BRICK_TILES])));
-        makeModel(INDICES.MIN_INCOMING_INDEX + 6,
-                new Vector3(20f, 5f, 0f),
+                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));*/
+        //Wall on Back
+        makeModel(INDICES.MIN_INCOMING_INDEX + 5, //Left
+                new Vector3(1.55f, 2.2f, 0f),
+                new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
+                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+        makeModel(INDICES.MIN_INCOMING_INDEX + 6, //UpperMid
+                new Vector3(0.9f, 2f, 0f),
+                new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
+                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+        makeModel(INDICES.MIN_INCOMING_INDEX + 7, // Right
+                new Vector3(1.55f, 2.2f, 0f),
+                new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
+                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+        makeModel(INDICES.MIN_INCOMING_INDEX + 8, //Lower Left Mid
+                new Vector3(0.31f, 0.3f, 0f),
+                new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
+                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+        makeModel(INDICES.MIN_INCOMING_INDEX + 9, //Lower Right Mid
+                new Vector3(0.31f, 0.3f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
                 new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
         for (int i = 0; i <= INDICES.MAX_INCOMING_INDEX - INDICES.MIN_INCOMING_INDEX; ++i)
@@ -353,23 +399,23 @@ public class GameScreen extends CoffeeScreen {
         makeModel(INDICES.MIN_TUNNEL_INDEX+0,
                 new Vector3(1.2f, 0f, baseDist * 2),
                 new Vector3(0f, -0.16f, 0f), // Carpet
-                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));
+                makeMaterialFromTexture(INDICES.SPRITE_RAINBOW));
         makeModel(INDICES.MIN_TUNNEL_INDEX+1,
                 new Vector3(0f, 4f, baseDist * 5),
                 new Vector3(-2f, -0f, 0f), // Tunnel walls
-                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));
+                makeMaterialFromTexture(INDICES.BLUE_TILES_SIDE));
         makeModel(INDICES.MIN_TUNNEL_INDEX+2,
                 new Vector3(0f, 4f, baseDist * 5),
                 new Vector3(2f, -0f, 0f), // Tunnel walls
-                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));
+                makeMaterialFromTexture(INDICES.BLUE_TILES_SIDE));
         makeModel(INDICES.MIN_TUNNEL_INDEX+3,
                 new Vector3(4f, 0f, baseDist * 5),
                 new Vector3(0f, -0.18f, 0f), // Tunnel walls
-                new Material(TextureAttribute.createDiffuse(textures[INDICES.GREY_TILES])));
+                makeMaterialFromTexture(INDICES.GREY_TILES));
         makeModel(INDICES.MIN_TUNNEL_INDEX+4,
                 new Vector3(4f, 0f, baseDist * 5),
                 new Vector3(0f, 2f, 0f), // Tunnel Top
-                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));
+                makeMaterialFromTexture(INDICES.BLUE_TILES_SIDE));
         makeModel(INDICES.MIN_TUNNEL_INDEX+5,
                 new Vector3(0.2f, 0f, baseDist * 5),
                 new Vector3(-1.98f, 1.98f, 0f), // Tunnel walls
@@ -406,7 +452,7 @@ public class GameScreen extends CoffeeScreen {
 
         if (dist >= 1.2) {
             dist -= (speed * delta);
-            for (int i = 0; i < 6; ++i)
+            for (int i = 0; i <= INDICES.MAX_INCOMING_INDEX - INDICES.MIN_INCOMING_INDEX; ++i)
                 setIncomingTransform(i);
                 setTunnelTransform();
         }
