@@ -17,11 +17,10 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.input.GameInputProcessor;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
+import de.caffeineaddicted.ld35.sprites.KeyDisplay;
 
 import java.util.Random;
 
@@ -216,7 +215,7 @@ public class GameScreen implements Screen {
             setModelTransform(i);
 
         stage = new Stage();
-        stage.addActor(new Label("Marias HUD", game.getAssets().get("uiskin.json", Skin.class)));
+        stage.addActor(new KeyDisplay(game));
     }
 
     private void CreateTunnelModels() {
