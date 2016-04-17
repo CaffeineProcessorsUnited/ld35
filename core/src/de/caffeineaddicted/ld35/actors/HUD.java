@@ -32,7 +32,7 @@ public class HUD extends Group {
 
     public void create () {
         keyDisplay = new KeyDisplay(g, this);
-        keyDisplay.setScale(0.25f, 0.25f);
+        keyDisplay.setScale(0.3f, 0.3f);
         keyDisplay.setPosition(10, 10);
         keyDisplay.setWidth(getWidth() - 20);
         labelSpeed = new Label("Speed: ",g.getAssets().get("uiskin.json", Skin.class));

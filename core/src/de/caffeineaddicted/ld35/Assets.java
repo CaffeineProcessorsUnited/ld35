@@ -20,9 +20,13 @@ public class Assets extends AssetManager {
         load("menu_background.png", Texture.class);
         load("uiskin.json", Skin.class);
         load("key_a.png", Texture.class);
+        load("key_ap.png", Texture.class);
         load("key_w.png", Texture.class);
+        load("key_wp.png", Texture.class);
         load("key_s.png", Texture.class);
+        load("key_sp.png", Texture.class);
         load("key_d.png", Texture.class);
+        load("key_dp.png", Texture.class);
         load("key_space.png", Texture.class);
 
         load("key_left.png", Texture.class);
@@ -35,8 +39,16 @@ public class Assets extends AssetManager {
         load("key_upp.png", Texture.class);
 
         load("BluetilesTexture.png", Texture.class);
-        load("BluetilesTextureInv.png", Texture.class);
         load("GreyTriagTexture.png", Texture.class);
         load("BrickTexture.png", Texture.class);
+
+        load("square.png", Texture.class);
+        load("squareinverted.png", Texture.class);
+        load("circle.png", Texture.class);
+        load("circleinverted.png", Texture.class);
+        load("star.png", Texture.class);
+        load("starinverted.png", Texture.class);
+        load("triangle.png", Texture.class);
+        load("triangleinverted.png", Texture.class);
     }
 }
