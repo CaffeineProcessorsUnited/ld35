@@ -385,23 +385,19 @@ public class GameScreen extends CoffeeScreen {
 
     @Override
     public void show() {
+        super.show();
         reset();
     }
 
     @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public void pause() {
-        // TODO Auto-generated method stub
+        super.pause();
         doDraw = false;
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
+        super.resume();
         doDraw = true;
     }
 }

@@ -19,6 +19,7 @@ public  abstract class CoffeeScreen implements Screen {
     @Override
     public void show() {
         visible = true;
+        game.debug(getClass().getSimpleName(), "visible=" + (visible ? "true" : "false"));
     }
 
     @Override
@@ -37,6 +38,7 @@ public  abstract class CoffeeScreen implements Screen {
     @Override
     public void hide() {
         visible = false;
+        game.debug(getClass().getSimpleName(), "visible=" + (visible ? "true" : "false"));
     }
 
     @Override

@@ -22,7 +22,7 @@ public class MenuInputProcessor implements InputProcessor {
                 switch (screen.getNavigation()) {
                     case Both:
                     case Vertical:
-                        screen.next();
+                        screen.prev();
                         break;
                 }
                 break;
@@ -38,7 +38,7 @@ public class MenuInputProcessor implements InputProcessor {
                 switch (screen.getNavigation()) {
                     case Both:
                     case Horizontal:
-                        screen.next();
+                        screen.prev();
                         break;
                 }
                 break;
