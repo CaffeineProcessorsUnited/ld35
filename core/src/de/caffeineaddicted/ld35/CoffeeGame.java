@@ -8,9 +8,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.caffeineaddicted.ld35.input.GlobalInputProcessor;
-import de.caffeineaddicted.ld35.messages.*;
-import de.caffeineaddicted.ld35.screens.*;
+import de.caffeineaddicted.ld35.impl.screens.*;
+import de.caffeineaddicted.ld35.impl.input.GlobalInputProcessor;
+import de.caffeineaddicted.ld35.impl.messages.*;
+import de.caffeineaddicted.ld35.input.CoffeeScreenInputMultiplexer;
+import de.caffeineaddicted.ld35.logic.Bundle;
+import de.caffeineaddicted.ld35.logic.Message;
+import de.caffeineaddicted.ld35.logic.MessageBasedGame;
+import de.caffeineaddicted.ld35.screens.RootScreen;
+import de.caffeineaddicted.ld35.util.Assets;
+import de.caffeineaddicted.ld35.util.Highscores;
+import de.caffeineaddicted.ld35.util.Preferences;
 
 import static de.caffeineaddicted.ld35.CoffeeGame.CONSTANTS.*;
 
@@ -20,11 +28,18 @@ public class CoffeeGame extends MessageBasedGame {
 
         public final static String PREFERENCES_FILENAME = "caffeine-ld35";
 
+        /*
+        Preferences keys
+         */
         public final static String  PREF_KEY_MUSIC_MENU_ACTIVATED = "music_menu_activated";
         public final static boolean PREF_DEF_MUSIC_MENU_ACTIVATED = true;
 
         public final static String  PREF_KEY_MUSIC_MENU_VOLUME = "music_menu_volume";
-        public final static  float   PREF_DEF_MUSIC_MENU_VOLUME = 1.f;
+        public final static float   PREF_DEF_MUSIC_MENU_VOLUME = 1.0f;
+        /*
+        Bundle keys
+         */
+        public static final String BUNDLE_SCORE = "score";
     }
 
     private SpriteBatch batch;
@@ -33,6 +48,7 @@ public class CoffeeGame extends MessageBasedGame {
     private Highscores highscores;
     private GameScreen gamescreen;
     private CoffeeScreenInputMultiplexer screenInput;
+    private RootScreen rootScreen;
 
     Preferences preferences;
 
@@ -54,7 +70,19 @@ public class CoffeeGame extends MessageBasedGame {
         assets.preload();
         highscores = new Highscores();
         preferences = new Preferences(PREFERENCES_FILENAME);
-        setScreen(new LoadingScreen(this));
+        rootScreen = new RootScreen(this);
+        setScreen(rootScreen);
+        initScreens();
+    }
+
+    private void initScreens() {
+        rootScreen.loadScreen(new CreditsScreen(this));
+        rootScreen.loadScreen(new GameOverScreen(this));
+        rootScreen.loadScreen(new CreditsScreen(this));
+        rootScreen.loadScreen(new CreditsScreen(this));
+        rootScreen.loadScreen(new CreditsScreen(this));
+        rootScreen.loadScreen(new CreditsScreen(this));
+        rootScreen.loadScreen(new CreditsScreen(this));
 
     }
 
@@ -76,7 +104,8 @@ public class CoffeeGame extends MessageBasedGame {
         }
         if (message.getClass() == GameOverMessage.class) {
             debug("Go to the lose screen");
-            setScreen(new GameOverScreen(this, ((GameOverMessage) message).score));
+            rootScreen.get(GameOverScreen.class).onMessageReceived(message);
+            rootScreen.showScreen(RootScreen.ZINDEX.NEAR, GameOverScreen.class);
         }
         if(message.getClass() == PauseGameMessage.class){
             debug("Showing the pause screen");
@@ -163,23 +192,6 @@ public class CoffeeGame extends MessageBasedGame {
 
     public CoffeeScreenInputMultiplexer getScreenInput() {
         return screenInput;
-    }
-
-    public boolean reloadScreen() {
-        if (CreditsScreen.class.isInstance(getScreen())) {
-            setScreen(new CreditsScreen(this));
-        } else if (GameScreen.class.isInstance(getScreen())) {
-            setScreen(new GameScreen(this));
-        } else if (HighscoresScreen.class.isInstance(getScreen())) {
-            setScreen(new HighscoresScreen(this));
-        } else if (LoadingScreen.class.isInstance(getScreen())) {
-            setScreen(new LoadingScreen(this));
-        } else if (MainMenuScreen.class.isInstance(getScreen())) {
-            setScreen(new MainMenuScreen(this));
-        } else {
-            return false;
-        }
-        return true;
     }
 
     public String getLogTag() {
