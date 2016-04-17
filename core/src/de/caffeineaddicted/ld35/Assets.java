@@ -16,7 +16,6 @@ public class Assets extends AssetManager {
 
     public void load() {
         load("theme_game.wav", Music.class);
-        load("badlogic.jpg", Texture.class);
         load("menu_background.png", Texture.class);
         load("uiskin.json", Skin.class);
         load("key_a.png", Texture.class);
@@ -28,6 +27,7 @@ public class Assets extends AssetManager {
         load("key_d.png", Texture.class);
         load("key_dp.png", Texture.class);
         load("key_space.png", Texture.class);
+        load("key_spacep.png", Texture.class);
 
         load("key_left.png", Texture.class);
         load("key_leftp.png", Texture.class);
