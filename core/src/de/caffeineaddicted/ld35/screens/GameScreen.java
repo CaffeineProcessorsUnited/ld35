@@ -120,9 +120,10 @@ public class GameScreen implements Screen {
         for (int j = 0; j < 4; j++) {
             instances[INDICES.MIN_INCOMING_INDEX+j].materials.first().set(ColorAttribute.createDiffuse(colors[incomingShape.GetShape(j)]));
         }
+        setTunnelTransform();
     }
 
-    private void setModelTransform(int model) {
+    private void setIncomingTransform(int model) {
         float x = 0;
         float y = 0;
         float z = dist;
@@ -142,6 +143,15 @@ public class GameScreen implements Screen {
         }
 
         instances[INDICES.MIN_INCOMING_INDEX+model].transform = new Matrix4(new Vector3(x, y, z), new Quaternion(), new Vector3(1, 1, 1));
+
+    }
+
+    private void setTunnelTransform(){
+        for (int i = INDICES.MIN_TUNNEL_INDEX;i<=INDICES.MAX_TUNNEL_INDEX;i++){
+            Vector3 positon = instances[i].transform.getTranslation(new Vector3());
+            positon.z = dist;
+            instances[i].transform.setTranslation(positon);
+        }
     }
 
     private void makeModel(int idx, Vector3 size, Vector3 offset, Material material){
@@ -176,8 +186,8 @@ public class GameScreen implements Screen {
 
         CreatePlayerModels();
         CreateIncomingModels();
-            generateNewIncomimgShape();
         CreateTunnelModels();
+        generateNewIncomimgShape();
         doDraw = true;
     }
 
@@ -234,7 +244,7 @@ public class GameScreen implements Screen {
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
                 new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
         for (int i = 0; i <= INDICES.MAX_INCOMING_INDEX - INDICES.MIN_INCOMING_INDEX; ++i)
-            setModelTransform(i);
+            setIncomingTransform(i);
 
         stage = new Stage();
         stage.addActor(new HUD(this));
@@ -271,6 +281,7 @@ public class GameScreen implements Screen {
                 new Vector3(1.98f, 1.98f, 0f), // Tunnel corners
                 new Material(ColorAttribute.createDiffuse(Color.GRAY)),
                 new Quaternion().setFromAxis(0,0,1,-45));
+        setTunnelTransform();
     }
 
     public void render(float delta) {
@@ -293,7 +304,8 @@ public class GameScreen implements Screen {
         if (dist >= 1.2) {
             dist -= (speed * delta);
             for (int i = 0; i < 6; ++i)
-                setModelTransform(i);
+                setIncomingTransform(i);
+                setTunnelTransform();
         }
 
         if (dist < 1.2) {
@@ -326,6 +338,7 @@ public class GameScreen implements Screen {
         numPoints = 0;
         dist = baseDist;
         speed = baseSpeed;
+        iteration = 0;
 
         generateNewIncomimgShape();
         playerShape.Reset();
