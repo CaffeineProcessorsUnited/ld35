@@ -21,20 +21,21 @@ public class PauseScreen extends MenuScreen {
 
     public PauseScreen(CoffeeGame g) {
         super(g);
-        create();
         setNavigation(NAVIGATION.Vertical);
+        create();
     }
 
     public void create() {
-        g.debug("Creating PauseScreen");
+        super.create();
+        game.debug("Creating PauseScreen");
 
         setTitle("LD 35: Paused");
 
         // Play button
-        btnResume = new TextButton("Resume game", g.getAssets().get("uiskin.json", Skin.class));
+        btnResume = new TextButton("Resume game", game.getAssets().get("uiskin.json", Skin.class));
         btnResume.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ResumeGameMessage());
+                game.message(new ResumeGameMessage());
             }
         });
         btnResume.setWidth(btnWidth);
@@ -42,10 +43,10 @@ public class PauseScreen extends MenuScreen {
         addButton(btnResume);
 
         // Back button
-        btnBack = new TextButton("Back to main menu", g.getAssets().get("uiskin.json", Skin.class));
+        btnBack = new TextButton("Back to main menu", game.getAssets().get("uiskin.json", Skin.class));
         btnBack.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowMainMenuMessage());
+                game.message(new ShowMainMenuMessage());
             }
         });
         btnBack.setWidth(btnWidth);

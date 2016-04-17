@@ -13,29 +13,30 @@ import de.caffeineaddicted.ld35.messages.*;
  */
 public class MainMenuScreen extends MenuScreen {
 
-    float btnMarginTop = 100;
-    float btnWidth = 200;
-    float btnHeight = 40;
+    int btnMarginTop = 100;
+    float btnWidth = 200f;
+    float btnHeight = 40f;
+
     TextButton btnPlay, btnHighscores, btnHelp, btnSettings, btnCredits, btnExit;
 
     public MainMenuScreen(CoffeeGame g) {
         super(g);
-        create();
         setNavigation(NAVIGATION.Vertical);
+        create();
     }
 
     public void create() {
-        g.debug("Creating MainMenuScreen");
+        super.create();
+        game.debug("Creating MainMenuScreen");
         setTitle("LD 35");
 
         int btnCounter = 0;
 
-
         // Play button
-        btnPlay = new TextButton("Play", g.getAssets().get("uiskin.json", Skin.class));
+        btnPlay = new TextButton("Play", game.getAssets().get("uiskin.json", Skin.class));
         btnPlay.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowGameMessage());
+                game.message(new ShowGameMessage());
             }
         });
         btnPlay.setWidth(btnWidth);
@@ -43,10 +44,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnPlay);
 
         // Highscores button
-        btnHighscores = new TextButton("Highscores", g.getAssets().get("uiskin.json", Skin.class));
+        btnHighscores = new TextButton("Highscores", game.getAssets().get("uiskin.json", Skin.class));
         btnHighscores.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowHighscoresMessage());
+                game.message(new ShowHighscoresMessage());
             }
         });
         btnHighscores.setWidth(btnWidth);
@@ -54,10 +55,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnHighscores);
 
         // Help button
-        btnHelp = new TextButton("Help", g.getAssets().get("uiskin.json", Skin.class));
+        btnHelp = new TextButton("Help", game.getAssets().get("uiskin.json", Skin.class));
         btnHelp.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new GameOverMessage(42));
+                game.message(new GameOverMessage(42));
             }
         });
         btnHelp.setWidth(btnWidth);
@@ -65,10 +66,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnHelp);
 
         // Settings button
-        btnSettings = new TextButton("Settings", g.getAssets().get("uiskin.json", Skin.class));
+        btnSettings = new TextButton("Settings", game.getAssets().get("uiskin.json", Skin.class));
         btnSettings.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowPreferenceScreen());
+                game.message(new ShowPreferenceScreen());
             }
         });
         btnSettings.setWidth(btnWidth);
@@ -76,10 +77,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnSettings);
 
         // Credits button
-        btnCredits = new TextButton("Credits", g.getAssets().get("uiskin.json", Skin.class));
+        btnCredits = new TextButton("Credits", game.getAssets().get("uiskin.json", Skin.class));
         btnCredits.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowCreditsMessage());
+                game.message(new ShowCreditsMessage());
             }
         });
         btnCredits.setWidth(btnWidth);
@@ -87,10 +88,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnCredits);
 
         // Exit button
-        btnExit = new TextButton("Exit", g.getAssets().get("uiskin.json", Skin.class));
+        btnExit = new TextButton("Exit", game.getAssets().get("uiskin.json", Skin.class));
         btnExit.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ExitGameMessage());
+                game.message(new ExitGameMessage());
             }
         });
         btnExit.setWidth(btnWidth);
@@ -100,6 +101,7 @@ public class MainMenuScreen extends MenuScreen {
     }
 
     private float getButtonY(int number) {
+        game.debug("margin: " + btnMarginTop + ", height: " + stage.getHeight() + ", button " + number + " at " + ((stage.getHeight() - btnMarginTop) - number * btnHeight));
         return (stage.getHeight() - btnMarginTop) - number * btnHeight;
     }
 }

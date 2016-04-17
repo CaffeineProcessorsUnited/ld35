@@ -1,20 +1,19 @@
 package de.caffeineaddicted.ld35.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.CoffeeGame;
+import de.caffeineaddicted.ld35.CoffeeScreen;
 import de.caffeineaddicted.ld35.messages.FinishedLoadingMessage;
 
 /**
  * Created by malte on 4/16/16.
  */
-public class LoadingScreen implements Screen {
+public class LoadingScreen extends CoffeeScreen {
 
-    private CoffeeGame g;
     private Sprite background;
 
     private float height = 15f;
@@ -31,24 +30,24 @@ public class LoadingScreen implements Screen {
     private float wait_time = 0.5f;
     private float min_time = 1.5f;
 
-    public LoadingScreen(CoffeeGame g) {
-        this.g = g;
+    public LoadingScreen(CoffeeGame game) {
+        super(game);
         create();
     }
 
     public void create(){
-        g.debug("Creating LoadingScreen");
+        game.debug("Creating LoadingScreen");
 
-        g.getAssets().preload();
+        game.getAssets().preload();
 
-        g.getAssets().finishLoading();
+        game.getAssets().finishLoading();
 
-        Texture texBackground = g.getAssets().get("loading_background.jpg", Texture.class);
+        Texture texBackground = game.getAssets().get("loading_background.jpg", Texture.class);
         texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         background = new Sprite(texBackground);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        g.getAssets().load();
+        game.getAssets().load();
     }
 
     public void render (float delta) {
@@ -59,36 +58,36 @@ public class LoadingScreen implements Screen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        g.getBatch().begin();
-        background.draw(g.getBatch());
-        g.getBatch().end();
+        game.getBatch().begin();
+        background.draw(game.getBatch());
+        game.getBatch().end();
 
-        g.getShape().setColor(bar_r, bar_g, bar_b, bar_a);
+        game.getShape().setColor(bar_r, bar_g, bar_b, bar_a);
         Gdx.gl.glLineWidth(line_thickness);
 
-        g.getShape().begin(ShapeRenderer.ShapeType.Line);
-        g.getShape().rect(x(), y(), w(), h());
-        g.getShape().end();
+        game.getShape().begin(ShapeRenderer.ShapeType.Line);
+        game.getShape().rect(x(), y(), w(), h());
+        game.getShape().end();
 
-        g.getShape().begin(ShapeRenderer.ShapeType.Filled);
-        g.getShape().rect(x(), y(), wp(), h());
-        g.getShape().end();
+        game.getShape().begin(ShapeRenderer.ShapeType.Filled);
+        game.getShape().rect(x(), y(), wp(), h());
+        game.getShape().end();
 
-        g.debug("Drawing rect: " + x() + ", " + y() + ", " + w() + ", " + h());
-        g.debug("Drawing box: " + x() + ", " + y() + ", " + wp() + ", " + h());
+        game.debug("Drawing rect: " + x() + ", " + y() + ", " + w() + ", " + h());
+        game.debug("Drawing box: " + x() + ", " + y() + ", " + wp() + ", " + h());
 
         if (time >= wait_time) {
-            if (g.getAssets().update()) {
+            if (game.getAssets().update()) {
                 if (time >= min_time) {
-                    g.debug("Finished loading assets");
-                    g.message(new FinishedLoadingMessage());
+                    game.debug("Finished loading assets");
+                    game.message(new FinishedLoadingMessage());
                 }
             } else {
-                g.debug("Loading assets " + (g.getAssets().getProgress() * 100) + " %");
+                game.debug("Loading assets " + (game.getAssets().getProgress() * 100) + " %");
             }
         }
         time += delta;
-        g.debug(time + "");
+        game.debug(time + "");
     }
 
     private float x() {
@@ -104,7 +103,7 @@ public class LoadingScreen implements Screen {
     }
 
     private float wp() {
-        return w() * (g.getAssets().getProgress() - (time >= (min_time * 0.7) ? 0f : 0.15f));
+        return w() * (game.getAssets().getProgress() - (time >= (min_time * 0.7) ? 0f : 0.15f));
     }
 
     private float h() {
@@ -113,31 +112,8 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void resize (int width, int height) {
+        super.resize(width, height);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    @Override
-    public void dispose () {
-
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
 }

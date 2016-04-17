@@ -19,33 +19,34 @@ public class HighscoresScreen extends MenuScreen {
     float txtMarginTop = 100;
     float txtWidth = 400;
     float txtHeight = 25;
+
     TextButton btnBack;
-    String[] txtCredits = { "Credits:", "Zwile zwei du kacklappen", "", "People developing this game:", "", "", "bla bla newline test"};
     ArrayList<Label> txtScores;
 
     public HighscoresScreen(CoffeeGame g) {
         super(g);
-        create();
         setNavigation(NAVIGATION.Horizontal);
+        create();
     }
 
-    public void create(){
-        g.debug("Creating CreditsScreen");
+    public void create() {
+        super.create();
+        game.debug("Creating CreditsScreen");
         setTitle("LD 35: Highscores");
 
         txtScores = new ArrayList<Label>();
-        for (int i = 0; i < Math.min(g.getHighscores().getScores().size(), 10); i++) {
-            txtScores.add(new Label(g.getHighscores().getScores().get(i).getName() + "" + g.getHighscores().getScores().get(i).getScore(), g.getAssets().get("uiskin.json", Skin.class), "default"));
+        for (int i = 0; i < Math.min(game.getHighscores().getScores().size(), 10); i++) {
+            txtScores.add(new Label(game.getHighscores().getScores().get(i).getName() + "" + game.getHighscores().getScores().get(i).getScore(), game.getAssets().get("uiskin.json", Skin.class), "default"));
             txtScores.get(i).setWidth(txtWidth);
             txtScores.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
             stage.addActor(txtScores.get(i));
         }
 
         // Back button
-        btnBack = new TextButton("Back", g.getAssets().get("uiskin.json", Skin.class));
+        btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
         btnBack.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowMainMenuMessage());
+                game.message(new ShowMainMenuMessage());
             }
         });
         btnBack.setWidth(120);

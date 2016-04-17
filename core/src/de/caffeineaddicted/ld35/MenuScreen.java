@@ -2,7 +2,6 @@ package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,13 +19,12 @@ import java.util.ArrayList;
 /**
  * Created by malte on 4/16/16.
  */
-public class MenuScreen implements Screen {
+public class MenuScreen extends CoffeeScreen {
 
     public enum NAVIGATION {
         Both, Horizontal, Vertical
     }
 
-    protected CoffeeGame g;
     protected Stage stage;
 
     private Label title;
@@ -38,16 +36,19 @@ public class MenuScreen implements Screen {
     private NAVIGATION navigation = NAVIGATION.Both;
 
     public MenuScreen(CoffeeGame g) {
-        this.g = g;
-        g.debug("Creating MenuScreen");
-        stage = new Stage();
+        super(g);
+    }
 
-        Texture texBackground = g.getAssets().get("menu_background.jpg", Texture.class);
+    public void create() {
+        game.debug("Creating MenuScreen");
+        stage = new Stage(game.createViewport());
+
+        Texture texBackground = game.getAssets().get("menu_background.jpg", Texture.class);
         texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         background = new Sprite(texBackground);
         background.setSize(stage.getWidth(), stage.getHeight());
 
-        title = new Label("", g.getAssets().get("uiskin.json", Skin.class), "title");
+        title = new Label("", game.getAssets().get("uiskin.json", Skin.class), "title");
         title.setPosition(stage.getWidth() / 2 - title.getWidth() / 2, stage.getHeight() - title.getHeight() - 10);
         stage.addActor(title);
 
@@ -60,7 +61,7 @@ public class MenuScreen implements Screen {
                 actor.remove();
             }
         }
-        title = new Label(titleStr, g.getAssets().get("uiskin.json", Skin.class), "title");
+        title = new Label(titleStr, game.getAssets().get("uiskin.json", Skin.class), "title");
         title.setPosition(stage.getWidth() / 2 - title.getWidth() / 2, stage.getHeight() - title.getHeight() - 10);
         stage.addActor(title);
     }
@@ -78,7 +79,6 @@ public class MenuScreen implements Screen {
     }
 
     public void addButton(Button button, float x, float y, ChangeListener listener, boolean selectable) {
-        g.debug("Adding button");
         if (button == null) {
             return;
         }
@@ -92,6 +92,7 @@ public class MenuScreen implements Screen {
         button.setPosition(x, y);
         button.addListener(listener);
         stage.addActor(button);
+        game.debug("Adding button at " + x + "," + y);
         if (selectable) {
             buttons.add(button);
         }
@@ -99,7 +100,7 @@ public class MenuScreen implements Screen {
 
     public void loseOver() {
         if (!(tabindex < 0)) {
-            g.debug("Change back to default style on index " + tabindex);
+            game.debug("Change back to default style on index " + tabindex);
             setStyle(buttons.get(tabindex), "default");
             tabindex = -1;
         }
@@ -116,7 +117,7 @@ public class MenuScreen implements Screen {
         if (index >= buttons.size()) {
             index = buttons.size() - 1;
         }
-        g.debug("We should try to highlight tabindex " + index);
+        game.debug("We should try to highlight tabindex " + index);
         setStyle(buttons.get(index), "over");
         tabindex = index;
     }
@@ -144,7 +145,7 @@ public class MenuScreen implements Screen {
     }
 
     public void setStyle(Button button, String stylename) {
-        setStyle(button, g.getAssets().get("uiskin.json", Skin.class), stylename);
+        setStyle(button, game.getAssets().get("uiskin.json", Skin.class), stylename);
     }
 
     public void setStyle(Button button, Skin skin, String stylename) {
@@ -160,9 +161,9 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        g.getBatch().begin();
-        background.draw(g.getBatch());
-        g.getBatch().end();
+        game.getBatch().begin();
+        background.draw(game.getBatch());
+        game.getBatch().end();
 
         stage.act(delta);
         stage.draw();
@@ -170,6 +171,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize (int width, int height) {
+        game.debug("resizing");
         stage.getViewport().update(width, height, true);
     }
 
@@ -180,24 +182,11 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+        super.show();
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
         multiplexer.addProcessor(new MenuInputProcessor(this));
-        Gdx.input.setInputProcessor(multiplexer);
+        game.getScreenInput().addProcessor(this, multiplexer);
     }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
+    
 }

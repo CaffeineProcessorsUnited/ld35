@@ -2,10 +2,13 @@ package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import de.caffeineaddicted.ld35.input.GlobalInputProcessor;
 import de.caffeineaddicted.ld35.messages.*;
 import de.caffeineaddicted.ld35.screens.*;
 
@@ -29,6 +32,7 @@ public class CoffeeGame extends MessageBasedGame {
     private Assets assets;
     private Highscores highscores;
     private GameScreen gamescreen;
+    private CoffeeScreenInputMultiplexer screenInput;
 
     Preferences preferences;
 
@@ -39,6 +43,11 @@ public class CoffeeGame extends MessageBasedGame {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         debug("Creating game");
         loadPreferences();
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        screenInput = new CoffeeScreenInputMultiplexer();
+        multiplexer.addProcessor(new GlobalInputProcessor(this));
+        multiplexer.addProcessor(screenInput);
+        Gdx.input.setInputProcessor(multiplexer);
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         assets = new Assets();
@@ -111,6 +120,14 @@ public class CoffeeGame extends MessageBasedGame {
             debug("Showing the preference screen");
             setScreen(new PreferencesScreen(this));
         }
+        if (message.getClass() == ToggleFullscreenMessage.class) {
+            debug("Toggeling fullscreen");
+            if (Gdx.graphics.isFullscreen()) {
+                Gdx.graphics.setWindowedMode(1280, 720);
+            } else {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+        }
     }
 
     public void loadPreferences() {
@@ -144,6 +161,10 @@ public class CoffeeGame extends MessageBasedGame {
         return preferences;
     }
 
+    public CoffeeScreenInputMultiplexer getScreenInput() {
+        return screenInput;
+    }
+
     public boolean reloadScreen() {
         if (CreditsScreen.class.isInstance(getScreen())) {
             setScreen(new CreditsScreen(this));
@@ -162,7 +183,11 @@ public class CoffeeGame extends MessageBasedGame {
     }
 
     public String getLogTag() {
-        return "CoffeeGame";
+        return getLogTag("");
+    }
+
+    public String getLogTag(String sub) {
+        return "CoffeeGame" + (!sub.isEmpty() ? ":" + sub : "");
     }
 
     public void log(String message) {
@@ -170,11 +195,26 @@ public class CoffeeGame extends MessageBasedGame {
     }
 
     public void debug(String message) {
-        Gdx.app.debug(getLogTag(), message);
+        debug("", message);
+    }
+
+    public void debug(String sub, String message) {
+        Gdx.app.debug(getLogTag(sub), message);
     }
 
     public void error(String message) {
-        Gdx.app.error(getLogTag(), message);
+        error("", message);
+    }
+
+    public void error(String sub, String message) {
+        Gdx.app.error(getLogTag(sub), message);
+    }
+
+    public Viewport createViewport() {
+        //return new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return new ScreenViewport();
+        //return new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //return new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()
     }
 
 }

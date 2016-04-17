@@ -1,8 +1,6 @@
 package de.caffeineaddicted.ld35.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -18,6 +16,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.caffeineaddicted.ld35.CoffeeGame;
+import de.caffeineaddicted.ld35.CoffeeScreen;
 import de.caffeineaddicted.ld35.input.GameInputProcessor;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
 import de.caffeineaddicted.ld35.sprites.KeyDisplay;
@@ -27,7 +26,7 @@ import java.util.Random;
 /**
  * Created by malte on 4/16/16.
  */
-public class GameScreen implements Screen {
+public class GameScreen extends CoffeeScreen {
     static private class INDICES {
         public static int MIN_PLAYER_INDEX = 0;
         public static int MAX_PLAYER_INDEX = 4;
@@ -64,7 +63,7 @@ public class GameScreen implements Screen {
     private ModelBatch modelBatch;
     private float dist;
     private float speed;
-    public CoffeeGame game;
+    
     private PerspectiveCamera camera;
     public ShapeRef playerShape;
     private ShapeRef incomingShape;
@@ -72,7 +71,7 @@ public class GameScreen implements Screen {
     private Stage stage;
 
     public GameScreen(CoffeeGame game) {
-        this.game = game;
+        super(game);
         colors = new Color[5];
         colors[0] = Color.RED;
         colors[1] = Color.GREEN;
@@ -95,7 +94,7 @@ public class GameScreen implements Screen {
             iteration++;
         }
         speed = Math.min(baseSpeed + speedMultiplier * iteration, 20.f);
-        Gdx.app.log("GenerateNewIncomingShape", numPoints + " " + iteration + " " + speed);
+        game.debug("GenerateNewIncomingShape", numPoints + " " + iteration + " " + speed);
         for (int j = 0; j < 4; j++) {
             instances[INDICES.MIN_INCOMING_INDEX+j].materials.first().set(ColorAttribute.createDiffuse(colors[incomingShape.GetShape(j)]));
         }
@@ -312,9 +311,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new GameInputProcessor(this));
-        Gdx.input.setInputProcessor(multiplexer);
+        game.getScreenInput().addProcessor(this, new GameInputProcessor(this));
     }
 
     @Override

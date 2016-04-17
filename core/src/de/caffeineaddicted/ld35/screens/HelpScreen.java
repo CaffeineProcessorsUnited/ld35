@@ -28,25 +28,25 @@ public class HelpScreen extends MenuScreen {
         create();
     }
 
-
     public void create() {
-        g.debug("Creating HelpScreen");
+        super.create();
+        game.debug("Creating HelpScreen");
 
         setTitle("LD 35: Help");
 
         txtHelpLabels = new ArrayList<Label>();
         for (int i = 0; i < txtHelps.length; i++) {
-            txtHelpLabels.add(new Label(txtHelps[i], g.getAssets().get("uiskin.json", Skin.class), "default"));
+            txtHelpLabels.add(new Label(txtHelps[i], game.getAssets().get("uiskin.json", Skin.class), "default"));
             txtHelpLabels.get(i).setWidth(txtWidth);
             txtHelpLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
             stage.addActor(txtHelpLabels.get(i));
         }
 
         // Back button
-        btnBack = new TextButton("Back", g.getAssets().get("uiskin.json", Skin.class));
+        btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
         btnBack.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                g.message(new ShowMainMenuMessage());
+                game.message(new ShowMainMenuMessage());
             }
         });
         btnBack.setWidth(120);
