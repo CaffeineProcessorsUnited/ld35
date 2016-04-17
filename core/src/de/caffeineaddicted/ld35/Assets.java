@@ -24,10 +24,16 @@ public class Assets extends AssetManager {
         load("key_s.png", Texture.class);
         load("key_d.png", Texture.class);
         load("key_space.png", Texture.class);
-        load("key_up.png", Texture.class);
-        load("key_down.png", Texture.class);
-        load("key_right.png", Texture.class);
+
         load("key_left.png", Texture.class);
+        load("key_leftp.png", Texture.class);
+        load("key_down.png", Texture.class);
+        load("key_downp.png", Texture.class);
+        load("key_right.png", Texture.class);
+        load("key_rightp.png", Texture.class);
+        load("key_up.png", Texture.class);
+        load("key_upp.png", Texture.class);
+
         load("BluetilesTexture.png", Texture.class);
         load("BluetilesTextureInv.png", Texture.class);
         load("GreyTriagTexture.png", Texture.class);

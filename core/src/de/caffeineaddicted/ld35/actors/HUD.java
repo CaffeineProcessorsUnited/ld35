@@ -31,14 +31,16 @@ public class HUD extends Group {
     }
 
     public void create () {
-        keyDisplay = new KeyDisplay(g);
-        keyDisplay.setPosition(0,0);
+        keyDisplay = new KeyDisplay(g, this);
+        keyDisplay.setScale(0.25f, 0.25f);
+        keyDisplay.setPosition(10, 10);
+        keyDisplay.setWidth(getWidth() - 20);
         labelSpeed = new Label("Speed: ",g.getAssets().get("uiskin.json", Skin.class));
         labelSpeed.setPosition(20, getHeight() - labelSpeed.getHeight() - 20);
         labelPoints = new Label("Points: ",g.getAssets().get("uiskin.json", Skin.class));
         labelPoints.setPosition(getWidth() - labelPoints.getWidth() - 20, getHeight() - labelSpeed.getHeight() - 20);
 
-        //addActor(keyDisplay);
+        addActor(keyDisplay);
         addActor(labelSpeed);
         addActor(labelPoints);
     }

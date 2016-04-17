@@ -322,7 +322,16 @@ public class GameScreen extends CoffeeScreen {
             }
         }
 
-        stage.act(delta);
+        stage.act(delta);;
+
+        models = new Model[INDICES.MAX_INDEX];
+        instances = new ModelInstance[INDICES.MAX_INDEX];
+
+        CreatePlayerModels();
+        CreateIncomingModels();
+        CreateTunnelModels();
+        generateNewIncomimgShape();
+        doDraw = true;
         stage.draw();
     }
 
