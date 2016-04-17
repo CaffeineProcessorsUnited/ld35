@@ -217,7 +217,8 @@ public class GameScreen extends CoffeeScreen {
         Vector3 a,b,c,d,n;
         a = new Vector3(0,0,0);
         if(size.x < 0.001){
-            b = new Vector3(0f,size.y,0f);
+            b = new Vector3
+                    (0f,size.y,0f);
             c = new Vector3(0f,size.y, size.z);
             d = new Vector3(0f,0f,size.z);
         } else if(size.y < 0.001){
@@ -487,7 +488,10 @@ public class GameScreen extends CoffeeScreen {
         cheatMode = !cheatMode;
     }
     public void incSpeed(){
-        speed += 1;
+        if(cheatMode)
+            speed += 1;
+        else
+            dist = 2;
     }
 
     private void reset(){
