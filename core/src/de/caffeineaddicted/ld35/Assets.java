@@ -31,5 +31,6 @@ public class Assets extends AssetManager {
         load("BluetilesTexture.png", Texture.class);
         load("BluetilesTextureInv.png", Texture.class);
         load("GreyTriagTexture.png", Texture.class);
+        load("BrickTexture.png", Texture.class);
     }
 }
