@@ -42,7 +42,8 @@ public class GameScreen extends CoffeeScreen {
         public static int BLUE_TILES_SIDE = 0;
         public static int BLUE_TILES_TOP = 1;
         public static int GREY_TILES = 2;
-        public static int NUM_TEXTURES = 3;
+        public static int BRICK_TILES = 3;
+        public static int NUM_TEXTURES = 4;
 
     }
 
@@ -98,13 +99,16 @@ public class GameScreen extends CoffeeScreen {
         textures[INDICES.BLUE_TILES_TOP].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         textures[INDICES.GREY_TILES] = game.getAssets().get("GreyTriagTexture.png", Texture.class);
         textures[INDICES.GREY_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        textures[INDICES.BRICK_TILES] = game.getAssets().get("BrickTexture.png", Texture.class);
+        textures[INDICES.BRICK_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         create();
         reset();
     }
 
     private boolean matchShapes() {
-        return playerShape.equals(incomingShape);
+        return true;
+        //return playerShape.equals(incomingShape);
     }
 
     private void generateNewIncomimgShape() {
@@ -239,7 +243,7 @@ public class GameScreen extends CoffeeScreen {
         makeModel(INDICES.MIN_INCOMING_INDEX + 5,
                 new Vector3(20f, 5f, 0.01f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+                new Material(TextureAttribute.createDiffuse(textures[INDICES.BRICK_TILES])));
         makeModel(INDICES.MIN_INCOMING_INDEX + 6,
                 new Vector3(20f, 5f, 0.01f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
@@ -368,7 +372,7 @@ public class GameScreen extends CoffeeScreen {
     }
 
     public int getSpeed() {
-        return (int) speed * 10;
+        return (int) (speed * 10);
     }
 
     @Override
