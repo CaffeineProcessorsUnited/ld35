@@ -43,7 +43,7 @@ public class MenuScreen extends CoffeeScreen {
         game.debug("Creating MenuScreen");
         stage = new Stage(game.createViewport());
 
-        Texture texBackground = game.getAssets().get("menu_background.jpg", Texture.class);
+        Texture texBackground = game.getAssets().get("menu_background.png", Texture.class);
         texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         background = new Sprite(texBackground);
         background.setSize(stage.getWidth(), stage.getHeight());
