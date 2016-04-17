@@ -103,7 +103,7 @@ public class LoadingScreen extends CoffeeScreen {
     }
 
     private float wp() {
-        return w() * (game.getAssets().getProgress() - (time >= (min_time * 0.7) ? 0f : 0.15f));
+        return w() * Math.max(0, (game.getAssets().getProgress() - (time >= (min_time * 0.7) ? 0f : 0.15f)));
     }
 
     private float h() {
