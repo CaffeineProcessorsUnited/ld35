@@ -20,9 +20,13 @@ public class Assets extends AssetManager {
         load("menu_background.png", Texture.class);
         load("uiskin.json", Skin.class);
         load("key_a.png", Texture.class);
+        load("key_ap.png", Texture.class);
         load("key_w.png", Texture.class);
+        load("key_wp.png", Texture.class);
         load("key_s.png", Texture.class);
+        load("key_sp.png", Texture.class);
         load("key_d.png", Texture.class);
+        load("key_dp.png", Texture.class);
         load("key_space.png", Texture.class);
 
         load("key_left.png", Texture.class);

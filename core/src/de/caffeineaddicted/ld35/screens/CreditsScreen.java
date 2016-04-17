@@ -20,8 +20,10 @@ public class CreditsScreen extends MenuScreen {
     float txtWidth = 380;
     float txtHeight = 25;
     TextButton btnBack;
-    String[] txtCredits = { "Credits:", "Zwile zwei du kacklappen", ""
-            + "", "People developing this game:", "Malte Heinzelmann", "Niels Bernlöhr","Felix Richter", "Maria Stepanov"
+    String[] txtCredits = { "Credits:", ""
+            + "", "This game is our submission for the Ludum Dare 35!", ""
+            + "A lot of coffee, cola, chicken wings, curry, chili and chocolate was consumed during development.", ""
+            + "", "People developing this game:", "Malte Heinzelmann", "Niels Bernloehr","Felix Richter", "Maria Stepanov"
             + "", "", "You can find us under CaffeineProccesorsUnited on Github: ","https://github.com/CaffeineProcessorsUnited"};
     ArrayList<Label> txtCreditLabels;
 
