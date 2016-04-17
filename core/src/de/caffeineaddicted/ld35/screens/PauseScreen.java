@@ -21,6 +21,8 @@ public class PauseScreen extends MenuScreen {
 
     public PauseScreen(CoffeeGame g) {
         super(g);
+        create();
+        setNavigation(NAVIGATION.Vertical);
     }
 
     public void create() {
@@ -50,31 +52,6 @@ public class PauseScreen extends MenuScreen {
         btnBack.setPosition(stage.getWidth() / 2 - btnWidth / 2, getButtonY(2));
         addButton(btnBack);
 
-    }
-
-    @Override
-    public void dispose () {
-
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
     }
 
     private float getButtonY(int number) {

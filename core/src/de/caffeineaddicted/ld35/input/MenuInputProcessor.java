@@ -19,10 +19,36 @@ public class MenuInputProcessor implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.UP:
-                screen.up();
+                switch (screen.getNavigation()) {
+                    case Both:
+                    case Vertical:
+                        screen.next();
+                        break;
+                }
                 break;
             case Input.Keys.DOWN:
-                screen.down();
+                switch (screen.getNavigation()) {
+                    case Both:
+                    case Vertical:
+                        screen.next();
+                        break;
+                }
+                break;
+            case Input.Keys.LEFT:
+                switch (screen.getNavigation()) {
+                    case Both:
+                    case Horizontal:
+                        screen.next();
+                        break;
+                }
+                break;
+            case Input.Keys.RIGHT:
+                switch (screen.getNavigation()) {
+                    case Both:
+                    case Horizontal:
+                        screen.next();
+                        break;
+                }
                 break;
             case Input.Keys.ENTER:
                 screen.click();

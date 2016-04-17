@@ -3,6 +3,7 @@ package de.caffeineaddicted.ld35.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -15,6 +16,9 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.input.GameInputProcessor;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
@@ -47,6 +51,8 @@ public class GameScreen implements Screen {
     private PerspectiveCamera camera;
     private ShapeRef playerShape;
     private ShapeRef incomingShape;
+
+    private Stage stage;
 
     public GameScreen(CoffeeGame g) {
         this.g = g;
@@ -102,8 +108,6 @@ public class GameScreen implements Screen {
 
     public void create(){
         g.debug("Creating GameScreen");
-        // give it to the multiplexer
-        //Gdx.input.setInput+Processor();
 
         playerShape = new ShapeRef();
         incomingShape = new ShapeRef();
@@ -175,13 +179,15 @@ public class GameScreen implements Screen {
         tunnel_instance[4].transform = new Matrix4(new Vector3(-1.98f,1.98f,0f),new Quaternion().setFromAxis(0,0,1,45), new Vector3(1f,1f,1f));
         tunnel_instance[5] = new ModelInstance(tunnel_model[5]);
         tunnel_instance[5].transform = new Matrix4(new Vector3(1.98f,1.98f,0f),new Quaternion().setFromAxis(0,0,1,-45), new Vector3(1f,1f,1f));
+
+        stage = new Stage();
+        stage.addActor(new Label("Marias HUD", g.getAssets().get("uiskin.json", Skin.class)));
     }
 
     public void render (float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-        //camera.update();
 
         if(playerShape.isDirty()){
             for (int i=0;i<4;i++){
@@ -216,6 +222,9 @@ public class GameScreen implements Screen {
                 generateNewIncomimgShape();
             }
         }
+
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
@@ -228,7 +237,7 @@ public class GameScreen implements Screen {
         camera.near = 1f;
         camera.far = 300f;
         camera.update();
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -241,6 +250,7 @@ public class GameScreen implements Screen {
         carpent_model.dispose();
         for(int i = 0; i< 6; ++i)
             tunnel_model[i].dispose();
+        stage.dispose();
     }
 
     @Override
