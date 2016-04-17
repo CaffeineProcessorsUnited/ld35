@@ -21,6 +21,7 @@ public class PauseScreen extends MenuScreen {
 
     public PauseScreen(CoffeeGame g) {
         super(g);
+        create();
     }
 
     public void create() {

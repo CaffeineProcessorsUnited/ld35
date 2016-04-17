@@ -2,6 +2,7 @@ package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -27,6 +28,7 @@ public class CoffeeGame extends MessageBasedGame {
     private ShapeRenderer shape;
     private Assets assets;
     private Highscores highscores;
+    private GameScreen gamescreen;
 
     Preferences preferences;
 
@@ -44,6 +46,7 @@ public class CoffeeGame extends MessageBasedGame {
         highscores = new Highscores();
         preferences = new Preferences(PREFERENCES_FILENAME);
         setScreen(new LoadingScreen(this));
+
     }
 
     public void message(Message message) {
@@ -66,14 +69,25 @@ public class CoffeeGame extends MessageBasedGame {
             debug("Go to the lose screen");
             setScreen(new GameOverScreen(this, ((GameOverMessage) message).score));
         }
+        if(message.getClass() == PauseGameMessage.class){
+            debug("Showing the pause screen");
+            if(gamescreen != null){
+                gamescreen.pause();
+            }
+            setScreen(new PauseScreen(this));
+        }
         if (message.getClass() == PreferencesUpdatedMessage.class) {
             debug("Preferences have changed. Update Interface");
             getPreferences().flush();
             loadPreferences();
         }
         if (message.getClass() == ResumeGameMessage.class) {
-            debug("Go to main menu screen");
-            setScreen(new MainMenuScreen(this));
+            debug("Resuming Game");
+            //setScreen(new MainMenuScreen(this));
+            if(gamescreen != null){
+                gamescreen.resume();
+            }
+            setScreen(gamescreen);
         }
         if (message.getClass() == ShowCreditsMessage.class) {
             debug("Showing the credits screen");
@@ -81,7 +95,9 @@ public class CoffeeGame extends MessageBasedGame {
         }
         if (message.getClass() == ShowGameMessage.class) {
             debug("Showing the game screen");
-            setScreen(new GameScreen(this));
+            if(gamescreen == null)
+                gamescreen = new GameScreen(this);
+            setScreen(gamescreen);
         }
         if (message.getClass() == ShowHighscoresMessage.class) {
             debug("Showing the highscore screen");
