@@ -15,6 +15,7 @@ public class ShapeRef {
     }
 
     public void Reset() {
+        dirty = true;
         for(int i = 0; i < numSlots; ++i)
             slots[i] = 0;
     }
