@@ -59,7 +59,7 @@ public class KeyDisplay extends Group {
     public void draw (Batch batch, float parentAlpha ) {
         wasd.setPosition(0, 0);
         space.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
-        spacewp.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
+        spacep.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
         arrows.setPosition(getWidth() - arrows.getWidth() * arrows.getScaleX(), 0);
         space.setVisible(!Gdx.input.isKeyPressed(Input.Keys.SPACE));
         spacep.setVisible(Gdx.input.isKeyPressed(Input.Keys.SPACE));
