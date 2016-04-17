@@ -3,24 +3,23 @@ package de.caffeineaddicted.ld35.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.caffeineaddicted.ld35.CoffeeGame;
+import de.caffeineaddicted.ld35.actors.HUD;
 import de.caffeineaddicted.ld35.input.GameInputProcessor;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
-import de.caffeineaddicted.ld35.sprites.KeyDisplay;
+import de.caffeineaddicted.ld35.messages.GameOverMessage;
 
 import java.util.Random;
 
@@ -28,6 +27,8 @@ import java.util.Random;
  * Created by malte on 4/16/16.
  */
 public class GameScreen implements Screen {
+
+
     static private class INDICES {
         public static int MIN_PLAYER_INDEX = 0;
         public static int MAX_PLAYER_INDEX = 4;
@@ -36,6 +37,11 @@ public class GameScreen implements Screen {
         public static int MIN_TUNNEL_INDEX = 12;
         public static int MAX_TUNNEL_INDEX = 18;
         public static int MAX_INDEX = 19;
+
+        public static int BLUE_TILES_SIDE = 0;
+        public static int BLUE_TILES_TOP = 1;
+        public static int GREY_TILES = 2;
+        public static int NUM_TEXTURES = 3;
 
     }
 
@@ -53,7 +59,9 @@ public class GameScreen implements Screen {
     private Model models[];
     private ModelInstance instances[];
     private ModelBuilder builder;
-    static private long va = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal;
+    static private long va = VertexAttributes.Usage.Position |
+                             VertexAttributes.Usage.Normal |
+                             VertexAttributes.Usage.TextureCoordinates;
     private int leadingIncoming = 0;
 
 /*
@@ -69,6 +77,8 @@ public class GameScreen implements Screen {
     public ShapeRef playerShape;
     private ShapeRef incomingShape;
 
+    private Texture textures[];
+
     private Stage stage;
 
     public GameScreen(CoffeeGame game) {
@@ -79,7 +89,17 @@ public class GameScreen implements Screen {
         colors[2] = Color.BLUE;
         colors[3] = Color.WHITE;
         colors[4] = Color.FIREBRICK;
+
+        textures = new Texture[INDICES.NUM_TEXTURES];
+        textures[INDICES.BLUE_TILES_SIDE] = game.getAssets().get("BluetilesTexture.png", Texture.class);
+        textures[INDICES.BLUE_TILES_SIDE].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        textures[INDICES.BLUE_TILES_TOP] = game.getAssets().get("BluetilesTextureInv.png", Texture.class);
+        textures[INDICES.BLUE_TILES_TOP].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        textures[INDICES.GREY_TILES] = game.getAssets().get("GreyTriagTexture.png", Texture.class);
+        textures[INDICES.GREY_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         create();
+        reset();
     }
 
     private boolean matchShapes() {
@@ -90,7 +110,8 @@ public class GameScreen implements Screen {
         int i = new Random().nextInt((int) Math.pow(ShapeRef.numShapes, ShapeRef.numSlots));
         incomingShape.SetShape(i);
         dist = baseDist;
-        numPoints++;
+        if(doDraw)
+            numPoints++;
         if (numPoints % numPointTrigger == 0) {
             iteration++;
         }
@@ -138,7 +159,7 @@ public class GameScreen implements Screen {
     }
 
     public void create() {
-        doDraw = true;
+        doDraw = false;
         game.debug("Creating GameScreen");
 
         playerShape = new ShapeRef();
@@ -157,6 +178,7 @@ public class GameScreen implements Screen {
         CreateIncomingModels();
             generateNewIncomimgShape();
         CreateTunnelModels();
+        doDraw = true;
     }
 
     private void CreatePlayerModels() {
@@ -215,7 +237,7 @@ public class GameScreen implements Screen {
             setModelTransform(i);
 
         stage = new Stage();
-        stage.addActor(new KeyDisplay(game));
+        stage.addActor(new HUD(this));
     }
 
     private void CreateTunnelModels() {
@@ -226,24 +248,24 @@ public class GameScreen implements Screen {
         makeModel(INDICES.MIN_TUNNEL_INDEX+1,
                 new Vector3(0.01f, 4f, baseDist * 5),
                 new Vector3(-2f, -0f, 0f), // Tunnel walls
-                new Material(ColorAttribute.createDiffuse(Color.BROWN)));
+                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));
         makeModel(INDICES.MIN_TUNNEL_INDEX+2,
                 new Vector3(0.01f, 4f, baseDist * 5),
                 new Vector3(2f, -0f, 0f), // Tunnel walls
-                new Material(ColorAttribute.createDiffuse(Color.BROWN)));
+                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_SIDE])));
         makeModel(INDICES.MIN_TUNNEL_INDEX+3,
                 new Vector3(4f, 0.01f, baseDist * 5),
                 new Vector3(0f, -0.18f, 0f), // Tunnel walls
-                new Material(ColorAttribute.createDiffuse(Color.GRAY)));
+                new Material(TextureAttribute.createDiffuse(textures[INDICES.GREY_TILES])));
         makeModel(INDICES.MIN_TUNNEL_INDEX+4,
                 new Vector3(4f, 0.01f, baseDist * 5),
-                new Vector3(0f, 2f, 0f), // Tunnel walls
-                new Material(ColorAttribute.createDiffuse(Color.BROWN)));
+                new Vector3(0f, 2f, 0f), // Tunnel Top
+                new Material(TextureAttribute.createDiffuse(textures[INDICES.BLUE_TILES_TOP])));
         makeModel(INDICES.MIN_TUNNEL_INDEX+5,
                 new Vector3(0.2f, 0.05f, baseDist * 5),
                 new Vector3(-1.98f, 1.98f, 0f), // Tunnel walls
                 new Material(ColorAttribute.createDiffuse(Color.GRAY)),
-                new Quaternion().setFromAxis(0,0,1,-45));
+                new Quaternion().setFromAxis(0,0,1,45));
         makeModel(INDICES.MIN_TUNNEL_INDEX+6,
                 new Vector3(0.2f, 0.05f, baseDist * 5),
                 new Vector3(1.98f, 1.98f, 0f), // Tunnel corners
@@ -258,12 +280,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 
-        if (playerShape.isDirty()) {
-            for (int i = 0; i < 4; i++) {
-                instances[INDICES.MIN_PLAYER_INDEX+i].materials.first().set(ColorAttribute.createDiffuse(colors[playerShape.GetShape(i)]));
-            }
-            playerShape.setDirty(false);
-        }
+        updatePlayerModel();
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
@@ -282,11 +299,38 @@ public class GameScreen implements Screen {
         if (dist < 1.2) {
             if (matchShapes()) {
                 generateNewIncomimgShape();
+            } else {
+
+                game.message(new GameOverMessage(numPoints));
             }
         }
 
         stage.act(delta);
         stage.draw();
+    }
+
+    private void updatePlayerModel() {
+        if (playerShape.isDirty()) {
+            for (int i = 0; i < 4; i++) {
+                instances[INDICES.MIN_PLAYER_INDEX+i].materials.first().set(ColorAttribute.createDiffuse(colors[playerShape.GetShape(i)]));
+            }
+            playerShape.setDirty(false);
+        }
+    }
+
+    private void reset(){
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new GameInputProcessor(this));
+        Gdx.input.setInputProcessor(multiplexer);
+
+        numPoints = 0;
+        dist = baseDist;
+        speed = baseSpeed;
+
+        generateNewIncomimgShape();
+        playerShape.Reset();
+        updatePlayerModel();
+        numPoints = 0;
     }
 
     @Override
@@ -302,6 +346,19 @@ public class GameScreen implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
+
+    public int getScore() {
+        return numPoints;
+    }
+
+    public int getSpeed() {
+        return (int) speed * 10;
+    }
+
     @Override
     public void dispose() {
         modelBatch.dispose();
@@ -312,9 +369,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new GameInputProcessor(this));
-        Gdx.input.setInputProcessor(multiplexer);
+        reset();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package de.caffeineaddicted.ld35.sprites;
+package de.caffeineaddicted.ld35.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
