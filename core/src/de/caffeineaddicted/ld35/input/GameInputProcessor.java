@@ -4,13 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
+import de.caffeineaddicted.ld35.messages.PauseGameMessage;
+import de.caffeineaddicted.ld35.screens.GameScreen;
 
 public class GameInputProcessor implements InputProcessor {
 
     private ShapeRef myshape;
+    private GameScreen screen;
 
-    public GameInputProcessor(ShapeRef myshape){
-        this.myshape = myshape;
+    public GameInputProcessor(GameScreen screen){
+        this.screen = screen;
+        myshape = screen.playerShape;
     }
 
     @Override
@@ -33,7 +37,8 @@ public class GameInputProcessor implements InputProcessor {
                 PlaceShape(0);
                 break;
             case Input.Keys.ESCAPE:
-                // PAUSE SCREEN
+            case Input.Keys.P:
+                screen.game.message(new PauseGameMessage());
                 break;
         }
         //System.out.println(myshape.GetShapeID());
