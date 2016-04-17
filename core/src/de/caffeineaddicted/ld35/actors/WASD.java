@@ -41,7 +41,7 @@ public class WASD extends Group {
         wp = new Image(g.getAssets().get("key_s.png", Texture.class));
         dp = new Image(g.getAssets().get("key_a.png", Texture.class));
 
-        setSize(a.getWidth() + s.getWidth() + d.getWidth(), Math.max(a.getHeight() + 2 * margin, w.getHeight() + Math.max(s.getHeight(), d.getHeight())) + margin);
+        setSize(a.getWidth() + s.getWidth() + d.getWidth() + 2 * margin, Math.max(a.getHeight(), w.getHeight() + Math.max(s.getHeight(), d.getHeight())) + margin);
 
         a.setPosition(0, 0);
         ap.setPosition(0, 0);

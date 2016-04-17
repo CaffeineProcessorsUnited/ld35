@@ -35,8 +35,16 @@ public class Assets extends AssetManager {
         load("key_upp.png", Texture.class);
 
         load("BluetilesTexture.png", Texture.class);
-        load("BluetilesTextureInv.png", Texture.class);
         load("GreyTriagTexture.png", Texture.class);
         load("BrickTexture.png", Texture.class);
+
+        load("square.png", Texture.class);
+        load("squareinverted.png", Texture.class);
+        load("circle.png", Texture.class);
+        load("circleinverted.png", Texture.class);
+        load("star.png", Texture.class);
+        load("starinverted.png", Texture.class);
+        load("triangle.png", Texture.class);
+        load("triangleinverted.png", Texture.class);
     }
 }

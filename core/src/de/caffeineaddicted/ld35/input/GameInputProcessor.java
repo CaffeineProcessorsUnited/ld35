@@ -40,6 +40,12 @@ public class GameInputProcessor implements InputProcessor {
             case Input.Keys.P:
                 screen.game.message(new PauseGameMessage());
                 break;
+            case Input.Keys.C:
+                screen.toggleCheats();
+                break;
+            case Input.Keys.N:
+                screen.incSpeed();
+                break;
         }
         //System.out.println(myshape.GetShapeID());
         return true;
