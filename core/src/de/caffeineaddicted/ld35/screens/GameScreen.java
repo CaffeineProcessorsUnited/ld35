@@ -59,6 +59,11 @@ public class GameScreen extends CoffeeScreen {
         public static int SPRITE_RAINBOW = 13;
 
         public static int NUM_TEXTURES = 14;
+
+        public static int SLOT_LEFT = 0;
+        public static int SLOT_UP = 1;
+        public static int SLOT_RIGHT = 2;
+        public static int SLOT_DOWN = 3;
     }
 
     private boolean cheatMode;
@@ -96,6 +101,15 @@ public class GameScreen extends CoffeeScreen {
     private ShapeRef incomingShape;
 
     private Texture textures[];
+    Texture GetTextureByIncomingShape(int slot, boolean inv){
+        if(slot < 0 || slot >= 4)
+            return null;
+        int shapeid = incomingShape.GetShape(slot);
+        return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
+    }
+    Texture GetTextureByShape(int shapeid, boolean inv){
+        return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
+    }
 
     private Stage stage;
 
@@ -284,9 +298,7 @@ public class GameScreen extends CoffeeScreen {
     }
 
     private TextureAttribute makeAttributeFromShape(int idx, boolean inv){
-        int elem = INDICES.SPRITE_UNICORN + 2 * idx + (inv ? 1 : 0);
-        game.error(idx+" "+inv + elem);
-        return TextureAttribute.createDiffuse(textures[elem]);
+        return TextureAttribute.createDiffuse(GetTextureByShape(idx,inv));
     }
 
     private Material makeMaterialFromTexture(int idx){
@@ -447,8 +459,10 @@ public class GameScreen extends CoffeeScreen {
         game.getBatch().setProjectionMatrix(camera.combined);
         modelBatch.begin(camera);
         for(int i = 0; i < instances.length; ++i)
-            if(instances[i] != null)
+            if(instances[i] != null) {
+                game.debug(""+i);
                 modelBatch.render(instances[i]);
+            }
         modelBatch.end();
 
         if (dist >= 1.2) {

@@ -38,7 +38,7 @@ public class ShapeRef {
         return slots;
     }
     public int GetShape(int slot){
-        assert 0 <= slot && slot < numSlots;
+        assert 0 >= slot && slot < numSlots;
         return slots[slot];
     }
     public void SetShape(int shapeID){
