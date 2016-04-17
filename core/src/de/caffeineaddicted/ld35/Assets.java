@@ -19,5 +19,14 @@ public class Assets extends AssetManager {
         load("badlogic.jpg", Texture.class);
         load("menu_background.jpg", Texture.class);
         load("uiskin.json", Skin.class);
+        load("key_a.png", Texture.class);
+        load("key_w.png", Texture.class);
+        load("key_s.png", Texture.class);
+        load("key_d.png", Texture.class);
+        load("key_space.png", Texture.class);
+        load("key_up.png", Texture.class);
+        load("key_down.png", Texture.class);
+        load("key_right.png", Texture.class);
+        load("key_left.png", Texture.class);
     }
 }

@@ -22,6 +22,10 @@ import java.util.ArrayList;
  */
 public class MenuScreen implements Screen {
 
+    public enum NAVIGATION {
+        Both, Horizontal, Vertical
+    }
+
     protected CoffeeGame g;
     protected Stage stage;
 
@@ -31,14 +35,12 @@ public class MenuScreen implements Screen {
 
     private ArrayList<Button> buttons;
 
+    private NAVIGATION navigation = NAVIGATION.Both;
+
     public MenuScreen(CoffeeGame g) {
         this.g = g;
         g.debug("Creating MenuScreen");
         stage = new Stage();
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(new MenuInputProcessor(this));
-        Gdx.input.setInputProcessor(multiplexer);
 
         Texture texBackground = g.getAssets().get("menu_background.jpg", Texture.class);
         texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -125,12 +127,20 @@ public class MenuScreen implements Screen {
         }
     }
 
-    public void up() {
-        select(Math.max(0, tabindex - 1));
+    public void prev() {
+        select((buttons.size() + tabindex - 1) % buttons.size());
     }
 
-    public void down() {
-        select(Math.min(buttons.size() - 1, tabindex + 1));
+    public void next() {
+        select((buttons.size() + tabindex + 1) % buttons.size());
+    }
+
+    public void setNavigation(NAVIGATION navigation) {
+        this.navigation = navigation;
+    }
+
+    public NAVIGATION getNavigation() {
+        return navigation;
     }
 
     public void setStyle(Button button, String stylename) {
@@ -154,7 +164,7 @@ public class MenuScreen implements Screen {
         background.draw(g.getBatch());
         g.getBatch().end();
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.act(delta);
         stage.draw();
     }
 
@@ -170,7 +180,10 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        // TODO Auto-generated method stub
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(new MenuInputProcessor(this));
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override

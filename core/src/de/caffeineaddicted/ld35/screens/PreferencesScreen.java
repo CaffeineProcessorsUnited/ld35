@@ -26,6 +26,7 @@ public class PreferencesScreen extends MenuScreen {
     public PreferencesScreen(CoffeeGame g) {
         super(g);
         create();
+        setNavigation(NAVIGATION.Horizontal);
         sync();
     }
 
@@ -94,30 +95,5 @@ public class PreferencesScreen extends MenuScreen {
     public void sync() {
         ckbPrefMusicMenuActivated.setChecked(g.getPreferences().getBoolean(PREF_KEY_MUSIC_MENU_ACTIVATED, PREF_DEF_MUSIC_MENU_ACTIVATED));
         sldrPrefMusicMenuVolume.setValue(g.getPreferences().getFloat(PREF_KEY_MUSIC_MENU_VOLUME, PREF_DEF_MUSIC_MENU_VOLUME));
-    }
-
-    @Override
-    public void dispose () {
-
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
     }
 }

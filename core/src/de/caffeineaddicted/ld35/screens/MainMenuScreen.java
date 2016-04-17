@@ -21,6 +21,7 @@ public class MainMenuScreen extends MenuScreen {
     public MainMenuScreen(CoffeeGame g) {
         super(g);
         create();
+        setNavigation(NAVIGATION.Vertical);
     }
 
     public void create() {
@@ -96,30 +97,6 @@ public class MainMenuScreen extends MenuScreen {
         btnExit.setPosition(stage.getWidth() / 2 - btnWidth / 2, getButtonY(btnCounter++));
         addButton(btnExit);
 
-    }
-
-    public void render (float delta) {
-        super.render(delta);
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
     }
 
     private float getButtonY(int number) {

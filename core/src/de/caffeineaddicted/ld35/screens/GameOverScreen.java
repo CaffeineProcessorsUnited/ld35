@@ -27,6 +27,7 @@ public class GameOverScreen extends MenuScreen {
         super(g);
         this.score = score;
         create();
+        setNavigation(NAVIGATION.Horizontal);
     }
 
     public void create() {
@@ -74,31 +75,6 @@ public class GameOverScreen extends MenuScreen {
         btnAbort.setPosition(stage.getWidth() / 2 + 130 / 2, 100);
         addButton(btnAbort);
 
-    }
-
-    @Override
-    public void dispose () {
-
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
     }
 
 }

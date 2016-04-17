@@ -26,6 +26,7 @@ public class HighscoresScreen extends MenuScreen {
     public HighscoresScreen(CoffeeGame g) {
         super(g);
         create();
+        setNavigation(NAVIGATION.Horizontal);
     }
 
     public void create(){
@@ -51,30 +52,5 @@ public class HighscoresScreen extends MenuScreen {
         btnBack.setPosition(stage.getWidth() / 2 - 120 / 2, 100);
         addButton(btnBack);
 
-    }
-
-    @Override
-    public void dispose () {
-
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
     }
 }
