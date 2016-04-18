@@ -18,6 +18,7 @@ public class RootScreen implements Screen {
     private Map<ZINDEX, Class<? extends CoffeeScreen>> activeScreens;
     private boolean renderWhilePasued = true;
     private boolean paused = false;
+
     public RootScreen(CoffeeGame game) {
         this.game = game;
         screens = new HashMap<Class<? extends CoffeeScreen>, CoffeeScreen>();

@@ -4,7 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.impl.messages.*;
+import de.caffeineaddicted.ld35.impl.messages.HideModeSelectionScreenMessage;
+import de.caffeineaddicted.ld35.impl.messages.ShowGameMessage;
+import de.caffeineaddicted.ld35.impl.messages.ShowMainMenuMessage;
 import de.caffeineaddicted.ld35.screens.MenuScreen;
 
 /**

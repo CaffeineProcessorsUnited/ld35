@@ -53,14 +53,16 @@ public class KeyDisplay extends Group {
         arrows.setScale(scaleX, scaleY);
         space.setScale(scaleX, scaleY);
         spacep.setScale(scaleX, scaleY);
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+        setSize(hud.getWidth(), Math.max(wasd.getHeight() * wasd.getScaleY(), Math.max(arrows.getHeight() * wasd.getScaleY(), space.getHeight() * wasd.getScaleY())));
         wasd.setPosition(0, 0);
         space.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
         spacep.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
         arrows.setPosition(getWidth() - arrows.getWidth() * arrows.getScaleX(), 0);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+
         space.setVisible(!Gdx.input.isKeyPressed(Input.Keys.SPACE));
         spacep.setVisible(Gdx.input.isKeyPressed(Input.Keys.SPACE));
         super.draw(batch, parentAlpha);

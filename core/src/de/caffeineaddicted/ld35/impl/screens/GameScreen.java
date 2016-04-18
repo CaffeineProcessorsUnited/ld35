@@ -42,6 +42,7 @@ public class GameScreen extends CoffeeScreen {
     public ShapeRef playerShape;
     private boolean cheatMode;
     private boolean gameOver;
+    private boolean hardcore;
     private int iteration = 0;
     private int numPoints;
     private boolean doDraw;
@@ -77,14 +78,14 @@ public class GameScreen extends CoffeeScreen {
 
     }
 
-    Texture GetTextureByIncomingShape(int slot, boolean inv) {
+    public Texture GetTextureByIncomingShape(int slot, boolean inv) {
         if (slot < 0 || slot >= 4)
             return null;
         int shapeid = incomingShape.GetShape(slot);
         return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
     }
 
-    Texture GetTextureByShape(int shapeid, boolean inv) {
+    public Texture GetTextureByShape(int shapeid, boolean inv) {
         return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
     }
 
@@ -481,6 +482,7 @@ public class GameScreen extends CoffeeScreen {
 
     private void reset() {
         gameOver = false;
+        hardcore = false;
 
         numPoints = 0;
         dist = baseDist;
@@ -544,13 +546,24 @@ public class GameScreen extends CoffeeScreen {
         return gameOver;
     }
 
+    public boolean isHardcore() {
+        return hardcore;
+    }
+
+    public void setHardcore(boolean hardcore) {
+        this.hardcore = hardcore;
+        if (hardcore) {
+            iteration = Math.max(iteration, 21);
+        }
+    }
+
     @Override
     public void pause() {
         super.pause();
         game.message(new PauseGameMessage());
     }
 
-    static public class INDICES {
+    static private class INDICES {
         public static int MIN_PLAYER_INDEX = 0;
         public static int MAX_PLAYER_INDEX = 4;
         public static int MIN_INCOMING_INDEX = 5;
