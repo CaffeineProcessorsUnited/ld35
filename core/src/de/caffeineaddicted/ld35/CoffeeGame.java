@@ -1,7 +1,6 @@
 package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
@@ -14,8 +13,10 @@ import de.caffeineaddicted.ld35.impl.screens.*;
 import de.caffeineaddicted.ld35.impl.input.GlobalInputProcessor;
 import de.caffeineaddicted.ld35.impl.messages.*;
 import de.caffeineaddicted.ld35.input.CoffeeScreenInputMultiplexer;
+import de.caffeineaddicted.ld35.logic.Bundle;
 import de.caffeineaddicted.ld35.logic.Message;
 import de.caffeineaddicted.ld35.logic.MessageBasedGame;
+import de.caffeineaddicted.ld35.messages.DefaultMessage;
 import de.caffeineaddicted.ld35.screens.RootScreen;
 import de.caffeineaddicted.ld35.util.Assets;
 import de.caffeineaddicted.ld35.util.Highscores;
@@ -99,20 +100,22 @@ public class CoffeeGame extends MessageBasedGame {
             if (rootScreen.isLoaded(GameScreen.class)) {
                 rootScreen.get(GameScreen.class).pause();
             }
-            rootScreen.get(GameOverScreen.class).onMessageReceived(message);
-            rootScreen.showScreen(GameOverScreen.class, RootScreen.ZINDEX.NEAR);
+            if (rootScreen.isLoaded(GameOverScreen.class)) {
+                rootScreen.get(GameOverScreen.class).onMessageReceived(message, new Bundle().put(CONSTANTS.BUNDLE_SCORE, ((GameOverMessage) message).score));
+                rootScreen.showScreen(GameOverScreen.class, RootScreen.ZINDEX.NEAR);
+            }
         }
         if (message.getClass() == HideGameOverMenuMessage.class) {
             debug("Leave the lose screen");
             rootScreen.hideScreen(GameOverScreen.class);
         }
         if(message.getClass() == PauseGameMessage.class){
-            debug("Showing the pause screen");
-            if (rootScreen.isLoaded(GameScreen.class) && !rootScreen.get(GameScreen.class).isPaused()) {
-                rootScreen.get(GameScreen.class).pause();
-            }
-            if (rootScreen.get(GameScreen.class).isVisible()) {
-                rootScreen.showScreen(PauseMenuScreen.class, RootScreen.ZINDEX.NEAR);
+            error("Showing the pause screen");
+            if (rootScreen.isLoaded(GameScreen.class)) {
+                rootScreen.get(GameScreen.class).setDoDraw(false);
+                if (rootScreen.get(GameScreen.class).isVisible() && !rootScreen.get(GameScreen.class).isGameOver()) {
+                    rootScreen.showScreen(PauseMenuScreen.class, RootScreen.ZINDEX.NEAR);
+                }
             }
         }
         if (message.getClass() == PreferencesUpdatedMessage.class) {
@@ -121,9 +124,8 @@ public class CoffeeGame extends MessageBasedGame {
             loadPreferences();
         }
         if (message.getClass() == ResumeGameMessage.class) {
-            debug("Resuming Game");
+            error("Resuming Game");
             if (rootScreen.isLoaded(GameScreen.class)) {
-                rootScreen.get(GameScreen.class).resume();
                 rootScreen.get(GameScreen.class).setDoDraw(true);
             }
         }

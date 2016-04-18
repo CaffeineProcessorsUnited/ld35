@@ -29,8 +29,8 @@ public class KeyDisplay extends Group {
     }
 
     public void create () {
-        wasd = new WASD(g);
-        arrows = new Arrows(g);
+        wasd = new WASD(g, this);
+        arrows = new Arrows(g, this);
         space = new Image(g.getAssets().get("key_space.png", Texture.class));
         spacep = new Image(g.getAssets().get("key_spacep.png", Texture.class));
         setSize(hud.getWidth(), Math.max(wasd.getHeight(), Math.max(arrows.getHeight(), space.getHeight())));
@@ -64,6 +64,10 @@ public class KeyDisplay extends Group {
         space.setVisible(!Gdx.input.isKeyPressed(Input.Keys.SPACE));
         spacep.setVisible(Gdx.input.isKeyPressed(Input.Keys.SPACE));
         super.draw(batch, parentAlpha);
+    }
+
+    public HUD getHud() {
+        return hud;
     }
 
 }

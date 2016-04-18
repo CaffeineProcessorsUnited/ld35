@@ -26,8 +26,11 @@ public class WASD extends Group {
 
     private float margin = 10f;
 
-    public WASD(CoffeeGame g) {
+    private KeyDisplay kd;
+
+    public WASD(CoffeeGame g, KeyDisplay kd) {
         this.g = g;
+        this.kd = kd;
         create();
     }
 
@@ -68,14 +71,16 @@ public class WASD extends Group {
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        a.setVisible(!Gdx.input.isKeyPressed(Input.Keys.A));
-        ap.setVisible(Gdx.input.isKeyPressed(Input.Keys.A));
-        s.setVisible(!Gdx.input.isKeyPressed(Input.Keys.S));
-        sp.setVisible(Gdx.input.isKeyPressed(Input.Keys.S));
-        d.setVisible(!Gdx.input.isKeyPressed(Input.Keys.D));
-        dp.setVisible(Gdx.input.isKeyPressed(Input.Keys.D));
-        w.setVisible(!Gdx.input.isKeyPressed(Input.Keys.W));
-        wp.setVisible(Gdx.input.isKeyPressed(Input.Keys.W));
+        if (kd.getHud().getGameScreen().isRunning()) {
+            a.setVisible(!Gdx.input.isKeyPressed(Input.Keys.A));
+            ap.setVisible(Gdx.input.isKeyPressed(Input.Keys.A));
+            s.setVisible(!Gdx.input.isKeyPressed(Input.Keys.S));
+            sp.setVisible(Gdx.input.isKeyPressed(Input.Keys.S));
+            d.setVisible(!Gdx.input.isKeyPressed(Input.Keys.D));
+            dp.setVisible(Gdx.input.isKeyPressed(Input.Keys.D));
+            w.setVisible(!Gdx.input.isKeyPressed(Input.Keys.W));
+            wp.setVisible(Gdx.input.isKeyPressed(Input.Keys.W));
+        }
         super.draw(batch, parentAlpha);
 
     }

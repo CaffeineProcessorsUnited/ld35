@@ -38,7 +38,6 @@ public class HighscoresScreen extends MenuScreen {
         txtScores = new ArrayList<Label>();
         table = new Table();
         table.setWidth(tblWidth);
-        table.setPosition(stage.getWidth() / 2 - table.getWidth() / 2, stage.getHeight() - tblMarginTop);
         //ptable.setDebug(true);
         for (int i = 0; i < Math.min(game.getHighscores().getScores().size(), 10); i++) {
             txtNames.add(new Label(game.getHighscores().getScores().get(i).getName(), game.getAssets().get("uiskin.json", Skin.class), "default"));
@@ -47,6 +46,10 @@ public class HighscoresScreen extends MenuScreen {
             table.add(txtScores.get(i)).right();
             table.row();
         }
+        table.pack();
+        table.setWidth(tblWidth);
+        game.error(table.getHeight()+ "");
+        table.setPosition(stage.getWidth() / 2 - table.getWidth() / 2, stage.getHeight() - table.getHeight() - tblMarginTop);
         stage.addActor(table);
 
         // Back button

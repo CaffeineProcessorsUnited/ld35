@@ -62,4 +62,8 @@ public class HUD extends Group {
         super.draw(batch, parentAlpha);
     }
 
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
 }

@@ -25,8 +25,11 @@ public class Arrows extends Group {
 
     private float margin = 10f;
 
-    public Arrows(CoffeeGame g) {
+    private KeyDisplay kd;
+
+    public Arrows(CoffeeGame g, KeyDisplay kd) {
         this.g = g;
+        this.kd = kd;
         create();
     }
 
@@ -65,14 +68,16 @@ public class Arrows extends Group {
 
     @Override
     public void draw (Batch batch, float parentAlpha) {
-        up.setVisible(!Gdx.input.isKeyPressed(Input.Keys.UP));
-        upp.setVisible(Gdx.input.isKeyPressed(Input.Keys.UP));
-        down.setVisible(!Gdx.input.isKeyPressed(Input.Keys.DOWN));
-        downp.setVisible(Gdx.input.isKeyPressed(Input.Keys.DOWN));
-        left.setVisible(!Gdx.input.isKeyPressed(Input.Keys.LEFT));
-        leftp.setVisible(Gdx.input.isKeyPressed(Input.Keys.LEFT));
-        right.setVisible(!Gdx.input.isKeyPressed(Input.Keys.RIGHT));
-        rightp.setVisible(Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        if (kd.getHud().getGameScreen().isRunning()) {
+            up.setVisible(!Gdx.input.isKeyPressed(Input.Keys.UP));
+            upp.setVisible(Gdx.input.isKeyPressed(Input.Keys.UP));
+            down.setVisible(!Gdx.input.isKeyPressed(Input.Keys.DOWN));
+            downp.setVisible(Gdx.input.isKeyPressed(Input.Keys.DOWN));
+            left.setVisible(!Gdx.input.isKeyPressed(Input.Keys.LEFT));
+            leftp.setVisible(Gdx.input.isKeyPressed(Input.Keys.LEFT));
+            right.setVisible(!Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+            rightp.setVisible(Gdx.input.isKeyPressed(Input.Keys.RIGHT));
+        }
         super.draw(batch, parentAlpha);
     }
 

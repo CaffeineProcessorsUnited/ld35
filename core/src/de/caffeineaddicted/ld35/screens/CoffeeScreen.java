@@ -5,6 +5,7 @@ import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.listener.MessageReceiver;
 import de.caffeineaddicted.ld35.logic.Bundle;
 import de.caffeineaddicted.ld35.logic.Message;
+import de.caffeineaddicted.ld35.messages.DefaultMessage;
 
 /**
  * Created by malte on 4/17/16.
@@ -76,6 +77,11 @@ public  abstract class CoffeeScreen implements Screen, MessageReceiver {
     @Override
     public void onMessageReceived(Message message) {
         onMessageReceived(message, new Bundle());
+    }
+
+    @Override
+    public void onMessageReceived(Bundle bundle) {
+        onMessageReceived(new DefaultMessage(), bundle);
     }
 
     @Override

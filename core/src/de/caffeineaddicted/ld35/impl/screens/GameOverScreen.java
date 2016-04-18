@@ -86,11 +86,13 @@ public class GameOverScreen extends MenuScreen {
 
     }
 
-    public void onMessageReceive(Message message, Bundle bundle) {
+    @Override
+    public void onMessageReceived(Message message, Bundle bundle) {
         if (bundle == null) {
             bundle = new Bundle();
         }
         score = bundle.get(CoffeeGame.CONSTANTS.BUNDLE_SCORE, Integer.class, 0);
+        game.error("score = " + score);
     }
 
 }

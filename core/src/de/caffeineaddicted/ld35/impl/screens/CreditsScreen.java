@@ -45,16 +45,6 @@ public class CreditsScreen extends MenuScreen {
 
         setTitle("LD 35: Credits");
 
-        /*txtCreditLabels = new ArrayList<Label>();
-        for (int i = 0; i < txtCredits.length; i++) {
-            txtCreditLabels.add(new Label(txtCredits[i], game.getAssets().get("uiskin.json", Skin.class), "default"));
-            txtWidth = Math.max(txtWidth, txtCreditLabels.get(i).getWidth());
-            stage.addActor(txtCreditLabels.get(i));
-        }
-        for (int i = 0; i < txtCreditLabels.size(); i++) {
-            txtCreditLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
-        }
-        */
         Label txtCredits  = new Label(credits, game.getAssets().get("uiskin.json", Skin.class), "default");
         txtCredits.setWrap(true);
 

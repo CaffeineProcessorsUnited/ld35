@@ -17,7 +17,4 @@ public abstract class MessageBasedGame extends Game {
         }
     }
 
-    public class DefaultMessage implements Message {
-
-    }
 }

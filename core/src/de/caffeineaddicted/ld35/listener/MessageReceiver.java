@@ -9,5 +9,6 @@ import de.caffeineaddicted.ld35.logic.MessageBasedGame;
  */
 public interface MessageReceiver {
     public void onMessageReceived(Message message);
+    public void onMessageReceived(Bundle bundle);
     public void onMessageReceived(Message message, Bundle bundle);
 }

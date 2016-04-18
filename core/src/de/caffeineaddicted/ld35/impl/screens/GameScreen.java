@@ -70,6 +70,7 @@ public class GameScreen extends CoffeeScreen {
     }
 
     private boolean cheatMode;
+    private boolean gameOver;
 
     private static float baseDist = 30.f;
     private static float baseSpeed = 2f;
@@ -295,6 +296,8 @@ public class GameScreen extends CoffeeScreen {
         doDraw = false;
         game.debug("Creating GameScreen");
 
+        game.getScreenInput().addProcessor(this, new GameInputProcessor(this));
+
         loadTexture(INDICES.BLUE_TILES_SIDE,"BluetilesTexture");
         loadTexture(INDICES.GREY_TILES,"GreyTriagTexture");
         loadTexture(INDICES.BRICK_TILES,"BrickTexture");
@@ -469,6 +472,8 @@ public class GameScreen extends CoffeeScreen {
 
         stage.draw();
 
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
         if(!doDraw)
             return;
 
@@ -480,13 +485,11 @@ public class GameScreen extends CoffeeScreen {
                 setTunnelTransform();
         }
 
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-
         if (dist < 1.2) {
             if (matchShapes()) {
                 generateNewIncomimgShape();
             } else {
-
+                gameOver = true;
                 game.message(new GameOverMessage(numPoints));
             }
         }
@@ -516,7 +519,7 @@ public class GameScreen extends CoffeeScreen {
     }
 
     private void reset(){
-        game.getScreenInput().addProcessor(this, new GameInputProcessor(this));
+        gameOver = false;
 
         numPoints = 0;
         dist = baseDist;
@@ -573,15 +576,17 @@ public class GameScreen extends CoffeeScreen {
         this.doDraw = doDraw;
     }
 
-    @Override
-    public void pause() {
-        super.pause();
-        doDraw = false;
-        game.message(new PauseGameMessage());
+    public boolean isRunning() {
+        return doDraw;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     @Override
-    public void resume() {
-        super.resume();
+    public void pause() {
+        super.pause();
+        game.message(new PauseGameMessage());
     }
 }
