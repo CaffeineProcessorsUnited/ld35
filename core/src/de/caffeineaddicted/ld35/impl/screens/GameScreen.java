@@ -152,7 +152,7 @@ public class GameScreen extends CoffeeScreen {
             x += 1.225;
             y += 0.9;
         } else if (model == 6) {
-            y += 1.45;
+            y += 1.25;
         } else if (model == 7) {
             x += -1.225;
             y += 0.9;
@@ -358,7 +358,7 @@ public class GameScreen extends CoffeeScreen {
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
                 new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
         makeModel(INDICES.MIN_INCOMING_INDEX + 6, //UpperMid
-                new Vector3(0.9f, 2f, 0f),
+                new Vector3(0.9f, 1.6f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
                 new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
         makeModel(INDICES.MIN_INCOMING_INDEX + 7, // Right
