@@ -3,6 +3,7 @@ package de.caffeineaddicted.ld35.impl.screens;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
@@ -16,12 +17,12 @@ import java.util.ArrayList;
  */
 public class HighscoresScreen extends MenuScreen {
 
-    float txtMarginTop = 100;
-    float txtWidth = 400;
-    float txtHeight = 25;
+    float tblMarginTop = 100;
+    float tblWidth = 400;
 
     TextButton btnBack;
-    ArrayList<Label> txtScores;
+    ArrayList<Label> txtNames, txtScores;
+    Table table;
 
     public HighscoresScreen(CoffeeGame g) {
         super(g);
@@ -33,13 +34,20 @@ public class HighscoresScreen extends MenuScreen {
         game.debug("Creating CreditsScreen");
         setTitle("LD 35: Highscores");
 
+        txtNames = new ArrayList<Label>();
         txtScores = new ArrayList<Label>();
+        table = new Table();
+        table.setWidth(tblWidth);
+        table.setPosition(stage.getWidth() / 2 - table.getWidth() / 2, stage.getHeight() - tblMarginTop);
+        //ptable.setDebug(true);
         for (int i = 0; i < Math.min(game.getHighscores().getScores().size(), 10); i++) {
-            txtScores.add(new Label(game.getHighscores().getScores().get(i).getName() + "" + game.getHighscores().getScores().get(i).getScore(), game.getAssets().get("uiskin.json", Skin.class), "default"));
-            txtScores.get(i).setWidth(txtWidth);
-            txtScores.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
-            stage.addActor(txtScores.get(i));
+            txtNames.add(new Label(game.getHighscores().getScores().get(i).getName(), game.getAssets().get("uiskin.json", Skin.class), "default"));
+            txtScores.add(new Label("" + game.getHighscores().getScores().get(i).getScore(), game.getAssets().get("uiskin.json", Skin.class), "default"));
+            table.add(txtNames.get(i)).left().expandX();
+            table.add(txtScores.get(i)).right();
+            table.row();
         }
+        stage.addActor(table);
 
         // Back button
         btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));

@@ -54,6 +54,11 @@ public class MenuScreen extends CoffeeScreen {
         stage.addActor(title);
 
         buttons = new ArrayList<Button>();
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(new MenuInputProcessor(this));
+        game.getScreenInput().addProcessor(this, multiplexer);
     }
 
     public void setTitle(String titleStr) {
@@ -179,15 +184,6 @@ public class MenuScreen extends CoffeeScreen {
     @Override
     public void dispose () {
         stage.dispose();
-    }
-
-    @Override
-    public void show() {
-        super.show();
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(new MenuInputProcessor(this));
-        game.getScreenInput().addProcessor(this, multiplexer);
     }
     
 }

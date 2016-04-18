@@ -19,16 +19,20 @@ import java.util.ArrayList;
 public class CreditsScreen extends MenuScreen {
 
     float txtMarginTop = 100;
-    float txtWidth = 0;
-    float txtHeight = 25;
+    float txtWidth = 600;
     TextButton btnBack;
-    String[] txtCredits = { "Credits:", ""
-            + "", "This game is our submission for the Ludum Dare 35!", ""
-            + "A lot of coffee, cola, chicken wings, curry, chili and chocolate", ""
-            + "(all these things start wit an c...coincidence?)", ""
-            + "was consumed during development.", ""
-            + "", "People developing this game:", "Malte Heinzelmann", "Niels Bernloehr","Felix Richter", "Maria Stepanov"
-            + "", "", "You can find us under CaffeineProccesorsUnited on Github: ","https://github.com/CaffeineProcessorsUnited"};
+    String credits = "Credits:\n" +
+            "This game is our submission for the Ludum Dare 35!\n" +
+            "A lot of coffee, cola, chicken wings, curry, chili and chocolate" +
+            " (all these things start wit an c...coincidence?) " +
+            " was consumed during development.\n" +
+            "\n" +
+            "People developing this game:\n" +
+            "Malte Heinzelmann\n" +
+            "Niels Bernloehr\n" +
+            "Felix Richter\n" +
+            "Maria Stepanov\n" +
+            "You can find us under CaffeineProccesorsUnited on Github: https://github.com/CaffeineProcessorsUnited";
     ArrayList<Label> txtCreditLabels;
 
     public CreditsScreen(CoffeeGame g) {
@@ -41,7 +45,7 @@ public class CreditsScreen extends MenuScreen {
 
         setTitle("LD 35: Credits");
 
-        txtCreditLabels = new ArrayList<Label>();
+        /*txtCreditLabels = new ArrayList<Label>();
         for (int i = 0; i < txtCredits.length; i++) {
             txtCreditLabels.add(new Label(txtCredits[i], game.getAssets().get("uiskin.json", Skin.class), "default"));
             txtWidth = Math.max(txtWidth, txtCreditLabels.get(i).getWidth());
@@ -50,6 +54,18 @@ public class CreditsScreen extends MenuScreen {
         for (int i = 0; i < txtCreditLabels.size(); i++) {
             txtCreditLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
         }
+        */
+        Label txtCredits  = new Label(credits, game.getAssets().get("uiskin.json", Skin.class), "default");
+        txtCredits.setWrap(true);
+
+        txtCredits.pack();
+        txtCredits.setWidth(txtWidth);
+
+        txtCredits.pack();
+        txtCredits.setWidth(txtWidth);
+
+        txtCredits.setPosition(stage.getWidth() / 2 - txtCredits.getWidth() / 2, stage.getHeight() - txtMarginTop - txtCredits.getHeight());
+        stage.addActor(txtCredits);
 
         // Back button
         btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));

@@ -1,6 +1,7 @@
 package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
@@ -48,7 +49,7 @@ public class CoffeeGame extends MessageBasedGame {
         assets = new Assets();
         assets.getLogger().setLevel(Logger.ERROR);
         assets.preload();
-        highscores = new Highscores();
+        highscores = new Highscores(this);
         preferences = new Preferences(PREFERENCES_FILENAME);
         rootScreen = new RootScreen(this);
         setScreen(rootScreen);
@@ -110,7 +111,9 @@ public class CoffeeGame extends MessageBasedGame {
             if (rootScreen.isLoaded(GameScreen.class) && !rootScreen.get(GameScreen.class).isPaused()) {
                 rootScreen.get(GameScreen.class).pause();
             }
-            rootScreen.showScreen(PauseMenuScreen.class, RootScreen.ZINDEX.NEAR);
+            if (rootScreen.get(GameScreen.class).isVisible()) {
+                rootScreen.showScreen(PauseMenuScreen.class, RootScreen.ZINDEX.NEAR);
+            }
         }
         if (message.getClass() == PreferencesUpdatedMessage.class) {
             debug("Preferences have changed. Update Interface");
