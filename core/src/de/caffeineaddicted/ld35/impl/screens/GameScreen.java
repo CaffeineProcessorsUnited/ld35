@@ -149,11 +149,14 @@ public class GameScreen extends CoffeeScreen {
         } else if (model == 4) {
             z += 0.02;
         } else if (model == 5) {
+            scaling.x = -1;
             x += 1.225;
             y += 0.9;
         } else if (model == 6) {
-            y += 1.25;
+            scaling.x = -1;
+            y += 1.225;
         } else if (model == 7) {
+            scaling.x = -1;
             x += -1.225;
             y += 0.9;
         } else if (model == 8) {
@@ -274,6 +277,9 @@ public class GameScreen extends CoffeeScreen {
         loadTexture(INDICES.SPRITE_TRIANGLE, "triangle");
         loadTexture(INDICES.SPRITE_TRIANGLE_INV, "triangleinverted");
         loadTexture(INDICES.SPRITE_RAINBOW, "rainbow", false);
+        loadTexture(INDICES.SPRITE_WALL_LEFT, "wall_left");
+        loadTexture(INDICES.SPRITE_WALL_MIDDLE, "wall_middle");
+        loadTexture(INDICES.SPRITE_WALL_RIGHT, "wall_right");
 
         playerShape = new ShapeRef();
         incomingShape = new ShapeRef();
@@ -356,23 +362,23 @@ public class GameScreen extends CoffeeScreen {
         makeModel(INDICES.MIN_INCOMING_INDEX + 5, //Left
                 new Vector3(1.55f, 2.2f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+                makeMaterialFromTexture(INDICES.SPRITE_WALL_LEFT));
         makeModel(INDICES.MIN_INCOMING_INDEX + 6, //UpperMid
-                new Vector3(0.9f, 1.6f, 0f),
+                new Vector3(0.9f, 1.55f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+                makeMaterialFromTexture(INDICES.SPRITE_WALL_MIDDLE));
         makeModel(INDICES.MIN_INCOMING_INDEX + 7, // Right
                 new Vector3(1.55f, 2.2f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+                makeMaterialFromTexture(INDICES.SPRITE_WALL_RIGHT));
         makeModel(INDICES.MIN_INCOMING_INDEX + 8, //Lower Left Mid
                 new Vector3(0.31f, 0.3f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+                new Material(ColorAttribute.createDiffuse(new Color(0x00e6ffff))));
         makeModel(INDICES.MIN_INCOMING_INDEX + 9, //Lower Right Mid
                 new Vector3(0.31f, 0.3f, 0f),
                 new Vector3(0f, 0f, 0f), // Will be overridden in setModelTransform
-                new Material(ColorAttribute.createDiffuse(new Color(0x8b522aff))));
+                new Material(ColorAttribute.createDiffuse(new Color(0x00e6ffff))));
         for (int i = 0; i <= INDICES.MAX_INCOMING_INDEX - INDICES.MIN_INCOMING_INDEX; ++i)
             setIncomingTransform(i);
 
@@ -599,8 +605,11 @@ public class GameScreen extends CoffeeScreen {
         public static int SPRITE_TRIANGLE = 11;
         public static int SPRITE_TRIANGLE_INV = 12;
         public static int SPRITE_RAINBOW = 13;
+        public static int SPRITE_WALL_LEFT = 14;
+        public static int SPRITE_WALL_MIDDLE = 15;
+        public static int SPRITE_WALL_RIGHT = 16;
 
-        public static int NUM_TEXTURES = 14;
+        public static int NUM_TEXTURES = 17;
 
         public static int SLOT_LEFT = 2;
         public static int SLOT_UP = 3;
