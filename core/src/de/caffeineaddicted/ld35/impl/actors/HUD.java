@@ -59,6 +59,7 @@ public class HUD extends Group {
                 getChildren().get(i).remove();
             }
         }
+        obstacleDisplay.setVisible(!gameScreen.isHardcore());
         labelSpeed = new Label("Speed: " + gameScreen.getSpeed(), g.getAssets().get("uiskin.json", Skin.class));
         labelSpeed.setPosition(20, getHeight() - labelSpeed.getHeight() - 20);
         addActor(labelSpeed);

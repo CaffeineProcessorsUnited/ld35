@@ -37,6 +37,7 @@ import static com.badlogic.gdx.graphics.GL20.GL_NONE;
  * Created by malte on 4/16/16.
  */
 public class GameScreen extends CoffeeScreen {
+
     static private class INDICES {
         public static int MIN_PLAYER_INDEX = 0;
         public static int MAX_PLAYER_INDEX = 4;
@@ -71,6 +72,7 @@ public class GameScreen extends CoffeeScreen {
 
     private boolean cheatMode;
     private boolean gameOver;
+    private boolean hardcore;
 
     private static float baseDist = 30.f;
     private static float baseSpeed = 2f;
@@ -520,6 +522,7 @@ public class GameScreen extends CoffeeScreen {
 
     private void reset(){
         gameOver = false;
+        hardcore = false;
 
         numPoints = 0;
         dist = baseDist;
@@ -584,9 +587,19 @@ public class GameScreen extends CoffeeScreen {
         return gameOver;
     }
 
+    public boolean isHardcore(){ return hardcore; }
+
+    public void setHardcore(boolean hardcore) {
+        this.hardcore=hardcore;
+        if(hardcore){
+            iteration = Math.max(iteration,21);
+        }
+    }
+
     @Override
     public void pause() {
         super.pause();
         game.message(new PauseGameMessage());
     }
+
 }
