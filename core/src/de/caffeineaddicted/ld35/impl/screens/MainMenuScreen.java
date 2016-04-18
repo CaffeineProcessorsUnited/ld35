@@ -28,6 +28,8 @@ public class MainMenuScreen extends MenuScreen {
         game.debug("Creating MainMenuScreen");
         setTitle("LD 35");
 
+        setDimmBackground(false);
+
         int btnCounter = 0;
 
         // Play button

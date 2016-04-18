@@ -1,7 +1,6 @@
 package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,6 +14,8 @@ import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 public class LoadingScreen extends CoffeeScreen {
 
     private Sprite background;
+    private Sprite cpu;
+    private Sprite logo;
 
     private float height = 15f;
     private float percent_width = 0.8f;
@@ -41,24 +42,27 @@ public class LoadingScreen extends CoffeeScreen {
 
         game.getAssets().finishLoading();
 
-        Texture texBackground = game.getAssets().get("loading_background.jpg", Texture.class);
+        Texture texBackground = game.getAssets().get("background.png", Texture.class);
         texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         background = new Sprite(texBackground);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        Texture texCPU = game.getAssets().get("cpu.png", Texture.class);
+        cpu = new Sprite(texCPU);
+        cpu.setScale(0.1f);
+
+        Texture texLogo = game.getAssets().get("logo.png", Texture.class);
+        logo = new Sprite(texLogo);
+        logo.setScale(0.8f, 0.8f);
 
         game.getAssets().load();
     }
 
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-
         game.getBatch().begin();
         background.draw(game.getBatch());
+        cpu.draw(game.getBatch());
+        logo.draw(game.getBatch());
         game.getBatch().end();
 
         game.getShape().setColor(bar_r, bar_g, bar_b, bar_a);
@@ -72,9 +76,6 @@ public class LoadingScreen extends CoffeeScreen {
         game.getShape().rect(x(), y(), wp(), h());
         game.getShape().end();
 
-        game.debug("Drawing rect: " + x() + ", " + y() + ", " + w() + ", " + h());
-        game.debug("Drawing box: " + x() + ", " + y() + ", " + wp() + ", " + h());
-
         if (time >= wait_time) {
             if (game.getAssets().update()) {
                 if (time >= min_time) {
@@ -86,7 +87,6 @@ public class LoadingScreen extends CoffeeScreen {
             }
         }
         time += delta;
-        game.debug(time + "");
     }
 
     private float x() {
@@ -113,6 +113,8 @@ public class LoadingScreen extends CoffeeScreen {
     public void resize(int width, int height) {
         super.resize(width, height);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cpu.setPosition(Gdx.graphics.getWidth() / 2 - cpu.getWidth() / 2, Gdx.graphics.getHeight() / 2 - cpu.getWidth() / 2);
+        logo.setPosition(Gdx.graphics.getWidth() / 2 - logo.getWidth() / 2, logo.getHeight() - 20);
     }
 
 }

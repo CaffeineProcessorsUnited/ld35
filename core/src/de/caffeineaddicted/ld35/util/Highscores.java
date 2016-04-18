@@ -2,7 +2,6 @@ package de.caffeineaddicted.ld35.util;
 
 import de.caffeineaddicted.ld35.CoffeeGame;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,82 +11,55 @@ import java.util.Comparator;
  */
 public class Highscores {
 
-    // The name of the file where the highscores will be saved
-    private final String HIGHSCORE_FILE;
-    // Initialising an in and outputStream for working with the file
-    ObjectOutputStream outputStream = null;
-    ObjectInputStream inputStream = null;
     private CoffeeGame game;
-    // An arraylist of the type "score" we will use to work with the scores
-    // inside the class
+
     private ArrayList<Score> scores;
 
+    private Preferences preferences;
+
     public Highscores(CoffeeGame game) {
-        this(game, "scores.dat");
+        this.game = game;
+        scores = new ArrayList<Score>();
+        preferences = new Preferences(CoffeeGame.CONSTANTS.PREFERENCES_FILENAME);
+        load();
     }
 
-    public Highscores(CoffeeGame game, String fileName) {
-        this.game = game;
-        HIGHSCORE_FILE = fileName;
-        scores = new ArrayList<Score>();
+    private void load() {
+        scores.clear();
+        for (int i = 0; i < 10; i++) {
+            int score = preferences.getInteger("score" + i, -1);
+            String name = preferences.getString("name" + i, null);
+            if (score > 0 && name != null) {
+                scores.add(new Score(name, score));
+            }
+        }
+        sort();
     }
 
     public ArrayList<Score> getScores() {
-        loadScoreFile();
-        sort();
         return scores;
     }
 
     private void sort() {
         ScoreComparator comparator = new ScoreComparator();
         Collections.sort(scores, comparator);
+        trim();
+    }
+
+    private void trim() {
         scores = sublist(scores, 0, Math.min(9, scores.size() - 1));
     }
 
     public void addScore(String name, int score) {
         scores.add(new Score(name, score));
         sort();
-        updateScoreFile();
-    }
-
-    public void loadScoreFile() {
-        try {
-            inputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_FILE));
-            scores = (ArrayList<Score>) inputStream.readObject();
-        } catch (FileNotFoundException e) {
-            game.error("Highscores", "[Load] FNF Error: " + e.getMessage());
-            System.out.println();
-        } catch (IOException e) {
-            game.error("Highscores", "[Load] IO Error: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            game.error("Highscores", "[Load] CNF Error: " + e.getMessage());
-        } finally {
-            inputStream = null;
+        trim();
+        preferences.clear();
+        for (int i = 0; i < Math.min(10, scores.size()); i++) {
+            preferences.putInteger("score" + i, scores.get(i).getScore());
+            preferences.putString("name" + i, scores.get(i).getName());
         }
-    }
-
-    public void updateScoreFile() {
-        if (scores.size() == 0) {
-            return;
-        }
-        try {
-            outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
-            outputStream.writeObject(sublist(scores, 0, Math.min(9, scores.size() - 1)));
-        } catch (FileNotFoundException e) {
-            game.error("Highscores", "[Update] FNF Error: " + e.getMessage() + ", the program will try and make a new file");
-        } catch (IOException e) {
-            game.error("Highscores", "[Update] IO Error: " + e.getMessage());
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.flush();
-                    outputStream.close();
-                }
-                outputStream = null;
-            } catch (IOException e) {
-                game.error("Highscores", "[Update] Error: " + e.getMessage());
-            }
-        }
+        preferences.flush();
     }
 
     public ArrayList<Score> sublist(ArrayList<Score> list, int begin, int end) {
@@ -98,7 +70,7 @@ public class Highscores {
         return result;
     }
 
-    public static class Score implements Serializable {
+    public static class Score {
         private int score;
         private String name;
 

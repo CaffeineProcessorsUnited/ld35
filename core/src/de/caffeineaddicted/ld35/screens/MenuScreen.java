@@ -1,8 +1,11 @@
 package de.caffeineaddicted.ld35.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -22,10 +25,11 @@ public class MenuScreen extends CoffeeScreen {
 
     protected Stage stage;
     private Label title;
-    private Sprite background;
     private int tabindex = -1;
     private ArrayList<Button> buttons;
     private NAVIGATION navigation = NAVIGATION.Both;
+
+    private boolean dimmBackground;
 
     public MenuScreen(CoffeeGame g) {
         super(g);
@@ -34,11 +38,7 @@ public class MenuScreen extends CoffeeScreen {
     public void create() {
         game.debug("Creating MenuScreen");
         stage = new Stage(game.createViewport());
-
-        Texture texBackground = game.getAssets().get("menu_background.png", Texture.class);
-        texBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        background = new Sprite(texBackground);
-        background.setSize(stage.getWidth(), stage.getHeight());
+        dimmBackground = true;
 
         title = new Label("", game.getDefaultSkin(), "title");
         title.setPosition(stage.getWidth() / 2 - title.getWidth() / 2, stage.getHeight() - title.getHeight() - 10);
@@ -61,6 +61,14 @@ public class MenuScreen extends CoffeeScreen {
         title = new Label(titleStr, game.getDefaultSkin(), "title");
         title.setPosition(stage.getWidth() / 2 - title.getWidth() / 2, stage.getHeight() - title.getHeight() - 10);
         stage.addActor(title);
+    }
+
+    public void setDimmBackground(boolean dimmBackground) {
+        this.dimmBackground = dimmBackground;
+    }
+
+    public boolean getDimmBackground() {
+        return dimmBackground;
     }
 
     public void addButton(Button button) {
@@ -155,13 +163,17 @@ public class MenuScreen extends CoffeeScreen {
     }
 
     public void render(float delta) {
-        //Gdx.gl.glEnable(GL20.GL_BLEND);
-        //Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        //Gdx.gl.glClearColor(0.8f, 0.2f, 0.2f, 0);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (dimmBackground) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            game.getShape().begin(ShapeRenderer.ShapeType.Filled);
+            game.getShape().setColor(0f, 0f, 0f, 0.6f);
+            game.getShape().rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            game.getShape().end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
         stage.act(delta);
         stage.draw();
-        //Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     @Override

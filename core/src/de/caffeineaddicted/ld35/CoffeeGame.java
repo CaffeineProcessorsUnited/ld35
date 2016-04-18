@@ -270,6 +270,7 @@ public class CoffeeGame extends MessageBasedGame {
     public static class CONSTANTS {
 
         public final static String PREFERENCES_FILENAME = "caffeine-ld35";
+        public final static String SCORES_FILENAME = "caffeine-ld35-scores";
 
         /*
         Preferences keys

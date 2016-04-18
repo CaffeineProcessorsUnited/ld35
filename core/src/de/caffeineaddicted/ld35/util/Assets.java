@@ -11,8 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class Assets extends AssetManager {
 
     public void preload() {
-        load("loading_background.jpg", Texture.class);
-        load("menu_background.png", Texture.class);
+        load("background.png", Texture.class);
+        load("cpu.png", Texture.class);
+        load("logo.png", Texture.class);
     }
 
     public void load() {

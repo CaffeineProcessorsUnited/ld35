@@ -58,18 +58,6 @@ public class PauseMenuScreen extends MenuScreen {
 
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        game.getShape().begin(ShapeRenderer.ShapeType.Filled);
-        game.getShape().setColor(0f, 0f, 0f, 0.6f);
-        game.getShape().rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        game.getShape().end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-        super.render(delta);
-    }
-
     private float getButtonY(int number) {
         return (stage.getHeight() - btnMarginTop) - number * btnHeight;
     }
