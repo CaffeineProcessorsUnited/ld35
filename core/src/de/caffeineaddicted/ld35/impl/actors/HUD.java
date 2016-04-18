@@ -14,6 +14,7 @@ import de.caffeineaddicted.ld35.impl.screens.GameScreen;
 public class HUD extends Group {
 
     private KeyDisplay keyDisplay;
+    private ObstacleDisplay obstacleDisplay;
     private Label labelSpeed;
     private Label labelPoints;
 
@@ -33,6 +34,10 @@ public class HUD extends Group {
         keyDisplay.setPosition(10, 10);
         keyDisplay.setWidth(getWidth() - 20);
 
+        obstacleDisplay = new ObstacleDisplay(g,this);
+        obstacleDisplay.setScale(0.05f,0.05f);
+        obstacleDisplay.setPosition(getWidth() / 2 - obstacleDisplay.getWidth()/2,getHeight()-obstacleDisplay.getHeight()-10);
+
         labelSpeed = new Label("Speed: " + gameScreen.getSpeed(), g.getAssets().get("uiskin.json", Skin.class));
         labelSpeed.setPosition(20, getHeight() - labelSpeed.getHeight() - 20);
 
@@ -42,6 +47,7 @@ public class HUD extends Group {
         addActor(keyDisplay);
         addActor(labelSpeed);
         addActor(labelPoints);
+        addActor(obstacleDisplay);
     }
 
     @Override

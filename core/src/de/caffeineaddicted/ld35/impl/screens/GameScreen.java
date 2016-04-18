@@ -105,13 +105,13 @@ public class GameScreen extends CoffeeScreen {
     private ShapeRef incomingShape;
 
     private Texture textures[];
-    Texture GetTextureByIncomingShape(int slot, boolean inv){
+    public Texture GetTextureByIncomingShape(int slot, boolean inv){
         if(slot < 0 || slot >= 4)
             return null;
         int shapeid = incomingShape.GetShape(slot);
         return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
     }
-    Texture GetTextureByShape(int shapeid, boolean inv){
+    public Texture GetTextureByShape(int shapeid, boolean inv){
         return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
     }
 
