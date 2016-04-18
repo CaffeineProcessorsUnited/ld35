@@ -43,7 +43,7 @@ public class ModeSelectionScreen extends MenuScreen {
         btnNormal.setPosition(stage.getWidth() / 2 - btnWidth / 2, getButtonY(btnCounter++));
         addButton(btnNormal);
 
-        // Highscores button
+        // Hoardcore button
         btnHardcore = new TextButton("Hardcore", game.getDefaultSkin());
         btnHardcore.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -54,7 +54,7 @@ public class ModeSelectionScreen extends MenuScreen {
         btnHardcore.setPosition(stage.getWidth() / 2 - btnWidth / 2, getButtonY(btnCounter++));
         addButton(btnHardcore);
 
-        // Exit button
+        // Back button
         btnBack = new TextButton("Exit", game.getDefaultSkin());
         btnBack.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {

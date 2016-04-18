@@ -20,6 +20,9 @@ import de.caffeineaddicted.ld35.impl.actors.HUD;
 import de.caffeineaddicted.ld35.impl.input.GameInputProcessor;
 import de.caffeineaddicted.ld35.impl.messages.GameOverMessage;
 import de.caffeineaddicted.ld35.impl.messages.PauseGameMessage;
+import de.caffeineaddicted.ld35.impl.messages.ShowGameMessage;
+import de.caffeineaddicted.ld35.logic.Bundle;
+import de.caffeineaddicted.ld35.logic.Message;
 import de.caffeineaddicted.ld35.logic.ShapeRef;
 import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 
@@ -554,7 +557,17 @@ public class GameScreen extends CoffeeScreen {
         this.hardcore = hardcore;
         if (hardcore) {
             iteration = Math.max(iteration, 21);
+            generateNewIncomimgShape();
         }
+    }
+
+    @Override
+    public void onMessageReceived(Message message, Bundle bundle) {
+        if (bundle == null) {
+            bundle = new Bundle();
+        }
+        setHardcore(bundle.get(CoffeeGame.CONSTANTS.BUNDLE_HARDCORE, Boolean.class, false));
+        game.error("hardcore " + isHardcore());
     }
 
     @Override
@@ -563,7 +576,7 @@ public class GameScreen extends CoffeeScreen {
         game.message(new PauseGameMessage());
     }
 
-    static private class INDICES {
+    static public class INDICES {
         public static int MIN_PLAYER_INDEX = 0;
         public static int MAX_PLAYER_INDEX = 4;
         public static int MIN_INCOMING_INDEX = 5;

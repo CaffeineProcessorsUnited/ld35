@@ -144,10 +144,10 @@ public class CoffeeGame extends MessageBasedGame {
         if (message.getClass() == ShowGameMessage.class) {
             debug("Showing the game screen");
             if (rootScreen.isLoaded(GameScreen.class)) {
-                rootScreen.get(GameScreen.class).onMessageReceived(message, new Bundle().put(CONSTANTS.BUNDLE_HARDCORE, ((ShowGameMessage) message).hardcore));
                 message(new ResumeGameMessage());
                 message(new HideModeSelectionScreenMessage());
                 rootScreen.showScreen(GameScreen.class, RootScreen.ZINDEX.MID);
+                rootScreen.get(GameScreen.class).onMessageReceived(message, new Bundle().put(CONSTANTS.BUNDLE_HARDCORE, ((ShowGameMessage) message).hardcore));
             }
         }
         if (message.getClass() == ShowModeSelectionScreenMessage.class) {
