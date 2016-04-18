@@ -19,12 +19,14 @@ import java.util.ArrayList;
 public class CreditsScreen extends MenuScreen {
 
     float txtMarginTop = 100;
-    float txtWidth = 380;
+    float txtWidth = 0;
     float txtHeight = 25;
     TextButton btnBack;
     String[] txtCredits = { "Credits:", ""
             + "", "This game is our submission for the Ludum Dare 35!", ""
-            + "A lot of coffee, cola, chicken wings, curry, chili and chocolate was consumed during development.", ""
+            + "A lot of coffee, cola, chicken wings, curry, chili and chocolate", ""
+            + "(all these things start wit an c...coincidence?)", ""
+            + "was consumed during development.", ""
             + "", "People developing this game:", "Malte Heinzelmann", "Niels Bernloehr","Felix Richter", "Maria Stepanov"
             + "", "", "You can find us under CaffeineProccesorsUnited on Github: ","https://github.com/CaffeineProcessorsUnited"};
     ArrayList<Label> txtCreditLabels;
@@ -42,9 +44,11 @@ public class CreditsScreen extends MenuScreen {
         txtCreditLabels = new ArrayList<Label>();
         for (int i = 0; i < txtCredits.length; i++) {
             txtCreditLabels.add(new Label(txtCredits[i], game.getAssets().get("uiskin.json", Skin.class), "default"));
-            txtCreditLabels.get(i).setWidth(txtWidth);
-            txtCreditLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
+            txtWidth = Math.max(txtWidth, txtCreditLabels.get(i).getWidth());
             stage.addActor(txtCreditLabels.get(i));
+        }
+        for (int i = 0; i < txtCreditLabels.size(); i++) {
+            txtCreditLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
         }
 
         // Back button

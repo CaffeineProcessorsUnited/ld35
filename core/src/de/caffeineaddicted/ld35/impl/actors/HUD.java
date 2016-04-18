@@ -1,6 +1,7 @@
 package de.caffeineaddicted.ld35.impl.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -31,9 +32,11 @@ public class HUD extends Group {
         keyDisplay.setScale(0.3f, 0.3f);
         keyDisplay.setPosition(10, 10);
         keyDisplay.setWidth(getWidth() - 20);
-        labelSpeed = new Label("Speed: ",g.getAssets().get("uiskin.json", Skin.class));
+
+        labelSpeed = new Label("Speed: " + gameScreen.getSpeed(), g.getAssets().get("uiskin.json", Skin.class));
         labelSpeed.setPosition(20, getHeight() - labelSpeed.getHeight() - 20);
-        labelPoints = new Label("Points: ",g.getAssets().get("uiskin.json", Skin.class));
+
+        labelPoints = new Label("Points: " + gameScreen.getScore(), g.getAssets().get("uiskin.json", Skin.class));
         labelPoints.setPosition(getWidth() - labelPoints.getWidth() - 20, getHeight() - labelSpeed.getHeight() - 20);
 
         addActor(keyDisplay);
@@ -43,8 +46,19 @@ public class HUD extends Group {
 
     @Override
     public void draw (Batch batch, float parentAlpha ) {
-        labelSpeed.setText("Speed: " + gameScreen.getSpeed());
-        labelPoints.setText("Score: " + gameScreen.getScore());
+        for (int i = getChildren().size - 1; i >= 0; i--) {
+            if (getChildren().get(i) == labelPoints) {
+                getChildren().get(i).remove();
+            } else if (getChildren().get(i) == labelSpeed) {
+                getChildren().get(i).remove();
+            }
+        }
+        labelSpeed = new Label("Speed: " + gameScreen.getSpeed(), g.getAssets().get("uiskin.json", Skin.class));
+        labelSpeed.setPosition(20, getHeight() - labelSpeed.getHeight() - 20);
+        addActor(labelSpeed);
+        labelPoints = new Label("Points: " + gameScreen.getScore(), g.getAssets().get("uiskin.json", Skin.class));
+        labelPoints.setPosition(getWidth() - labelPoints.getWidth() - 20, getHeight() - labelPoints.getHeight() - 20);
+        addActor(labelPoints);
         super.draw(batch, parentAlpha);
     }
 

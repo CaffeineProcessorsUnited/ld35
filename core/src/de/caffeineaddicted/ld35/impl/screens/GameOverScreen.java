@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
+import de.caffeineaddicted.ld35.impl.messages.AbortGameMessage;
+import de.caffeineaddicted.ld35.impl.messages.HideGameOverMenuMessage;
+import de.caffeineaddicted.ld35.impl.messages.ShowGameMessage;
 import de.caffeineaddicted.ld35.logic.Bundle;
 import de.caffeineaddicted.ld35.logic.Message;
 import de.caffeineaddicted.ld35.screens.MenuScreen;
@@ -59,6 +62,9 @@ public class GameOverScreen extends MenuScreen {
         btnEnter.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 game.getHighscores().addScore(inputName.getText(), score);
+                game.message(new AbortGameMessage());
+                game.message(new HideGameOverMenuMessage());
+                game.message(new ShowMainMenuMessage());
             }
         });
         btnEnter.setWidth(120);
@@ -69,6 +75,8 @@ public class GameOverScreen extends MenuScreen {
         btnAbort = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
         btnAbort.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
+                game.message(new AbortGameMessage());
+                game.message(new HideGameOverMenuMessage());
                 game.message(new ShowMainMenuMessage());
             }
         });

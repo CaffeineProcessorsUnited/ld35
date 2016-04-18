@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.CoffeeGame;
 import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 
@@ -33,5 +34,13 @@ public class BackgroundScreen  extends CoffeeScreen {
         game.getBatch().begin();
         background.draw(game.getBatch());
         game.getBatch().end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        game.getShape().begin(ShapeRenderer.ShapeType.Filled);
+        game.getShape().setColor(0.2f, 0.2f, 0.2f, 0.5f);
+        game.getShape().rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.getShape().end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 }

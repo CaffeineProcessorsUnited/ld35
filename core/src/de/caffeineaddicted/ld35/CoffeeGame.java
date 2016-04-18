@@ -101,6 +101,10 @@ public class CoffeeGame extends MessageBasedGame {
             rootScreen.get(GameOverScreen.class).onMessageReceived(message);
             rootScreen.showScreen(GameOverScreen.class, RootScreen.ZINDEX.NEAR);
         }
+        if (message.getClass() == HideGameOverMenuMessage.class) {
+            debug("Leave the lose screen");
+            rootScreen.hideScreen(GameOverScreen.class);
+        }
         if(message.getClass() == PauseGameMessage.class){
             debug("Showing the pause screen");
             if (rootScreen.isLoaded(GameScreen.class) && !rootScreen.get(GameScreen.class).isPaused()) {
