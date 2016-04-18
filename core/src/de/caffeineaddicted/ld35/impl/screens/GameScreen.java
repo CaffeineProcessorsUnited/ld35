@@ -296,8 +296,6 @@ public class GameScreen extends CoffeeScreen {
         doDraw = false;
         game.debug("Creating GameScreen");
 
-        game.getScreenInput().addProcessor(this, new GameInputProcessor(this));
-
         loadTexture(INDICES.BLUE_TILES_SIDE,"BluetilesTexture");
         loadTexture(INDICES.GREY_TILES,"GreyTriagTexture");
         loadTexture(INDICES.BRICK_TILES,"BrickTexture");
@@ -330,6 +328,8 @@ public class GameScreen extends CoffeeScreen {
         CreateTunnelModels();
         generateNewIncomimgShape();
         doDraw = true;
+
+        game.getScreenInput().addProcessor(this, new GameInputProcessor(this));
 
         reset();
 
