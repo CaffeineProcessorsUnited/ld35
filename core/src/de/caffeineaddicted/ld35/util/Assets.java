@@ -54,5 +54,8 @@ public class Assets extends AssetManager {
         load("triangleinverted.png", Texture.class);
 
         load("rainbow.png", Texture.class);
+        load("wall_left.png", Texture.class);
+        load("wall_middle.png", Texture.class);
+        load("wall_right.png", Texture.class);
     }
 }

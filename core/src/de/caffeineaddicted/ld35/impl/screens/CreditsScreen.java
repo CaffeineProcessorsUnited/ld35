@@ -24,7 +24,7 @@ public class CreditsScreen extends MenuScreen {
             "\n" +
             "People developing this game:\n" +
             "Malte Heinzelmann\n" +
-            "Niels Bernloehr\n" +
+            "Niels Bernlöhr\n" +
             "Felix Richter\n" +
             "Maria Stepanov\n" +
             "You can find us under CaffeineProccesorsUnited http://caffeineaddicted.de/";
