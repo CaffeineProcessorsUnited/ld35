@@ -602,9 +602,9 @@ public class GameScreen extends CoffeeScreen {
 
         public static int NUM_TEXTURES = 14;
 
-        public static int SLOT_LEFT = 0;
-        public static int SLOT_UP = 1;
-        public static int SLOT_RIGHT = 2;
-        public static int SLOT_DOWN = 3;
+        public static int SLOT_LEFT = 2;
+        public static int SLOT_UP = 3;
+        public static int SLOT_RIGHT = 0;
+        public static int SLOT_DOWN = 1;
     }
 }
