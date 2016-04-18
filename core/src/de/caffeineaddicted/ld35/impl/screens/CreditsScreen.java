@@ -19,12 +19,12 @@ public class CreditsScreen extends MenuScreen {
     String credits = "Credits:\n" +
             "This game is our submission for the Ludum Dare 35!\n" +
             "A lot of coffee, cola, chicken wings, curry, chili and chocolate" +
-            " (all these things start wit an c...coincidence?) " +
+            " (all these things start wit a c...coincidence?) " +
             " was consumed during development.\n" +
             "\n" +
             "People developing this game:\n" +
             "Malte Heinzelmann\n" +
-            "Niels Bernloehr\n" +
+            "Niels Bernlöhr\n" +
             "Felix Richter\n" +
             "Maria Stepanov\n" +
             "You can find us under CaffeineProccesorsUnited http://caffeineaddicted.de/";
