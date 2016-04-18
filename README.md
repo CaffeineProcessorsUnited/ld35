@@ -32,4 +32,4 @@ http://caffeineaddicted.de/
 * Maria Stepanov(@riastefan): Food provider, entertainment, and a bit of "at least I tried"
 * Malte Heinzelmann(@hnzlmnn): Framework, GUI and everything else
 
-HAVE FUN!
+# HAVE FUN!
