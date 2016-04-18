@@ -22,7 +22,6 @@ public class MainMenuScreen extends MenuScreen {
     public MainMenuScreen(CoffeeGame g) {
         super(g);
         setNavigation(NAVIGATION.Vertical);
-        create();
     }
 
     public void create() {

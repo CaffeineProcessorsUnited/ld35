@@ -26,7 +26,6 @@ public class HighscoresScreen extends MenuScreen {
     public HighscoresScreen(CoffeeGame g) {
         super(g);
         setNavigation(NAVIGATION.Horizontal);
-        create();
     }
 
     public void create() {

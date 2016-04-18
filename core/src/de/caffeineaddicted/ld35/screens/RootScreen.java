@@ -1,9 +1,8 @@
 package de.caffeineaddicted.ld35.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.impl.screens.GameOverScreen;
-import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 
 import java.util.*;
 
@@ -63,19 +62,44 @@ public class RootScreen implements Screen {
         screens.remove(screen);
     }
 
-    public void showScreen(ZINDEX zindex, Class<? extends CoffeeScreen> screen) {
-        if (screens.get(activeScreens.get(zindex)) != null)
-            screens.get(activeScreens.get(zindex)).hide();
-
-        activeScreens.put(zindex, screen);
-        screens.get(screen).show();
+    public void showScreen(Class<? extends CoffeeScreen> screenclass, ZINDEX zindex) {
+        hideScreen(zindex);
+        CoffeeScreen screen;
+        if ((screen = screens.get(screenclass)) != null) {
+            activeScreens.put(zindex, screenclass);
+            game.debug("showing screen " + screenclass.getSimpleName() + " on " + zindex.name());
+            screen.show();
+            screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
     public void hideScreen(ZINDEX zindex) {
-        if (screens.get(activeScreens.get(zindex)) != null) {
-            screens.get(activeScreens.get(zindex)).hide();
-            activeScreens.put(zindex, null);
+        Class<? extends CoffeeScreen> oldScreenclass;
+        if ((oldScreenclass = activeScreens.get(zindex)) != null) {
+            CoffeeScreen oldScreen;
+            if ((oldScreen = screens.get(oldScreenclass)) != null) {
+                game.debug("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
+                activeScreens.put(zindex, null);
+                oldScreen.hide();
+            }
         }
+    }
+
+    public void hideScreen(Class<? extends CoffeeScreen> screenclass) {
+        ZINDEX zindex = null;
+        for (Map.Entry<ZINDEX, Class<? extends CoffeeScreen>> pair: activeScreens.entrySet()) {
+            if (pair.getValue() == screenclass) {
+                zindex = pair.getKey();
+                break;
+            }
+        }
+        if (zindex != null) {
+            hideScreen(zindex);
+        }
+    }
+
+    public boolean isLoaded(Class<? extends CoffeeScreen> screenclass) {
+        return screens.containsKey(screenclass);
     }
 
     public <T> T get(Class<T> screenclass) {
@@ -87,6 +111,7 @@ public class RootScreen implements Screen {
         if ((screenclass = activeScreens.get(zindex)) != null) {
             CoffeeScreen screen;
             if ((screen = screens.get(screenclass)) != null) {
+                //game.debug("RootScreen:reder", "rendering " + screenclass.getSimpleName() + " on " + zindex.name());
                 screen.render(delta);
             }
         }
@@ -119,13 +144,20 @@ public class RootScreen implements Screen {
             //game.debug("Rendering screen: " + zindex.name());
             renderIfNotNull(zindex, delta);
         }
+        //game.debug("done rendering");
     }
 
     @Override
     public void resize(int width, int height) {
-        // let's just resize any screen
-        for (CoffeeScreen screen: screens.values()) {
-            screen.resize(width, height);
+        // why should i resize not drawn screens? they get resized when the are shown
+        for (ZINDEX zindex: ZINDEX.asSortedArray()) {
+            Class<? extends CoffeeScreen> screenclass;
+            if ((screenclass = activeScreens.get(zindex)) != null) {
+                CoffeeScreen screen;
+                if ((screen = screens.get(screenclass)) != null) {
+                    screen.resize(width, height);
+                }
+            }
         }
     }
 

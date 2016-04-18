@@ -27,7 +27,6 @@ public class CreditsScreen extends MenuScreen {
 
     public CreditsScreen(CoffeeGame g) {
         super(g);
-        create();
     }
 
     public void create() {

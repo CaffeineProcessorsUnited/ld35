@@ -32,7 +32,6 @@ public class LoadingScreen extends CoffeeScreen {
 
     public LoadingScreen(CoffeeGame game) {
         super(game);
-        create();
     }
 
     public void create(){

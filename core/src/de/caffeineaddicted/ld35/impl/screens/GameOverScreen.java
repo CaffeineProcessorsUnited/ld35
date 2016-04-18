@@ -28,7 +28,6 @@ public class GameOverScreen extends MenuScreen {
     public GameOverScreen(CoffeeGame g) {
         super(g);
         setNavigation(NAVIGATION.Horizontal);
-        create();
     }
 
     public void create() {

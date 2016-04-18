@@ -26,8 +26,6 @@ public class PreferencesScreen extends MenuScreen {
     public PreferencesScreen(CoffeeGame g) {
         super(g);
         setNavigation(NAVIGATION.Horizontal);
-        create();
-        sync();
     }
 
     public void create() {
@@ -91,6 +89,7 @@ public class PreferencesScreen extends MenuScreen {
         btnAbort.setPosition(stage.getWidth() / 2 + 130 / 2, 100);
         addButton(btnAbort);
 
+        sync();
     }
 
     public void sync() {

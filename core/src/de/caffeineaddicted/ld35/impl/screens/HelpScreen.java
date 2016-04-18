@@ -25,7 +25,6 @@ public class HelpScreen extends MenuScreen {
 
     public HelpScreen(CoffeeGame g) {
         super(g);
-        create();
     }
 
     public void create() {

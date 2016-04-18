@@ -159,15 +159,15 @@ public class MenuScreen extends CoffeeScreen {
     }
 
     public void render (float delta) {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Gdx.gl.glEnable(GL20.GL_BLEND);
+        //Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        //Gdx.gl.glClearColor(0.8f, 0.2f, 0.2f, 0);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.getBatch().begin();
-        background.draw(game.getBatch());
-        game.getBatch().end();
 
         stage.act(delta);
         stage.draw();
+        //Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     @Override

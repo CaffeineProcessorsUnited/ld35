@@ -18,6 +18,9 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.caffeineaddicted.ld35.CoffeeGame;
+import de.caffeineaddicted.ld35.impl.messages.PauseGameMessage;
+import de.caffeineaddicted.ld35.impl.messages.ResumeGameMessage;
+import de.caffeineaddicted.ld35.impl.messages.ShowPauseScreenMessage;
 import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 import de.caffeineaddicted.ld35.impl.actors.HUD;
 import de.caffeineaddicted.ld35.impl.input.GameInputProcessor;
@@ -93,17 +96,7 @@ public class GameScreen extends CoffeeScreen {
         colors[4] = Color.FIREBRICK;
 
         textures = new Texture[INDICES.NUM_TEXTURES];
-        textures[INDICES.BLUE_TILES_SIDE] = game.getAssets().get("BluetilesTexture.png", Texture.class);
-        textures[INDICES.BLUE_TILES_SIDE].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        textures[INDICES.BLUE_TILES_TOP] = game.getAssets().get("BluetilesTextureInv.png", Texture.class);
-        textures[INDICES.BLUE_TILES_TOP].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        textures[INDICES.GREY_TILES] = game.getAssets().get("GreyTriagTexture.png", Texture.class);
-        textures[INDICES.GREY_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        textures[INDICES.BRICK_TILES] = game.getAssets().get("BrickTexture.png", Texture.class);
-        textures[INDICES.BRICK_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-        create();
-        reset();
     }
 
     private boolean matchShapes() {
@@ -177,6 +170,15 @@ public class GameScreen extends CoffeeScreen {
         doDraw = false;
         game.debug("Creating GameScreen");
 
+        textures[INDICES.BLUE_TILES_SIDE] = game.getAssets().get("BluetilesTexture.png", Texture.class);
+        textures[INDICES.BLUE_TILES_SIDE].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        textures[INDICES.BLUE_TILES_TOP] = game.getAssets().get("BluetilesTextureInv.png", Texture.class);
+        textures[INDICES.BLUE_TILES_TOP].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        textures[INDICES.GREY_TILES] = game.getAssets().get("GreyTriagTexture.png", Texture.class);
+        textures[INDICES.GREY_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        textures[INDICES.BRICK_TILES] = game.getAssets().get("BrickTexture.png", Texture.class);
+        textures[INDICES.BRICK_TILES].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         playerShape = new ShapeRef();
         incomingShape = new ShapeRef();
 
@@ -194,6 +196,11 @@ public class GameScreen extends CoffeeScreen {
         CreateTunnelModels();
         generateNewIncomimgShape();
         doDraw = true;
+
+        reset();
+
+
+
     }
 
     private void CreatePlayerModels() {
@@ -290,21 +297,22 @@ public class GameScreen extends CoffeeScreen {
     }
 
     public void render(float delta) {
-        if(!doDraw)
-            return;
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
-
         updatePlayerModel();
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
-        game.getBatch().setProjectionMatrix(camera.combined);
         modelBatch.begin(camera);
         for(int i = 0; i < instances.length; ++i)
             modelBatch.render(instances[i]);
         modelBatch.end();
+
+        stage.act(delta);
+        stage.draw();
+
+        if(!doDraw)
+            return;
 
         if (dist >= 1.2) {
             dist -= (speed * delta);
@@ -321,9 +329,6 @@ public class GameScreen extends CoffeeScreen {
                 game.message(new GameOverMessage(numPoints));
             }
         }
-
-        stage.act(delta);
-        stage.draw();
     }
 
     private void updatePlayerModel() {
@@ -389,15 +394,19 @@ public class GameScreen extends CoffeeScreen {
         reset();
     }
 
+    public void setDoDraw(boolean doDraw) {
+        this.doDraw = doDraw;
+    }
+
     @Override
     public void pause() {
         super.pause();
         doDraw = false;
+        game.message(new PauseGameMessage());
     }
 
     @Override
     public void resume() {
         super.resume();
-        doDraw = true;
     }
 }

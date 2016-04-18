@@ -11,17 +11,26 @@ import de.caffeineaddicted.ld35.logic.Message;
  */
 public  abstract class CoffeeScreen implements Screen, MessageReceiver {
     public final CoffeeGame game;
+    private boolean paused;
     private boolean visible;
+    private boolean created;
 
     public CoffeeScreen(CoffeeGame game) {
         this.game = game;
+        created = false;
+        created = false;
         visible = false;
     }
 
     public abstract void render(float delta);
 
+    public abstract void create();
+
     @Override
     public void show() {
+        if (!created) {
+            create();
+        }
         visible = true;
         game.debug(getClass().getSimpleName(), "visible=" + (visible ? "true" : "false"));
     }
@@ -33,10 +42,12 @@ public  abstract class CoffeeScreen implements Screen, MessageReceiver {
 
     @Override
     public void pause() {
+        paused = true;
     }
 
     @Override
     public void resume() {
+        paused = false;
     }
 
     @Override
@@ -48,6 +59,14 @@ public  abstract class CoffeeScreen implements Screen, MessageReceiver {
     @Override
     public void dispose() {
 
+    }
+
+    public boolean isCreated() {
+        return created;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 
     public boolean isVisible() {
