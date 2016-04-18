@@ -2,16 +2,11 @@ package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.logic.Bundle;
-import de.caffeineaddicted.ld35.logic.Message;
-import de.caffeineaddicted.ld35.screens.MenuScreen;
 import de.caffeineaddicted.ld35.impl.messages.ShowMainMenuMessage;
-
-import java.util.ArrayList;
+import de.caffeineaddicted.ld35.screens.MenuScreen;
 
 /**
  * Created by malte on 4/16/16.
@@ -32,8 +27,7 @@ public class CreditsScreen extends MenuScreen {
             "Niels Bernloehr\n" +
             "Felix Richter\n" +
             "Maria Stepanov\n" +
-            "You can find us under CaffeineProccesorsUnited on Github: https://github.com/CaffeineProcessorsUnited";
-    ArrayList<Label> txtCreditLabels;
+            "You can find us under CaffeineProccesorsUnited http://caffeineaddicted.de/";
 
     public CreditsScreen(CoffeeGame g) {
         super(g);
@@ -45,7 +39,7 @@ public class CreditsScreen extends MenuScreen {
 
         setTitle("LD 35: Credits");
 
-        Label txtCredits  = new Label(credits, game.getAssets().get("uiskin.json", Skin.class), "default");
+        Label txtCredits = new Label(credits, game.getDefaultSkin(), "default");
         txtCredits.setWrap(true);
 
         txtCredits.pack();
@@ -58,7 +52,7 @@ public class CreditsScreen extends MenuScreen {
         stage.addActor(txtCredits);
 
         // Back button
-        btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
+        btnBack = new TextButton("Back", game.getDefaultSkin());
         btnBack.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 game.message(new ShowMainMenuMessage());

@@ -1,17 +1,19 @@
 package de.caffeineaddicted.ld35;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.caffeineaddicted.ld35.impl.screens.*;
 import de.caffeineaddicted.ld35.impl.input.GlobalInputProcessor;
 import de.caffeineaddicted.ld35.impl.messages.*;
+import de.caffeineaddicted.ld35.impl.screens.*;
 import de.caffeineaddicted.ld35.input.CoffeeScreenInputMultiplexer;
 import de.caffeineaddicted.ld35.logic.Bundle;
 import de.caffeineaddicted.ld35.logic.Message;
@@ -69,6 +71,7 @@ public class CoffeeGame extends MessageBasedGame {
         rootScreen.loadScreen(new HighscoresScreen(this));
         rootScreen.loadScreen(new LoadingScreen(this));
         rootScreen.loadScreen(new MainMenuScreen(this));
+        rootScreen.loadScreen(new ModeSelectionScreen(this));
         rootScreen.loadScreen(new PauseMenuScreen(this));
         rootScreen.loadScreen(new PreferencesScreen(this));
     }
@@ -109,8 +112,8 @@ public class CoffeeGame extends MessageBasedGame {
             debug("Leave the lose screen");
             rootScreen.hideScreen(GameOverScreen.class);
         }
-        if(message.getClass() == PauseGameMessage.class){
-            error("Showing the pause screen");
+        if (message.getClass() == PauseGameMessage.class) {
+            debug("Showing the pause screen");
             if (rootScreen.isLoaded(GameScreen.class)) {
                 rootScreen.get(GameScreen.class).setDoDraw(false);
                 if (rootScreen.get(GameScreen.class).isVisible() && !rootScreen.get(GameScreen.class).isGameOver()) {
@@ -124,7 +127,7 @@ public class CoffeeGame extends MessageBasedGame {
             loadPreferences();
         }
         if (message.getClass() == ResumeGameMessage.class) {
-            error("Resuming Game");
+            debug("Resuming Game");
             if (rootScreen.isLoaded(GameScreen.class)) {
                 rootScreen.get(GameScreen.class).setDoDraw(true);
             }
@@ -141,8 +144,21 @@ public class CoffeeGame extends MessageBasedGame {
         }
         if (message.getClass() == ShowGameMessage.class) {
             debug("Showing the game screen");
-            rootScreen.showScreen(GameScreen.class, RootScreen.ZINDEX.MID);
+            if (rootScreen.isLoaded(GameScreen.class)) {
+                rootScreen.get(GameScreen.class).onMessageReceived(message, new Bundle().put(CONSTANTS.BUNDLE_HARDCORE, ((ShowGameMessage) message).hardcore));
+                message(new ResumeGameMessage());
+                message(new HideModeSelectionScreenMessage());
+                rootScreen.showScreen(GameScreen.class, RootScreen.ZINDEX.MID);
+            }
+        }
+        if (message.getClass() == ShowModeSelectionScreenMessage.class) {
+            error("Showing the mode selection screen");
+            rootScreen.showScreen(ModeSelectionScreen.class, RootScreen.ZINDEX.NEAR);
             message(new HideMainMenuMessage());
+        }
+        if (message.getClass() == HideModeSelectionScreenMessage.class) {
+            debug("Hiding the mode selection screen");
+            rootScreen.hideScreen(ModeSelectionScreen.class);
         }
         if (message.getClass() == ShowHighscoresMessage.class) {
             debug("Showing the highscore screen");
@@ -156,9 +172,17 @@ public class CoffeeGame extends MessageBasedGame {
             debug("Go to main menu screen");
             rootScreen.hideScreen(MainMenuScreen.class);
         }
-        if (message.getClass() == ShowPreferenceScreen.class) {
+        if (message.getClass() == ShowPreferenceScreenMessage.class) {
             debug("Showing the preference screen");
             rootScreen.showScreen(PreferencesScreen.class, RootScreen.ZINDEX.FAR);
+        }
+        if (message.getClass() == ShowHelpScreenMessage.class) {
+            debug("Showing the preference screen");
+            rootScreen.showScreen(HelpScreen.class, RootScreen.ZINDEX.FAR);
+        }
+        if (message.getClass() == HidePreferenceScreen.class) {
+            debug("Hiding the preference screen");
+            rootScreen.hideScreen(PreferencesScreen.class);
         }
         if (message.getClass() == ToggleFullscreenMessage.class) {
             debug("Toggeling fullscreen");
@@ -205,6 +229,10 @@ public class CoffeeGame extends MessageBasedGame {
         return screenInput;
     }
 
+    public Skin getDefaultSkin() {
+        return getAssets().get("uiskin.json", Skin.class);
+    }
+
     public String getLogTag() {
         return getLogTag("");
     }
@@ -247,15 +275,16 @@ public class CoffeeGame extends MessageBasedGame {
         /*
         Preferences keys
          */
-        public final static String  PREF_KEY_MUSIC_MENU_ACTIVATED = "music_menu_activated";
+        public final static String PREF_KEY_MUSIC_MENU_ACTIVATED = "music_menu_activated";
         public final static boolean PREF_DEF_MUSIC_MENU_ACTIVATED = true;
 
-        public final static String  PREF_KEY_MUSIC_MENU_VOLUME = "music_menu_volume";
-        public final static float   PREF_DEF_MUSIC_MENU_VOLUME = 1.0f;
+        public final static String PREF_KEY_MUSIC_MENU_VOLUME = "music_menu_volume";
+        public final static float PREF_DEF_MUSIC_MENU_VOLUME = 1.0f;
         /*
         Bundle keys
          */
         public static final String BUNDLE_SCORE = "score";
+        public static final String BUNDLE_HARDCORE = "hardcore";
     }
 
 }

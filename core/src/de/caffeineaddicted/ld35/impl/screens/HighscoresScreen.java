@@ -2,13 +2,12 @@ package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.screens.MenuScreen;
 import de.caffeineaddicted.ld35.impl.messages.ShowMainMenuMessage;
+import de.caffeineaddicted.ld35.screens.MenuScreen;
 
 import java.util.ArrayList;
 
@@ -40,22 +39,21 @@ public class HighscoresScreen extends MenuScreen {
         table.setWidth(tblWidth);
         //ptable.setDebug(true);
         for (int i = 0; i < Math.min(game.getHighscores().getScores().size(), 10); i++) {
-            txtNames.add(new Label(game.getHighscores().getScores().get(i).getName(), game.getAssets().get("uiskin.json", Skin.class), "default"));
-            txtScores.add(new Label("" + game.getHighscores().getScores().get(i).getScore(), game.getAssets().get("uiskin.json", Skin.class), "default"));
+            txtNames.add(new Label(game.getHighscores().getScores().get(i).getName(), game.getDefaultSkin(), "default"));
+            txtScores.add(new Label("" + game.getHighscores().getScores().get(i).getScore(), game.getDefaultSkin(), "default"));
             table.add(txtNames.get(i)).left().expandX();
             table.add(txtScores.get(i)).right();
             table.row();
         }
         table.pack();
         table.setWidth(tblWidth);
-        game.error(table.getHeight()+ "");
         table.setPosition(stage.getWidth() / 2 - table.getWidth() / 2, stage.getHeight() - table.getHeight() - tblMarginTop);
         stage.addActor(table);
 
         // Back button
-        btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
+        btnBack = new TextButton("Back", game.getDefaultSkin());
         btnBack.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.message(new ShowMainMenuMessage());
             }
         });

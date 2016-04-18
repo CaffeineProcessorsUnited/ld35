@@ -1,10 +1,9 @@
 package de.caffeineaddicted.ld35.impl.messages;
 
 import de.caffeineaddicted.ld35.logic.Message;
-import de.caffeineaddicted.ld35.logic.MessageBasedGame;
 
 /**
  * Created by malte on 4/16/16.
  */
-public class ShowPreferenceScreen implements Message {
+public class ShowPreferenceScreenMessage implements Message {
 }

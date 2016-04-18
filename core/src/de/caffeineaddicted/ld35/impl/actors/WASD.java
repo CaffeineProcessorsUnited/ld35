@@ -34,7 +34,7 @@ public class WASD extends Group {
         create();
     }
 
-    public void create () {
+    public void create() {
         a = new Image(g.getAssets().get("key_a.png", Texture.class));
         s = new Image(g.getAssets().get("key_s.png", Texture.class));
         w = new Image(g.getAssets().get("key_w.png", Texture.class));
@@ -69,6 +69,7 @@ public class WASD extends Group {
         addActor(dp);
         addActor(wp);
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (kd.getHud().getGameScreen().isRunning()) {

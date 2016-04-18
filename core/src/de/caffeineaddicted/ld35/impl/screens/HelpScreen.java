@@ -2,14 +2,11 @@ package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.screens.MenuScreen;
 import de.caffeineaddicted.ld35.impl.messages.ShowMainMenuMessage;
-
-import java.util.ArrayList;
+import de.caffeineaddicted.ld35.screens.MenuScreen;
 
 /**
  * Created by malte on 4/16/16.
@@ -17,11 +14,20 @@ import java.util.ArrayList;
 public class HelpScreen extends MenuScreen {
 
     float txtMarginTop = 100;
-    float txtWidth = 380;
-    float txtHeight = 25;
+    float txtWidth = 600;
     TextButton btnBack;
-    String[] txtHelps = { "Help", "Help", "Help", "Help", "Help", "Help", "Help"};
-    ArrayList<Label> txtHelpLabels;
+    String help = "Learn\n" +
+            "to\n" +
+            "play\n" +
+            "scrub\n" +
+            "!\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "";
 
     public HelpScreen(CoffeeGame g) {
         super(g);
@@ -33,18 +39,22 @@ public class HelpScreen extends MenuScreen {
 
         setTitle("LD 35: Help");
 
-        txtHelpLabels = new ArrayList<Label>();
-        for (int i = 0; i < txtHelps.length; i++) {
-            txtHelpLabels.add(new Label(txtHelps[i], game.getAssets().get("uiskin.json", Skin.class), "default"));
-            txtHelpLabels.get(i).setWidth(txtWidth);
-            txtHelpLabels.get(i).setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - i * txtHeight);
-            stage.addActor(txtHelpLabels.get(i));
-        }
+        Label txtHelp = new Label(help, game.getDefaultSkin(), "default");
+        txtHelp.setWrap(true);
+
+        txtHelp.pack();
+        txtHelp.setWidth(txtWidth);
+
+        txtHelp.pack();
+        txtHelp.setWidth(txtWidth);
+
+        txtHelp.setPosition(stage.getWidth() / 2 - txtHelp.getWidth() / 2, stage.getHeight() - txtMarginTop - txtHelp.getHeight());
+        stage.addActor(txtHelp);
 
         // Back button
-        btnBack = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
+        btnBack = new TextButton("Back", game.getDefaultSkin());
         btnBack.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.message(new ShowMainMenuMessage());
             }
         });
@@ -54,28 +64,4 @@ public class HelpScreen extends MenuScreen {
 
     }
 
-    @Override
-    public void dispose () {
-
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
 }

@@ -1,12 +1,15 @@
 package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.screens.MenuScreen;
 import de.caffeineaddicted.ld35.impl.messages.PreferencesUpdatedMessage;
 import de.caffeineaddicted.ld35.impl.messages.ShowMainMenuMessage;
+import de.caffeineaddicted.ld35.screens.MenuScreen;
 
 import static de.caffeineaddicted.ld35.CoffeeGame.CONSTANTS.*;
 
@@ -36,37 +39,25 @@ public class PreferencesScreen extends MenuScreen {
 
         int i = 0;
 
-        txtPrefMusicMenuActivated = new Label("Activate music", game.getAssets().get("uiskin.json", Skin.class), "default");
+        txtPrefMusicMenuActivated = new Label("Activate music", game.getDefaultSkin(), "default");
         txtPrefMusicMenuActivated.setPosition(stage.getWidth() / 2 - prefWidth / 2, (stage.getHeight() - prefMarginTop) - (i++) * prefHeight);
         stage.addActor(txtPrefMusicMenuActivated);
-        ckbPrefMusicMenuActivated = new CheckBox("Activate music", game.getAssets().get("uiskin.json", Skin.class), "default");
-        ckbPrefMusicMenuActivated.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                game.debug("hure");
-            }
-        });
+        ckbPrefMusicMenuActivated = new CheckBox("Activate music", game.getDefaultSkin(), "default");
         ckbPrefMusicMenuActivated.setPosition(stage.getWidth() / 2 - prefWidth / 2, (stage.getHeight() - prefMarginTop) - (i++) * prefHeight);
         stage.addActor(ckbPrefMusicMenuActivated);
 
 
-        txtPrefMusicMenuVolume = new Label("Activate music", game.getAssets().get("uiskin.json", Skin.class), "default");
+        txtPrefMusicMenuVolume = new Label("Activate music", game.getDefaultSkin(), "default");
         txtPrefMusicMenuVolume.setPosition(stage.getWidth() / 2 - prefWidth / 2, (stage.getHeight() - prefMarginTop) - (i++) * prefHeight);
         stage.addActor(txtPrefMusicMenuVolume);
-        sldrPrefMusicMenuVolume = new Slider(0f, 1f, 0.05f, false, game.getAssets().get("uiskin.json", Skin.class));
-        sldrPrefMusicMenuVolume.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                game.debug("huren silder");
-            }
-        });
+        sldrPrefMusicMenuVolume = new Slider(0f, 1f, 0.05f, false, game.getDefaultSkin());
         sldrPrefMusicMenuVolume.setPosition(stage.getWidth() / 2 - prefWidth / 2, (stage.getHeight() - prefMarginTop) - (i++) * prefHeight);
         stage.addActor(sldrPrefMusicMenuVolume);
 
         // Save button
-        btnSave = new TextButton("Apply", game.getAssets().get("uiskin.json", Skin.class));
+        btnSave = new TextButton("Apply", game.getDefaultSkin());
         btnSave.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.getPreferences().putBoolean(PREF_KEY_MUSIC_MENU_ACTIVATED, ckbPrefMusicMenuActivated.isChecked());
                 game.getPreferences().putFloat(PREF_KEY_MUSIC_MENU_VOLUME, sldrPrefMusicMenuVolume.getValue());
                 game.getPreferences().flush();
@@ -78,9 +69,9 @@ public class PreferencesScreen extends MenuScreen {
         addButton(btnSave);
 
         // Abort button
-        btnAbort = new TextButton("Back", game.getAssets().get("uiskin.json", Skin.class));
+        btnAbort = new TextButton("Back", game.getDefaultSkin());
         btnAbort.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.getPreferences().abort();
                 game.message(new ShowMainMenuMessage());
             }

@@ -10,7 +10,7 @@ import de.caffeineaddicted.ld35.messages.DefaultMessage;
 /**
  * Created by malte on 4/17/16.
  */
-public  abstract class CoffeeScreen implements Screen, MessageReceiver {
+public abstract class CoffeeScreen implements Screen, MessageReceiver {
     public final CoffeeGame game;
     private boolean paused;
     private boolean visible;
@@ -31,6 +31,7 @@ public  abstract class CoffeeScreen implements Screen, MessageReceiver {
     public void show() {
         if (!created) {
             create();
+            created = true;
         }
         visible = true;
         game.debug(getClass().getSimpleName(), "visible=" + (visible ? "true" : "false"));

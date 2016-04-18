@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public class Preferences implements com.badlogic.gdx.Preferences {
 
-    com.badlogic.gdx.Preferences backup, working;
     private final String filename;
+    com.badlogic.gdx.Preferences backup, working;
 
     public Preferences(String filename) {
         this.filename = filename;

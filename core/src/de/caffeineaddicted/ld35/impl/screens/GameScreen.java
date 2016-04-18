@@ -1,10 +1,6 @@
 package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -20,14 +16,12 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.impl.messages.PauseGameMessage;
-import de.caffeineaddicted.ld35.impl.messages.ResumeGameMessage;
-import de.caffeineaddicted.ld35.impl.messages.ShowPauseScreenMessage;
-import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 import de.caffeineaddicted.ld35.impl.actors.HUD;
 import de.caffeineaddicted.ld35.impl.input.GameInputProcessor;
-import de.caffeineaddicted.ld35.logic.ShapeRef;
 import de.caffeineaddicted.ld35.impl.messages.GameOverMessage;
+import de.caffeineaddicted.ld35.impl.messages.PauseGameMessage;
+import de.caffeineaddicted.ld35.logic.ShapeRef;
+import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 
 import java.util.Random;
 
@@ -37,98 +31,38 @@ import static com.badlogic.gdx.graphics.GL20.GL_NONE;
  * Created by malte on 4/16/16.
  */
 public class GameScreen extends CoffeeScreen {
-    static private class INDICES {
-        public static int MIN_PLAYER_INDEX = 0;
-        public static int MAX_PLAYER_INDEX = 4;
-        public static int MIN_INCOMING_INDEX = 5;
-        public static int MAX_INCOMING_INDEX = 14;
-        public static int MIN_TUNNEL_INDEX = 15;
-        public static int MAX_TUNNEL_INDEX = 21;
-        public static int MAX_INDEX = 22;
-
-        public static int BLUE_TILES_SIDE = 0;
-        public static int GREY_TILES = 1;
-        public static int BRICK_TILES = 2;
-        public static int SPRITE_UNICORN = 3;
-        public static int SPRITE_UNICORN_INV = 4;
-        public static int SPRITE_SQUARE = 5;
-        public static int SPRITE_SQUARE_INV = 6;
-        public static int SPRITE_CIRCLE = 7;
-        public static int SPRITE_CIRCLE_INV = 8;
-        public static int SPRITE_STAR = 9;
-        public static int SPRITE_STAR_INV = 10;
-        public static int SPRITE_TRIANGLE = 11;
-        public static int SPRITE_TRIANGLE_INV = 12;
-        public static int SPRITE_RAINBOW = 13;
-
-        public static int NUM_TEXTURES = 14;
-
-        public static int SLOT_LEFT = 0;
-        public static int SLOT_UP = 1;
-        public static int SLOT_RIGHT = 2;
-        public static int SLOT_DOWN = 3;
-    }
-
-    private boolean cheatMode;
-    private boolean gameOver;
-
     private static float baseDist = 30.f;
     private static float baseSpeed = 2f;
     private static float speedMultiplier = 0.5f;
-    private int iteration = 0;
     private static Color[] colors;
-
-    private int numPoints;
     private static int numPointTrigger = 7;
-
+    static private long va = VertexAttributes.Usage.Position |
+            VertexAttributes.Usage.Normal |
+            VertexAttributes.Usage.TextureCoordinates;
+    public ShapeRef playerShape;
+    private boolean cheatMode;
+    private boolean gameOver;
+    private int iteration = 0;
+    private int numPoints;
     private boolean doDraw;
-
     private Model models[];
     private ModelInstance instances[];
     private ModelBuilder builder;
-    static private long va = VertexAttributes.Usage.Position |
-                             VertexAttributes.Usage.Normal |
-                             VertexAttributes.Usage.TextureCoordinates;
     private int leadingIncoming = 0;
 
-/*
-    private Model player_model[], incoming_model[], carpent_model;
-    private Model tunnel_model[];
-    private ModelInstance player_instance[], incoming_instance[], carpet_instance;
-    private ModelInstance tunnel_instance[];*/
+    /*
+        private Model player_model[], incoming_model[], carpent_model;
+        private Model tunnel_model[];
+        private ModelInstance player_instance[], incoming_instance[], carpet_instance;
+        private ModelInstance tunnel_instance[];*/
     private ModelBatch modelBatch;
     private float dist;
     private float speed;
-    
+
     private PerspectiveCamera camera;
-    public ShapeRef playerShape;
     private ShapeRef incomingShape;
-
     private Texture textures[];
-    Texture GetTextureByIncomingShape(int slot, boolean inv){
-        if(slot < 0 || slot >= 4)
-            return null;
-        int shapeid = incomingShape.GetShape(slot);
-        return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
-    }
-    Texture GetTextureByShape(int shapeid, boolean inv){
-        return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
-    }
-
     private Stage stage;
-
-    private void loadTexture(int idx, final String name, boolean mipmap){
-        textures[idx] = game.getAssets().get(name+".png", Texture.class);
-        if(mipmap)
-            textures[idx].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        else
-            textures[idx].setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
-    }
-
-    private void loadTexture(int idx, final String name){
-        loadTexture(idx, name, true);
-    }
 
     public GameScreen(CoffeeGame game) {
         super(game);
@@ -143,6 +77,30 @@ public class GameScreen extends CoffeeScreen {
 
     }
 
+    Texture GetTextureByIncomingShape(int slot, boolean inv) {
+        if (slot < 0 || slot >= 4)
+            return null;
+        int shapeid = incomingShape.GetShape(slot);
+        return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
+    }
+
+    Texture GetTextureByShape(int shapeid, boolean inv) {
+        return textures[INDICES.SPRITE_UNICORN + 2 * shapeid + (inv ? 1 : 0)];
+    }
+
+    private void loadTexture(int idx, final String name, boolean mipmap) {
+        textures[idx] = game.getAssets().get(name + ".png", Texture.class);
+        if (mipmap)
+            textures[idx].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        else
+            textures[idx].setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+    }
+
+    private void loadTexture(int idx, final String name) {
+        loadTexture(idx, name, true);
+    }
+
     private boolean matchShapes() {
         return playerShape.equals(incomingShape) || cheatMode;
     }
@@ -151,19 +109,19 @@ public class GameScreen extends CoffeeScreen {
         int i = new Random().nextInt((int) Math.pow(ShapeRef.numShapes, ShapeRef.numSlots));
         incomingShape.SetShape(i);
         dist = baseDist;
-        if(doDraw)
+        if (doDraw)
             numPoints++;
         if (numPoints % numPointTrigger == 0) {
             iteration++;
         }
         float s = Math.min(baseSpeed + speedMultiplier * iteration, 20.f);
-        if(!cheatMode)
+        if (!cheatMode)
             speed = s;
         else {
-            speed = Math.max(speed,s);
+            speed = Math.max(speed, s);
         }
         for (int j = 0; j < 4; j++) {
-            instances[INDICES.MIN_INCOMING_INDEX+j].materials.first().set(makeAttributeFromShape(incomingShape.GetShape(j),true));
+            instances[INDICES.MIN_INCOMING_INDEX + j].materials.first().set(makeAttributeFromShape(incomingShape.GetShape(j), true));
         }
         setTunnelTransform();
     }
@@ -172,7 +130,7 @@ public class GameScreen extends CoffeeScreen {
         float x = 0;
         float y = 0;
         float z = dist;
-        Vector3 scaling = new Vector3(1,1,1);
+        Vector3 scaling = new Vector3(1, 1, 1);
         if (model == 0) {
             x = -0.3f;
             scaling.x = -1;
@@ -202,38 +160,38 @@ public class GameScreen extends CoffeeScreen {
             y += 0.3;
         }
 
-        if(instances[INDICES.MIN_INCOMING_INDEX+model] != null)
-            instances[INDICES.MIN_INCOMING_INDEX+model].transform = new Matrix4(new Vector3(x, y, z), new Quaternion(), scaling);
+        if (instances[INDICES.MIN_INCOMING_INDEX + model] != null)
+            instances[INDICES.MIN_INCOMING_INDEX + model].transform = new Matrix4(new Vector3(x, y, z), new Quaternion(), scaling);
     }
 
-    private void setTunnelTransform(){
-        for (int i = INDICES.MIN_TUNNEL_INDEX;i<=INDICES.MAX_TUNNEL_INDEX;i++){
+    private void setTunnelTransform() {
+        for (int i = INDICES.MIN_TUNNEL_INDEX; i <= INDICES.MAX_TUNNEL_INDEX; i++) {
             Vector3 positon = instances[i].transform.getTranslation(new Vector3());
             positon.z = dist;
             instances[i].transform.setTranslation(positon);
         }
     }
 
-    private void calcPlane(final Vector3 pos, final Vector3 size, Vector3 aa, Vector3 bb, Vector3 cc, Vector3 dd, Vector3 nn){
-        Vector3 a,b,c,d,n;
-        a = new Vector3(0,0,0);
-        if(size.x < 0.001){
+    private void calcPlane(final Vector3 pos, final Vector3 size, Vector3 aa, Vector3 bb, Vector3 cc, Vector3 dd, Vector3 nn) {
+        Vector3 a, b, c, d, n;
+        a = new Vector3(0, 0, 0);
+        if (size.x < 0.001) {
             b = new Vector3
-                    (0f,size.y,0f);
-            c = new Vector3(0f,size.y, size.z);
-            d = new Vector3(0f,0f,size.z);
-        } else if(size.y < 0.001){
-            b = new Vector3(size.x,0f,0f);
-            c = new Vector3(size.x,0 , size.z);
-            d = new Vector3(0f,0f,size.z);
-        } else if(size.z < 0.001){
-            b = new Vector3(size.x,0f,0f);
-            c = new Vector3(size.x,size.y, 0);
-            d = new Vector3(0f,size.y,0f);
+                    (0f, size.y, 0f);
+            c = new Vector3(0f, size.y, size.z);
+            d = new Vector3(0f, 0f, size.z);
+        } else if (size.y < 0.001) {
+            b = new Vector3(size.x, 0f, 0f);
+            c = new Vector3(size.x, 0, size.z);
+            d = new Vector3(0f, 0f, size.z);
+        } else if (size.z < 0.001) {
+            b = new Vector3(size.x, 0f, 0f);
+            c = new Vector3(size.x, size.y, 0);
+            d = new Vector3(0f, size.y, 0f);
         } else {
-            b = new Vector3(0,1,0);
-            d = new Vector3(0,1,1);
-            c = new Vector3(0,0,1);
+            b = new Vector3(0, 1, 0);
+            d = new Vector3(0, 1, 1);
+            c = new Vector3(0, 0, 1);
         }
 
         Vector3 s = size.scl(0.5f);
@@ -253,42 +211,44 @@ public class GameScreen extends CoffeeScreen {
         nn.set(n);
     }
 
-    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material){
+    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material) {
         makeModel(idx, size, offset, material, null);
     }
-    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material, Quaternion rotation){
-        makeModel(idx, size, offset, material, rotation,new Vector3(1,1,1));
+
+    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material, Quaternion rotation) {
+        makeModel(idx, size, offset, material, rotation, new Vector3(1, 1, 1));
     }
-    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material, Quaternion rotation, Vector3 scaling){
-        if(builder == null)
+
+    private void makeModel(int idx, Vector3 size, Vector3 offset, Material material, Quaternion rotation, Vector3 scaling) {
+        if (builder == null)
             return;
-        if(rotation == null)
+        if (rotation == null)
             rotation = new Quaternion();
         Vector3 a = new Vector3();
         Vector3 b = new Vector3();
         Vector3 c = new Vector3();
         Vector3 d = new Vector3();
         Vector3 n = new Vector3();
-        calcPlane(offset,size,a,b,c,d,n);
+        calcPlane(offset, size, a, b, c, d, n);
 
         material.set(IntAttribute.createCullFace(GL_NONE));
         material.set(new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA));
 
-        models[idx] = builder.createRect(a.x,a.y,a.z,
-                                         b.x,b.y,b.z,
-                                         c.x,c.y,c.z,
-                                         d.x,d.y,d.z,
-                                         n.x,n.y,n.z,
-                                         material, va);
+        models[idx] = builder.createRect(a.x, a.y, a.z,
+                b.x, b.y, b.z,
+                c.x, c.y, c.z,
+                d.x, d.y, d.z,
+                n.x, n.y, n.z,
+                material, va);
         instances[idx] = new ModelInstance(models[idx]);
         instances[idx].transform = new Matrix4(offset, rotation, scaling);
     }
 
-    private TextureAttribute makeAttributeFromShape(int idx, boolean inv){
-        return TextureAttribute.createDiffuse(GetTextureByShape(idx,inv));
+    private TextureAttribute makeAttributeFromShape(int idx, boolean inv) {
+        return TextureAttribute.createDiffuse(GetTextureByShape(idx, inv));
     }
 
-    private Material makeMaterialFromTexture(int idx){
+    private Material makeMaterialFromTexture(int idx) {
         return new Material(TextureAttribute.createDiffuse(textures[idx]));
     }
 
@@ -296,20 +256,20 @@ public class GameScreen extends CoffeeScreen {
         doDraw = false;
         game.debug("Creating GameScreen");
 
-        loadTexture(INDICES.BLUE_TILES_SIDE,"BluetilesTexture");
-        loadTexture(INDICES.GREY_TILES,"GreyTriagTexture");
-        loadTexture(INDICES.BRICK_TILES,"BrickTexture");
-        loadTexture(INDICES.SPRITE_UNICORN,"unicorn");
-        loadTexture(INDICES.SPRITE_UNICORN_INV,"unicorninverted");
-        loadTexture(INDICES.SPRITE_SQUARE,"square");
-        loadTexture(INDICES.SPRITE_SQUARE_INV,"squareinverted");
-        loadTexture(INDICES.SPRITE_CIRCLE,"circle");
-        loadTexture(INDICES.SPRITE_CIRCLE_INV,"circleinverted");
-        loadTexture(INDICES.SPRITE_STAR,"star");
-        loadTexture(INDICES.SPRITE_STAR_INV,"starinverted");
-        loadTexture(INDICES.SPRITE_TRIANGLE,"triangle");
-        loadTexture(INDICES.SPRITE_TRIANGLE_INV,"triangleinverted");
-        loadTexture(INDICES.SPRITE_RAINBOW,"rainbow",false);
+        loadTexture(INDICES.BLUE_TILES_SIDE, "BluetilesTexture");
+        loadTexture(INDICES.GREY_TILES, "GreyTriagTexture");
+        loadTexture(INDICES.BRICK_TILES, "BrickTexture");
+        loadTexture(INDICES.SPRITE_UNICORN, "unicorn");
+        loadTexture(INDICES.SPRITE_UNICORN_INV, "unicorninverted");
+        loadTexture(INDICES.SPRITE_SQUARE, "square");
+        loadTexture(INDICES.SPRITE_SQUARE_INV, "squareinverted");
+        loadTexture(INDICES.SPRITE_CIRCLE, "circle");
+        loadTexture(INDICES.SPRITE_CIRCLE_INV, "circleinverted");
+        loadTexture(INDICES.SPRITE_STAR, "star");
+        loadTexture(INDICES.SPRITE_STAR_INV, "starinverted");
+        loadTexture(INDICES.SPRITE_TRIANGLE, "triangle");
+        loadTexture(INDICES.SPRITE_TRIANGLE_INV, "triangleinverted");
+        loadTexture(INDICES.SPRITE_RAINBOW, "rainbow", false);
 
         playerShape = new ShapeRef();
         incomingShape = new ShapeRef();
@@ -337,30 +297,30 @@ public class GameScreen extends CoffeeScreen {
     }
 
     private void CreatePlayerModels() {
-        makeModel(INDICES.MIN_PLAYER_INDEX+0,
+        makeModel(INDICES.MIN_PLAYER_INDEX + 0,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(-0.3f, 0f, 1.2f),
                 makeMaterialFromTexture(INDICES.SPRITE_STAR),
                 new Quaternion(),
-                new Vector3(-1,1,1));
-        makeModel(INDICES.MIN_PLAYER_INDEX+1,
+                new Vector3(-1, 1, 1));
+        makeModel(INDICES.MIN_PLAYER_INDEX + 1,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(0f, 0f, 1.2f),
                 makeMaterialFromTexture(INDICES.SPRITE_STAR),
                 new Quaternion(),
-                new Vector3(-1,1,1));
-        makeModel(INDICES.MIN_PLAYER_INDEX+2,
+                new Vector3(-1, 1, 1));
+        makeModel(INDICES.MIN_PLAYER_INDEX + 2,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(0.3f, 0f, 1.2f),
                 makeMaterialFromTexture(INDICES.SPRITE_STAR),
                 new Quaternion(),
-                new Vector3(-1,1,1));
-        makeModel(INDICES.MIN_PLAYER_INDEX+3,
+                new Vector3(-1, 1, 1));
+        makeModel(INDICES.MIN_PLAYER_INDEX + 3,
                 new Vector3(0.3f, 0.3f, 0f),
                 new Vector3(0f, 0.3f, 1.2f),
                 makeMaterialFromTexture(INDICES.SPRITE_STAR),
                 new Quaternion(),
-                new Vector3(-1,1,1));
+                new Vector3(-1, 1, 1));
         /*makeModel(INDICES.MIN_PLAYER_INDEX+4,
                 new Vector3(1f, 1f, 0f),
                 new Vector3(0f, 0f, 1.22f),
@@ -417,36 +377,36 @@ public class GameScreen extends CoffeeScreen {
     }
 
     private void CreateTunnelModels() {
-        makeModel(INDICES.MIN_TUNNEL_INDEX+0,
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 0,
                 new Vector3(1.2f, 0f, baseDist * 2),
                 new Vector3(0f, -0.16f, 0f), // Carpet
                 makeMaterialFromTexture(INDICES.SPRITE_RAINBOW));
-        makeModel(INDICES.MIN_TUNNEL_INDEX+1,
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 1,
                 new Vector3(0f, 4f, baseDist * 5),
                 new Vector3(-2f, -0f, 0f), // Tunnel walls
                 makeMaterialFromTexture(INDICES.BLUE_TILES_SIDE));
-        makeModel(INDICES.MIN_TUNNEL_INDEX+2,
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 2,
                 new Vector3(0f, 4f, baseDist * 5),
                 new Vector3(2f, -0f, 0f), // Tunnel walls
                 makeMaterialFromTexture(INDICES.BLUE_TILES_SIDE));
-        makeModel(INDICES.MIN_TUNNEL_INDEX+3,
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 3,
                 new Vector3(4f, 0f, baseDist * 5),
                 new Vector3(0f, -0.18f, 0f), // Tunnel walls
                 makeMaterialFromTexture(INDICES.GREY_TILES));
-        makeModel(INDICES.MIN_TUNNEL_INDEX+4,
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 4,
                 new Vector3(4f, 0f, baseDist * 5),
                 new Vector3(0f, 2f, 0f), // Tunnel Top
                 makeMaterialFromTexture(INDICES.BLUE_TILES_SIDE));
-        makeModel(INDICES.MIN_TUNNEL_INDEX+5,
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 5,
                 new Vector3(0.2f, 0f, baseDist * 5),
                 new Vector3(-1.98f, 1.98f, 0f), // Tunnel walls
                 new Material(ColorAttribute.createDiffuse(Color.GRAY)),
-                new Quaternion().setFromAxis(0,0,1,45));
-        makeModel(INDICES.MIN_TUNNEL_INDEX+6,
+                new Quaternion().setFromAxis(0, 0, 1, 45));
+        makeModel(INDICES.MIN_TUNNEL_INDEX + 6,
                 new Vector3(0.2f, 0f, baseDist * 5),
                 new Vector3(1.98f, 1.98f, 0f), // Tunnel corners
                 new Material(ColorAttribute.createDiffuse(Color.GRAY)),
-                new Quaternion().setFromAxis(0,0,1,-45));
+                new Quaternion().setFromAxis(0, 0, 1, -45));
         setTunnelTransform();
     }
 
@@ -463,9 +423,9 @@ public class GameScreen extends CoffeeScreen {
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
         modelBatch.begin(camera);
-        for(int i = 0; i < instances.length; ++i)
-            if(instances[i] != null) {
-                game.debug(""+i);
+        for (int i = 0; i < instances.length; ++i)
+            if (instances[i] != null) {
+                game.debug("" + i);
                 modelBatch.render(instances[i]);
             }
         modelBatch.end();
@@ -474,7 +434,7 @@ public class GameScreen extends CoffeeScreen {
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        if(!doDraw)
+        if (!doDraw)
             return;
 
 
@@ -482,7 +442,7 @@ public class GameScreen extends CoffeeScreen {
             dist -= (speed * delta);
             for (int i = 0; i <= INDICES.MAX_INCOMING_INDEX - INDICES.MIN_INCOMING_INDEX; ++i)
                 setIncomingTransform(i);
-                setTunnelTransform();
+            setTunnelTransform();
         }
 
         if (dist < 1.2) {
@@ -502,23 +462,24 @@ public class GameScreen extends CoffeeScreen {
     private void updatePlayerModel() {
         if (playerShape.isDirty()) {
             for (int i = 0; i < 4; i++) {
-                instances[INDICES.MIN_PLAYER_INDEX+i].materials.first().set(makeAttributeFromShape(playerShape.GetShape(i),false));
+                instances[INDICES.MIN_PLAYER_INDEX + i].materials.first().set(makeAttributeFromShape(playerShape.GetShape(i), false));
             }
             playerShape.setDirty(false);
         }
     }
 
-    public void toggleCheats(){
+    public void toggleCheats() {
         cheatMode = !cheatMode;
     }
-    public void incSpeed(){
-        if(cheatMode)
+
+    public void incSpeed() {
+        if (cheatMode)
             speed += 1;
         else
             dist = 2;
     }
 
-    private void reset(){
+    private void reset() {
         gameOver = false;
 
         numPoints = 0;
@@ -549,7 +510,6 @@ public class GameScreen extends CoffeeScreen {
         return stage;
     }
 
-
     public int getScore() {
         return numPoints;
     }
@@ -561,7 +521,7 @@ public class GameScreen extends CoffeeScreen {
     @Override
     public void dispose() {
         modelBatch.dispose();
-        for(int i = 0; i < instances.length; ++i)
+        for (int i = 0; i < instances.length; ++i)
             models[i].dispose();
         stage.dispose();
     }
@@ -588,5 +548,37 @@ public class GameScreen extends CoffeeScreen {
     public void pause() {
         super.pause();
         game.message(new PauseGameMessage());
+    }
+
+    static public class INDICES {
+        public static int MIN_PLAYER_INDEX = 0;
+        public static int MAX_PLAYER_INDEX = 4;
+        public static int MIN_INCOMING_INDEX = 5;
+        public static int MAX_INCOMING_INDEX = 14;
+        public static int MIN_TUNNEL_INDEX = 15;
+        public static int MAX_TUNNEL_INDEX = 21;
+        public static int MAX_INDEX = 22;
+
+        public static int BLUE_TILES_SIDE = 0;
+        public static int GREY_TILES = 1;
+        public static int BRICK_TILES = 2;
+        public static int SPRITE_UNICORN = 3;
+        public static int SPRITE_UNICORN_INV = 4;
+        public static int SPRITE_SQUARE = 5;
+        public static int SPRITE_SQUARE_INV = 6;
+        public static int SPRITE_CIRCLE = 7;
+        public static int SPRITE_CIRCLE_INV = 8;
+        public static int SPRITE_STAR = 9;
+        public static int SPRITE_STAR_INV = 10;
+        public static int SPRITE_TRIANGLE = 11;
+        public static int SPRITE_TRIANGLE_INV = 12;
+        public static int SPRITE_RAINBOW = 13;
+
+        public static int NUM_TEXTURES = 14;
+
+        public static int SLOT_LEFT = 0;
+        public static int SLOT_UP = 1;
+        public static int SLOT_RIGHT = 2;
+        public static int SLOT_DOWN = 3;
     }
 }

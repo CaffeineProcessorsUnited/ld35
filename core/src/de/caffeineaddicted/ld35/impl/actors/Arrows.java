@@ -33,15 +33,15 @@ public class Arrows extends Group {
         create();
     }
 
-    public void create () {
-        left =      new Image(g.getAssets().get("key_left.png", Texture.class));
-        leftp =     new Image(g.getAssets().get("key_leftp.png", Texture.class));
-        down =      new Image(g.getAssets().get("key_down.png", Texture.class));
-        downp =     new Image(g.getAssets().get("key_downp.png", Texture.class));
-        right =     new Image(g.getAssets().get("key_right.png", Texture.class));
-        rightp =    new Image(g.getAssets().get("key_rightp.png", Texture.class));
-        up =        new Image(g.getAssets().get("key_up.png", Texture.class));
-        upp =       new Image(g.getAssets().get("key_upp.png", Texture.class));
+    public void create() {
+        left = new Image(g.getAssets().get("key_left.png", Texture.class));
+        leftp = new Image(g.getAssets().get("key_leftp.png", Texture.class));
+        down = new Image(g.getAssets().get("key_down.png", Texture.class));
+        downp = new Image(g.getAssets().get("key_downp.png", Texture.class));
+        right = new Image(g.getAssets().get("key_right.png", Texture.class));
+        rightp = new Image(g.getAssets().get("key_rightp.png", Texture.class));
+        up = new Image(g.getAssets().get("key_up.png", Texture.class));
+        upp = new Image(g.getAssets().get("key_upp.png", Texture.class));
 
         setSize(left.getWidth() + down.getWidth() + right.getWidth() + 2 * margin, down.getHeight() + up.getHeight() + margin);
 
@@ -55,7 +55,6 @@ public class Arrows extends Group {
         upp.setPosition(down.getX(), down.getHeight() + margin);
 
 
-
         addActor(up);
         addActor(down);
         addActor(left);
@@ -67,7 +66,7 @@ public class Arrows extends Group {
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         if (kd.getHud().getGameScreen().isRunning()) {
             up.setVisible(!Gdx.input.isKeyPressed(Input.Keys.UP));
             upp.setVisible(Gdx.input.isKeyPressed(Input.Keys.UP));

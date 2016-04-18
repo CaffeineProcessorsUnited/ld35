@@ -11,34 +11,13 @@ import java.util.*;
  */
 public class RootScreen implements Screen {
 
-    public enum ZINDEX {
-        FAREST(0), FAR(1), MID(2), NEAR(3), NEAREST(4);
-
-        public final Integer value;
-
-        ZINDEX(Integer value) {
-            this.value = value;
-        }
-
-        static ArrayList<ZINDEX> asSortedArray() {
-            ArrayList<ZINDEX> list = new ArrayList<ZINDEX>(Arrays.asList(ZINDEX.values()));
-            Collections.sort(list, new Comparator<ZINDEX>() {
-                @Override
-                public int compare(ZINDEX o1, ZINDEX o2) {
-                    return o1.value.compareTo(o2.value);
-                }
-            });
-            return list;
-        }
-    };
-
     private CoffeeGame game;
+
+    ;
     private Map<Class<? extends CoffeeScreen>, CoffeeScreen> screens;
     private Map<ZINDEX, Class<? extends CoffeeScreen>> activeScreens;
-
     private boolean renderWhilePasued = true;
     private boolean paused = false;
-
     public RootScreen(CoffeeGame game) {
         this.game = game;
         screens = new HashMap<Class<? extends CoffeeScreen>, CoffeeScreen>();
@@ -70,6 +49,8 @@ public class RootScreen implements Screen {
             game.debug("showing screen " + screenclass.getSimpleName() + " on " + zindex.name());
             screen.show();
             screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        } else {
+            game.error("The screen " + screenclass.getSimpleName() + " is not loaded! Load it before u show it!");
         }
     }
 
@@ -78,7 +59,7 @@ public class RootScreen implements Screen {
         if ((oldScreenclass = activeScreens.get(zindex)) != null) {
             CoffeeScreen oldScreen;
             if ((oldScreen = screens.get(oldScreenclass)) != null) {
-                game.debug("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
+                game.error("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
                 activeScreens.put(zindex, null);
                 oldScreen.hide();
             }
@@ -87,7 +68,7 @@ public class RootScreen implements Screen {
 
     public void hideScreen(Class<? extends CoffeeScreen> screenclass) {
         ZINDEX zindex = null;
-        for (Map.Entry<ZINDEX, Class<? extends CoffeeScreen>> pair: activeScreens.entrySet()) {
+        for (Map.Entry<ZINDEX, Class<? extends CoffeeScreen>> pair : activeScreens.entrySet()) {
             if (pair.getValue() == screenclass) {
                 zindex = pair.getKey();
                 break;
@@ -116,18 +97,18 @@ public class RootScreen implements Screen {
             }
         }
     }
-    
-    /*
-    Redirect interface calls to affected children
-     */
 
     @Override
     public void show() {
         // we have to present a screen
-        for (CoffeeScreen screen: screens.values()) {
+        for (CoffeeScreen screen : screens.values()) {
             screen.show();
         }
     }
+    
+    /*
+    Redirect interface calls to affected children
+     */
 
     public void render(float delta) {
         render(delta, false);
@@ -140,7 +121,7 @@ public class RootScreen implements Screen {
         if (paused && !renderWhilePasued && !forceRender) {
             return;
         }
-        for (ZINDEX zindex: ZINDEX.asSortedArray()) {
+        for (ZINDEX zindex : ZINDEX.asSortedArray()) {
             //game.debug("Rendering screen: " + zindex.name());
             renderIfNotNull(zindex, delta);
         }
@@ -150,7 +131,7 @@ public class RootScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         // why should i resize not drawn screens? they get resized when the are shown
-        for (ZINDEX zindex: ZINDEX.asSortedArray()) {
+        for (ZINDEX zindex : ZINDEX.asSortedArray()) {
             Class<? extends CoffeeScreen> screenclass;
             if ((screenclass = activeScreens.get(zindex)) != null) {
                 CoffeeScreen screen;
@@ -166,7 +147,7 @@ public class RootScreen implements Screen {
         // we paused the game
         paused = true;
         game.debug("U can't pause root!");
-        for (CoffeeScreen screen: screens.values()) {
+        for (CoffeeScreen screen : screens.values()) {
             screen.pause();
         }
     }
@@ -176,7 +157,7 @@ public class RootScreen implements Screen {
         // we resumed the game
         paused = false;
         game.debug("Unleash the kraken");
-        for (CoffeeScreen screen: screens.values()) {
+        for (CoffeeScreen screen : screens.values()) {
             screen.resume();
         }
     }
@@ -184,7 +165,7 @@ public class RootScreen implements Screen {
     @Override
     public void hide() {
         // screen got hidden
-        for (CoffeeScreen screen: screens.values()) {
+        for (CoffeeScreen screen : screens.values()) {
             screen.hide();
         }
     }
@@ -192,8 +173,29 @@ public class RootScreen implements Screen {
     @Override
     public void dispose() {
         // why would you do that?
-        for (CoffeeScreen screen: screens.values()) {
+        for (CoffeeScreen screen : screens.values()) {
             screen.dispose();
+        }
+    }
+
+    public enum ZINDEX {
+        FAREST(0), FAR(1), MID(2), NEAR(3), NEAREST(4);
+
+        public final Integer value;
+
+        ZINDEX(Integer value) {
+            this.value = value;
+        }
+
+        static ArrayList<ZINDEX> asSortedArray() {
+            ArrayList<ZINDEX> list = new ArrayList<ZINDEX>(Arrays.asList(ZINDEX.values()));
+            Collections.sort(list, new Comparator<ZINDEX>() {
+                @Override
+                public int compare(ZINDEX o1, ZINDEX o2) {
+                    return o1.value.compareTo(o2.value);
+                }
+            });
+            return list;
         }
     }
 }

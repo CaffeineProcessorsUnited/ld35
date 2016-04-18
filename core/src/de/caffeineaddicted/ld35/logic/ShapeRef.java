@@ -8,15 +8,15 @@ public class ShapeRef {
 
     private int[] slots;
 
-    public ShapeRef(){
+    public ShapeRef() {
         slots = new int[numSlots];
-        dirty=true;
+        dirty = true;
         Reset();
     }
 
     public void Reset() {
         dirty = true;
-        for(int i = 0; i < numSlots; ++i)
+        for (int i = 0; i < numSlots; ++i)
             slots[i] = 0;
     }
 
@@ -24,40 +24,44 @@ public class ShapeRef {
         assert 0 <= shape && shape < numShapes;
         assert 0 <= slot && slot < numSlots;
         slots[slot] = shape;
-        dirty=true;
+        dirty = true;
     }
 
-    public int GetShapeID(){
+    public int GetShapeID() {
         int id = 0;
-        for(int i = 0; i < numSlots; ++i) {
+        for (int i = 0; i < numSlots; ++i) {
             id += (Math.pow(numShapes, i) * slots[i]);
         }
         return id;
     }
-    public int[] GetShapes(){
+
+    public int[] GetShapes() {
         return slots;
     }
-    public int GetShape(int slot){
+
+    public int GetShape(int slot) {
         assert 0 >= slot && slot < numSlots;
         return slots[slot];
     }
-    public void SetShape(int shapeID){
+
+    public void SetShape(int shapeID) {
         Reset();
-        for(int i = numSlots-1; i >= 0; --i){
-            int mod = (int) Math.pow(numShapes,i);
+        for (int i = numSlots - 1; i >= 0; --i) {
+            int mod = (int) Math.pow(numShapes, i);
             slots[i] = shapeID / mod;
             shapeID %= mod;
         }
     }
-    public boolean isDirty(){
+
+    public boolean isDirty() {
         return dirty;
     }
 
-    public void setDirty(boolean dirty){
-        this.dirty=dirty;
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 
-    public boolean equals(ShapeRef other){
+    public boolean equals(ShapeRef other) {
         return GetShapeID() == other.GetShapeID();
     }
 

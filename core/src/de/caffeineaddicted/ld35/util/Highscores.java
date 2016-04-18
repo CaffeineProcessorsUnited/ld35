@@ -1,7 +1,6 @@
 package de.caffeineaddicted.ld35.util;
 
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,15 +12,15 @@ import java.util.Comparator;
  */
 public class Highscores {
 
-    private CoffeeGame game;
     // The name of the file where the highscores will be saved
     private final String HIGHSCORE_FILE;
     // Initialising an in and outputStream for working with the file
-    ObjectOutputStream          outputStream   = null;
-    ObjectInputStream           inputStream    = null;
+    ObjectOutputStream outputStream = null;
+    ObjectInputStream inputStream = null;
+    private CoffeeGame game;
     // An arraylist of the type "score" we will use to work with the scores
     // inside the class
-    private ArrayList<Score>    scores;
+    private ArrayList<Score> scores;
 
     public Highscores(CoffeeGame game) {
         this(game, "scores.dat");
@@ -99,7 +98,7 @@ public class Highscores {
         return result;
     }
 
-    public static class Score  implements Serializable {
+    public static class Score implements Serializable {
         private int score;
         private String name;
 

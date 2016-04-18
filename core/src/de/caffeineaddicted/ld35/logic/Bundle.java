@@ -3,6 +3,7 @@ package de.caffeineaddicted.ld35.logic;
 /**
  * Created by Malte on 17.04.2016.
  */
+
 import java.util.HashMap;
 import java.util.Map;
 

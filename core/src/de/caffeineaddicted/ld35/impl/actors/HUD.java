@@ -1,7 +1,6 @@
 package de.caffeineaddicted.ld35.impl.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -27,7 +26,7 @@ public class HUD extends Group {
         create();
     }
 
-    public void create () {
+    public void create() {
         keyDisplay = new KeyDisplay(g, this);
         keyDisplay.setScale(0.3f, 0.3f);
         keyDisplay.setPosition(10, 10);
@@ -45,7 +44,7 @@ public class HUD extends Group {
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha ) {
+    public void draw(Batch batch, float parentAlpha) {
         for (int i = getChildren().size - 1; i >= 0; i--) {
             if (getChildren().get(i) == labelPoints) {
                 getChildren().get(i).remove();

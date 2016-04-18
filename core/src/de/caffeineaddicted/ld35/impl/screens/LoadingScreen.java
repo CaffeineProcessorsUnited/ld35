@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 import de.caffeineaddicted.ld35.impl.messages.FinishedLoadingMessage;
+import de.caffeineaddicted.ld35.screens.CoffeeScreen;
 
 /**
  * Created by malte on 4/16/16.
@@ -34,7 +34,7 @@ public class LoadingScreen extends CoffeeScreen {
         super(game);
     }
 
-    public void create(){
+    public void create() {
         game.debug("Creating LoadingScreen");
 
         game.getAssets().preload();
@@ -49,7 +49,7 @@ public class LoadingScreen extends CoffeeScreen {
         game.getAssets().load();
     }
 
-    public void render (float delta) {
+    public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -110,7 +110,7 @@ public class LoadingScreen extends CoffeeScreen {
     }
 
     @Override
-    public void resize (int width, int height) {
+    public void resize(int width, int height) {
         super.resize(width, height);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }

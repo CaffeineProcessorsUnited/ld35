@@ -28,7 +28,7 @@ public class KeyDisplay extends Group {
         create();
     }
 
-    public void create () {
+    public void create() {
         wasd = new WASD(g, this);
         arrows = new Arrows(g, this);
         space = new Image(g.getAssets().get("key_space.png", Texture.class));
@@ -48,7 +48,7 @@ public class KeyDisplay extends Group {
     }
 
     @Override
-    public void setScale (float scaleX, float scaleY) {
+    public void setScale(float scaleX, float scaleY) {
         wasd.setScale(scaleX, scaleY);
         arrows.setScale(scaleX, scaleY);
         space.setScale(scaleX, scaleY);
@@ -56,7 +56,7 @@ public class KeyDisplay extends Group {
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha ) {
+    public void draw(Batch batch, float parentAlpha) {
         wasd.setPosition(0, 0);
         space.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
         spacep.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);

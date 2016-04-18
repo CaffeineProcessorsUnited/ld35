@@ -3,24 +3,23 @@ package de.caffeineaddicted.ld35.impl.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import de.caffeineaddicted.ld35.logic.ShapeRef;
 import de.caffeineaddicted.ld35.impl.messages.PauseGameMessage;
 import de.caffeineaddicted.ld35.impl.screens.GameScreen;
+import de.caffeineaddicted.ld35.logic.ShapeRef;
 
 public class GameInputProcessor implements InputProcessor {
 
     private ShapeRef myshape;
     private GameScreen screen;
 
-    public GameInputProcessor(GameScreen screen){
+    public GameInputProcessor(GameScreen screen) {
         this.screen = screen;
         myshape = screen.playerShape;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        switch (keycode)
-        {
+        switch (keycode) {
             case Input.Keys.A:
                 PlaceShape(1);
                 break;
@@ -51,18 +50,18 @@ public class GameInputProcessor implements InputProcessor {
         return true;
     }
 
-    private void PlaceShape(int shape){
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            myshape.PlaceShape(shape,2);
+    private void PlaceShape(int shape) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            myshape.PlaceShape(shape, GameScreen.INDICES.SLOT_LEFT);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            myshape.PlaceShape(shape,3);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            myshape.PlaceShape(shape, GameScreen.INDICES.SLOT_UP);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            myshape.PlaceShape(shape,0);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            myshape.PlaceShape(shape, GameScreen.INDICES.SLOT_RIGHT);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            myshape.PlaceShape(shape,1);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            myshape.PlaceShape(shape, GameScreen.INDICES.SLOT_DOWN);
         }
     }
 

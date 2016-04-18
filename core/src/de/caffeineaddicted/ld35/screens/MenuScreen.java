@@ -1,8 +1,6 @@
 package de.caffeineaddicted.ld35.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,18 +20,11 @@ import java.util.ArrayList;
  */
 public class MenuScreen extends CoffeeScreen {
 
-    public enum NAVIGATION {
-        Both, Horizontal, Vertical
-    }
-
     protected Stage stage;
-
     private Label title;
     private Sprite background;
     private int tabindex = -1;
-
     private ArrayList<Button> buttons;
-
     private NAVIGATION navigation = NAVIGATION.Both;
 
     public MenuScreen(CoffeeGame g) {
@@ -49,7 +40,7 @@ public class MenuScreen extends CoffeeScreen {
         background = new Sprite(texBackground);
         background.setSize(stage.getWidth(), stage.getHeight());
 
-        title = new Label("", game.getAssets().get("uiskin.json", Skin.class), "title");
+        title = new Label("", game.getDefaultSkin(), "title");
         title.setPosition(stage.getWidth() / 2 - title.getWidth() / 2, stage.getHeight() - title.getHeight() - 10);
         stage.addActor(title);
 
@@ -62,12 +53,12 @@ public class MenuScreen extends CoffeeScreen {
     }
 
     public void setTitle(String titleStr) {
-        for (Actor actor: stage.getActors()) {
+        for (Actor actor : stage.getActors()) {
             if (actor == title) {
                 actor.remove();
             }
         }
-        title = new Label(titleStr, game.getAssets().get("uiskin.json", Skin.class), "title");
+        title = new Label(titleStr, game.getDefaultSkin(), "title");
         title.setPosition(stage.getWidth() / 2 - title.getWidth() / 2, stage.getHeight() - title.getHeight() - 10);
         stage.addActor(title);
     }
@@ -90,7 +81,7 @@ public class MenuScreen extends CoffeeScreen {
         }
         if (listener == null) {
             listener = new ChangeListener() {
-                public void changed (ChangeEvent event, Actor actor) {
+                public void changed(ChangeEvent event, Actor actor) {
                     // Do nothing
                 }
             };
@@ -142,16 +133,16 @@ public class MenuScreen extends CoffeeScreen {
         select((buttons.size() + tabindex + 1) % buttons.size());
     }
 
-    public void setNavigation(NAVIGATION navigation) {
-        this.navigation = navigation;
-    }
-
     public NAVIGATION getNavigation() {
         return navigation;
     }
 
+    public void setNavigation(NAVIGATION navigation) {
+        this.navigation = navigation;
+    }
+
     public void setStyle(Button button, String stylename) {
-        setStyle(button, game.getAssets().get("uiskin.json", Skin.class), stylename);
+        setStyle(button, game.getDefaultSkin(), stylename);
     }
 
     public void setStyle(Button button, Skin skin, String stylename) {
@@ -163,27 +154,36 @@ public class MenuScreen extends CoffeeScreen {
 
     }
 
-    public void render (float delta) {
+    public void render(float delta) {
         //Gdx.gl.glEnable(GL20.GL_BLEND);
         //Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         //Gdx.gl.glClearColor(0.8f, 0.2f, 0.2f, 0);
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
         stage.act(delta);
         stage.draw();
         //Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     @Override
-    public void resize (int width, int height) {
+    public void resize(int width, int height) {
         game.debug("resizing");
         stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void dispose () {
+    public void hide() {
+        super.hide();
+        tabindex = -1;
+        create();
+    }
+
+    @Override
+    public void dispose() {
         stage.dispose();
     }
-    
+
+    public enum NAVIGATION {
+        Both, Horizontal, Vertical
+    }
+
 }

@@ -1,12 +1,11 @@
 package de.caffeineaddicted.ld35.impl.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import de.caffeineaddicted.ld35.CoffeeGame;
-import de.caffeineaddicted.ld35.screens.MenuScreen;
 import de.caffeineaddicted.ld35.impl.messages.*;
+import de.caffeineaddicted.ld35.screens.MenuScreen;
 
 /**
  * Created by malte on 4/16/16.
@@ -32,10 +31,10 @@ public class MainMenuScreen extends MenuScreen {
         int btnCounter = 0;
 
         // Play button
-        btnPlay = new TextButton("Play", game.getAssets().get("uiskin.json", Skin.class));
+        btnPlay = new TextButton("Play", game.getDefaultSkin());
         btnPlay.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                game.message(new ShowGameMessage());
+            public void changed(ChangeEvent event, Actor actor) {
+                game.message(new ShowModeSelectionScreenMessage());
             }
         });
         btnPlay.setWidth(btnWidth);
@@ -43,9 +42,9 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnPlay);
 
         // Highscores button
-        btnHighscores = new TextButton("Highscores", game.getAssets().get("uiskin.json", Skin.class));
+        btnHighscores = new TextButton("Highscores", game.getDefaultSkin());
         btnHighscores.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.message(new ShowHighscoresMessage());
             }
         });
@@ -54,10 +53,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnHighscores);
 
         // Help button
-        btnHelp = new TextButton("Help", game.getAssets().get("uiskin.json", Skin.class));
+        btnHelp = new TextButton("Help", game.getDefaultSkin());
         btnHelp.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                game.message(new GameOverMessage(42));
+            public void changed(ChangeEvent event, Actor actor) {
+                game.message(new ShowHelpScreenMessage());
             }
         });
         btnHelp.setWidth(btnWidth);
@@ -65,10 +64,10 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnHelp);
 
         // Settings button
-        btnSettings = new TextButton("Settings", game.getAssets().get("uiskin.json", Skin.class));
+        btnSettings = new TextButton("Settings", game.getDefaultSkin());
         btnSettings.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                game.message(new ShowPreferenceScreen());
+            public void changed(ChangeEvent event, Actor actor) {
+                game.message(new ShowPreferenceScreenMessage());
             }
         });
         btnSettings.setWidth(btnWidth);
@@ -76,9 +75,9 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnSettings);
 
         // Credits button
-        btnCredits = new TextButton("Credits", game.getAssets().get("uiskin.json", Skin.class));
+        btnCredits = new TextButton("Credits", game.getDefaultSkin());
         btnCredits.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.message(new ShowCreditsMessage());
             }
         });
@@ -87,9 +86,9 @@ public class MainMenuScreen extends MenuScreen {
         addButton(btnCredits);
 
         // Exit button
-        btnExit = new TextButton("Exit", game.getAssets().get("uiskin.json", Skin.class));
+        btnExit = new TextButton("Exit", game.getDefaultSkin());
         btnExit.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 game.message(new ExitGameMessage());
             }
         });
