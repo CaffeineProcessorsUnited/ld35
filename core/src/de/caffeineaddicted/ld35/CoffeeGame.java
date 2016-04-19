@@ -49,7 +49,7 @@ public class CoffeeGame extends MessageBasedGame {
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         assets = new Assets();
-        assets.getLogger().setLevel(Logger.ERROR);
+        assets.getLogger().setLevel(Logger.NONE);
         assets.preload();
         highscores = new Highscores(this);
         preferences = new Preferences(PREFERENCES_FILENAME);
@@ -151,7 +151,7 @@ public class CoffeeGame extends MessageBasedGame {
             }
         }
         if (message.getClass() == ShowModeSelectionScreenMessage.class) {
-            error("Showing the mode selection screen");
+            debug("Showing the mode selection screen");
             rootScreen.showScreen(ModeSelectionScreen.class, RootScreen.ZINDEX.NEAR);
             message(new HideMainMenuMessage());
         }
