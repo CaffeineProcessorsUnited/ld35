@@ -60,7 +60,7 @@ public class RootScreen implements Screen {
         if ((oldScreenclass = activeScreens.get(zindex)) != null) {
             CoffeeScreen oldScreen;
             if ((oldScreen = screens.get(oldScreenclass)) != null) {
-                game.error("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
+                game.debug("hiding screen " + oldScreenclass.getSimpleName() + " on " + zindex.name());
                 activeScreens.put(zindex, null);
                 oldScreen.hide();
             }

@@ -19,7 +19,7 @@ public class CoffeeScreenInputMultiplexer implements InputProcessor {
     }
 
     public void addProcessor(CoffeeScreen screen, InputProcessor processor) {
-        screen.game.error(screen.getClass().getSimpleName() + " added Processor " + processor.getClass().getSimpleName());
+        screen.game.debug(screen.getClass().getSimpleName() + " added Processor " + processor.getClass().getSimpleName());
         if (screen == null) throw new NullPointerException("screen cannot be null");
         if (processor == null) throw new NullPointerException("processor cannot be null");
         processors.put(screen, processor);

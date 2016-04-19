@@ -32,9 +32,9 @@ Feel free to like, share and comment or whatever else there is.
 http://caffeineaddicted.de/
 
 ##Who did what:
-* Felix Richter(@felix5721): Textures and Game logic stuff and fluffy clouds
-* Niels Bernlöhr(@k0rmarun): Textures and Game logic and ruining keyboards (R.I.P. L450 keyboard)
-* Maria Stepanov(@riastefan): Food provider, entertainment, and a bit of "at least I tried"
-* Malte Heinzelmann(@hnzlmnn): Framework, GUI and everything else
+* Felix Richter([@felix5721](https://github.com/felix5721)): Textures and Game logic stuff and fluffy clouds
+* Niels Bernlöhr([@k0rmarun](https://github.com/k0rmarun)): Textures and Game logic and ruining keyboards (R.I.P. L450 keyboard)
+* Maria Stepanov([@riastefan](https://github.com/riastefan)): Food provider, entertainment, and a bit of "at least I tried"
+* Malte Heinzelmann([@hnzlmnn](https://github.com/hnzlmnn)): Framework, GUI and everything else
 
 # HAVE FUN!

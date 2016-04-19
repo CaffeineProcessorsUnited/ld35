@@ -573,7 +573,7 @@ public class GameScreen extends CoffeeScreen {
             bundle = new Bundle();
         }
         setHardcore(bundle.get(CoffeeGame.CONSTANTS.BUNDLE_HARDCORE, Boolean.class, false));
-        game.error("hardcore " + isHardcore());
+        game.log("hardcore " + isHardcore());
     }
 
     @Override
