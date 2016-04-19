@@ -37,7 +37,7 @@ public class KeyDisplay extends Group {
         wasd.setPosition(0, 0);
         space.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
         spacep.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
-        arrows.setPosition(getWidth() - arrows.getWidth(), 0);
+        arrows.setPosition(getWidth() - arrows.getWidth() - 20, 0);
 
         spacep.setVisible(false);
 
@@ -57,7 +57,7 @@ public class KeyDisplay extends Group {
         wasd.setPosition(0, 0);
         space.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
         spacep.setPosition(wasd.getWidth() * wasd.getScaleX() + 20, 0);
-        arrows.setPosition(getWidth() - arrows.getWidth() * arrows.getScaleX(), 0);
+        arrows.setPosition(getWidth() - arrows.getWidth() * arrows.getScaleX() - 20, 0);
     }
 
     @Override

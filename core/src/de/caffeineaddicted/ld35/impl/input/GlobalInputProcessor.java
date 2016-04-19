@@ -19,9 +19,9 @@ public class GlobalInputProcessor implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Input.Keys.F11:
-                game.message(new ToggleFullscreenMessage());
-                break;
+//            case Input.Keys.F11:
+//                game.message(new ToggleFullscreenMessage());
+//                break;
         }
         return false;
     }

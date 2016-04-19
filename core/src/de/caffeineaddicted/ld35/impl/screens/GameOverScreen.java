@@ -38,7 +38,7 @@ public class GameOverScreen extends MenuScreen {
         super.create();
         game.debug("Creating GameOverScreen");
 
-        setTitle("LD 35: Noob");
+        setTitle("LD 35: Game Over");
 
         int i = 0;
 
@@ -55,7 +55,7 @@ public class GameOverScreen extends MenuScreen {
         stage.addActor(txtNameLabel);
 
         inputName = new TextField("", game.getDefaultSkin(), "default");
-        inputName.setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - (i++) * txtHeight);
+        inputName.setPosition(stage.getWidth() / 2 - txtWidth / 2, (stage.getHeight() - txtMarginTop) - (i++) * txtHeight -20 );
         stage.addActor(inputName);
 
         // Save button
